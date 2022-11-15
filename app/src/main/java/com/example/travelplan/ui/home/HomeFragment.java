@@ -1,5 +1,6 @@
 package com.example.travelplan.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import com.example.travelplan.HomePage;
 import com.example.travelplan.R;
 import com.example.travelplan.collection_item;
 import com.example.travelplan.databinding.FragmentHomeBinding;
+import com.example.travelplan.description_page;
 import com.example.travelplan.myAdapter;
 
 import java.util.ArrayList;
@@ -60,7 +62,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onRecyclerItemClick(int position) {
                 Log.e("test", "onRecyclerItemClick: "+position);
-
+                startActivity2(root);
             }
         });
 
@@ -74,5 +76,8 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+    public void startActivity2(View view){
 
+        startActivity(new Intent(this.getContext(), description_page.class));
+    }
 }

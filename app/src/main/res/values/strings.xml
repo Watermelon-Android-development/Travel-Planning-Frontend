@@ -5,9 +5,4 @@
     <string name="title_Map">Map</string>
     <string name="title_Profile">Profile</string>
     <string name="title_activity_description_page">description_page</string>
-    
-    <string name="app_name">Travel plan</string>
-    <string name="planTitle">PLANLIST</string>
-    <string name="planDates">11.11</string>
-    <string name="planSites">A->B->C</string>
 </resources>

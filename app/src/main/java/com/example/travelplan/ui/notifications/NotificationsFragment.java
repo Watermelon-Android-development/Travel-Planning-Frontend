@@ -29,6 +29,17 @@ public class NotificationsFragment extends Fragment {
         return root;
     }
 
+    //这个是跳转到collection的
+//    public void ToCollection(View view) {
+//        Intent intent = new Intent(this, Collection.class);
+//        this.startActivity(intent);
+//    }
+    //这是跳转到planlist的
+//public void ToPlanList(View view) {
+//        Intent intent = new Intent(this, Planlist.class);
+//        this.startActivity(intent);
+//    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

@@ -151,18 +151,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/Topbackground" />
 
-        <ImageButton
-            android:id="@+id/back"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginTop="16dp"
-            android:background="#5EB9FB"
-            android:gravity="center"
-            app:layout_constraintStart_toStartOf="@+id/homepage"
-            app:layout_constraintTop_toTopOf="@+id/planListTitle"
-            app:srcCompat="@drawable/back"
-            tools:ignore="SpeakableTextPresentCheck" />
-
         <ImageView
             android:id="@+id/Bottombackground"
             android:layout_width="wrap_content"

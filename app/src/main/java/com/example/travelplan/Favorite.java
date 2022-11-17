@@ -1,13 +1,19 @@
 package com.example.travelplan;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import java.util.ArrayList;
+
+import android.os.Handler;
 
 import java.util.List;
 
@@ -31,14 +37,18 @@ public class Favorite extends AppCompatActivity{
     private List<SaveCheckBox> mDatas;
 
     private FavoriteAdapter mAdapter;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
-        buttonEdit = (Button) findViewById(R.id.buttonEdit);
+
+
+//        buttonEdit = findViewById(R.id.edit);
         boxAllClick = (Button) findViewById(R.id.boxAllClick);
         itemDelete = (Button) findViewById(R.id.itemDelete);
+        handler = new Handler();
 
         itemDelete.setVisibility(View.INVISIBLE);
         boxAllClick.setVisibility(View.INVISIBLE);
@@ -47,42 +57,52 @@ public class Favorite extends AppCompatActivity{
         mDatas = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
 
-            SaveCheckBox dataBean = new SaveCheckBox("" + i, "title", "describetion");
+            SaveCheckBox dataBean = new SaveCheckBox("" + i, "title"+ i, "describetion"+ i);
             mDatas.add(dataBean);
         }
+
 
         mAdapter = new FavoriteAdapter(this, mDatas);
         listView.setAdapter(mAdapter);
 
     }
 
-    public void btnEditList1(View view) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
-        btnEditList();
-
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.right_top_favorite, menu);
+        return true;
     }
 
-    /**
-     * 编辑、取消编辑
-//     * @param view
-     */
-    public void btnEditList() {
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        mAdapter. flage_edit= !mAdapter.flage_edit;
 
-        if (mAdapter.flage_edit) {
-            buttonEdit.setText("取消");
-            itemDelete.setVisibility(View.VISIBLE);
-            boxAllClick.setVisibility(View.VISIBLE);
+        int id = item.getItemId();
 
-        } else {
-            buttonEdit.setText("编辑");
-            itemDelete.setVisibility(View.INVISIBLE);
-            boxAllClick.setVisibility(View.INVISIBLE);
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.edit) {
+
+            mAdapter. flage_edit= !mAdapter.flage_edit;
+
+            if (mAdapter.flage_edit) {
+                item.setTitle("CANCEL");
+                itemDelete.setVisibility(View.VISIBLE);
+                boxAllClick.setVisibility(View.VISIBLE);
+
+            } else {
+                item.setTitle("EDIT");
+                itemDelete.setVisibility(View.INVISIBLE);
+                boxAllClick.setVisibility(View.INVISIBLE);
+            }
+
+            mAdapter.notifyDataSetChanged();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
-        mAdapter.notifyDataSetChanged();
-    }
 
     /**
      * 全选，取消全选
@@ -92,18 +112,18 @@ public class Favorite extends AppCompatActivity{
 
         mAdapter.flage_visible = !mAdapter.flage_visible;
         if (mAdapter.flage_visible) {
-            boxAllClick.setText("全选");
+            boxAllClick.setText("DESELECT ALL");
             for (int i = 0; i < mDatas.size(); i++) {
                 mDatas.get(i).isCheck = true;
             }}
         else{
-            boxAllClick.setText("取消全选");
+            boxAllClick.setText("SELECT ALL");
             for (int i = 0; i < mDatas.size(); i++) {
                 mDatas.get(i).isCheck = false;
             }
-            }
+        }
 
-            mAdapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
 
     }
 
@@ -119,16 +139,25 @@ public class Favorite extends AppCompatActivity{
 
     public void showDialog(View view){
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
-        builder.setTitle("删除");
-        builder.setMessage("确认删除吗？");
-        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+        builder.setTitle("DELETE");
+        builder.setMessage("Are you sure to delete all the options?");
+        builder.setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
+                for (int i = 0,len=mDatas.size(); i < len; i++) {
+                    if (mDatas.get(i).isCheck==true){
+                        mDatas.remove(i);
+                        len--;
+                        i--;
+                    }
+                }
+                mAdapter.notifyDataSetChanged();
             }
+
         });
 
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

@@ -1,20 +1,28 @@
 package com.example.travelplan.ui.notifications;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.travelplan.Favorite;
+import com.example.travelplan.R;
 import com.example.travelplan.databinding.FragmentNotificationsBinding;
 
 public class NotificationsFragment extends Fragment {
 
     private FragmentNotificationsBinding binding;
+
+    private Button buttonFavorite;
+
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -26,14 +34,29 @@ public class NotificationsFragment extends Fragment {
 
         final TextView textView = binding.textNotifications;
         notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
+        buttonFavorite= (Button)root.findViewById(R.id.collection);
+        buttonFavorite.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+
+            public void onClick(View v){
+                ToFavorite(v);
+            }
+        });
         return root;
+
+
     }
 
+
     //这个是跳转到collection的
-//    public void ToCollection(View view) {
-//        Intent intent = new Intent(this, Collection.class);
-//        this.startActivity(intent);
-//    }
+
+    public void ToFavorite(View view) {
+
+        this.startActivity(new Intent(getActivity(), Favorite.class));
+    }
+
     //这是跳转到planlist的
 //public void ToPlanList(View view) {
 //        Intent intent = new Intent(this, Planlist.class);
@@ -45,4 +68,6 @@ public class NotificationsFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
+
 }

@@ -52,7 +52,7 @@ public class PlanlistActivity extends AppCompatActivity{
         mDatas = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
 
-            SaveCheckBox dataBean = new SaveCheckBox("" + i, "title"+ i, "description"+ i);
+            SaveCheckBox dataBean = new SaveCheckBox("id" + i, "title"+ i, "description"+ i);
             mDatas.add(dataBean);
         }
 
@@ -107,7 +107,7 @@ public class PlanlistActivity extends AppCompatActivity{
 
         mAdapter.flage_visible = !mAdapter.flage_visible;
         if (mAdapter.flage_visible) {
-            boxAllClick.setText("DESELECT ALL");
+            boxAllClick.setText("UNSELECT ALL");
             for (int i = 0; i < mDatas.size(); i++) {
                 mDatas.get(i).isCheck = true;
             }}

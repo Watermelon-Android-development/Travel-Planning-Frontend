@@ -1,7 +1,5 @@
 package com.example.travelplan.ui.planlist;
-//
-//public class FavoriteAdapter {
-//}
+
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -6,4 +6,5 @@
     <string name="title_Profile">Profile</string>
     <string name="title_activity_description_page">description_page</string>
     <string name="title_activity_favorite">Favorite</string>
+    <string name="title_activity_planlist">Planlist</string>
 </resources>

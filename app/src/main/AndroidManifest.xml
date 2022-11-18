@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.travelplan">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
 
     <application
         android:allowBackup="true"
@@ -12,6 +21,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelPlan"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="af02f5ab56c2a6a7bf5eee71b95856d4" />
+
         <activity
             android:name=".description_page"
             android:exported="false">
@@ -40,16 +54,13 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".Favorite"
             android:exported="false"
             android:label="@string/title_activity_favorite">
             <meta-data
                 android:name="android.app.lib_name"
-                android:value=""
-                />
-
+                android:value="" />
         </activity>
     </application>
 

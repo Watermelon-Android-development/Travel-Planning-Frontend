@@ -58,10 +58,7 @@ public class NotificationsFragment extends Fragment {
     }
 
     //这是跳转到planlist的
-//public void ToPlanList(View view) {
-//        Intent intent = new Intent(this, Planlist.class);
-//        this.startActivity(intent);
-//    }
+
 
     @Override
     public void onDestroyView() {

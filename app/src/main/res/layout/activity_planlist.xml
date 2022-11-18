@@ -11,7 +11,7 @@
     tools:context=".PlanlistActivity" >
 
     <ListView
-        android:id="@+id/listView"
+        android:id="@+id/planlistView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         >
@@ -25,7 +25,7 @@
 
 
         <Button
-            android:id="@+id/boxAllClick"
+            android:id="@+id/planboxAllClick"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -34,7 +34,7 @@
 
             />
         <Button
-            android:id="@+id/itemDelete"
+            android:id="@+id/planitemDelete"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

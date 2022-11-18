@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.travelplan.Favorite;
+import com.example.travelplan.PlanlistActivity;
 import com.example.travelplan.R;
 import com.example.travelplan.databinding.FragmentNotificationsBinding;
 
@@ -21,7 +22,7 @@ public class NotificationsFragment extends Fragment {
     private FragmentNotificationsBinding binding;
 
     private Button buttonFavorite;
-
+    private Button buttonPlanlist;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -37,11 +38,19 @@ public class NotificationsFragment extends Fragment {
 
         buttonFavorite= (Button)root.findViewById(R.id.collection);
         buttonFavorite.setOnClickListener(new View.OnClickListener(){
-
             @Override
 
             public void onClick(View v){
                 ToFavorite(v);
+            }
+        });
+        buttonPlanlist= (Button)root.findViewById(R.id.planlist);
+        buttonPlanlist.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+
+            public void onClick(View v){
+                ToPlanlist(v);
             }
         });
         return root;
@@ -58,7 +67,10 @@ public class NotificationsFragment extends Fragment {
     }
 
     //这是跳转到planlist的
+    public void ToPlanlist(View view) {
 
+        this.startActivity(new Intent(getActivity(), PlanlistActivity.class));
+    }
 
     @Override
     public void onDestroyView() {

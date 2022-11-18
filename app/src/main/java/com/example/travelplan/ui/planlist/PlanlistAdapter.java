@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.example.travelplan.ui.planlist.SaveCheckBox;
 import com.example.travelplan.R;
 
 import java.util.List;
@@ -60,9 +61,9 @@ public class PlanlistAdapter extends BaseAdapter {
 
             holder = new ViewHolder();
 
-            holder.checkboxOperateData = (CheckBox) convertView.findViewById(R.id.checkbox_operate_data);
-            holder.textTitle = (TextView) convertView.findViewById(R.id.text_title);
-            holder.textDesc = (TextView) convertView.findViewById(R.id.text_desc);
+            holder.checkboxOperateData = (CheckBox) convertView.findViewById(R.id.plan_checkbox_operate_data);
+            holder.textTitle = (TextView) convertView.findViewById(R.id.plan_text_title);
+            holder.textDesc = (TextView) convertView.findViewById(R.id.plan_text_desc);
 
             convertView.setTag(holder);
 

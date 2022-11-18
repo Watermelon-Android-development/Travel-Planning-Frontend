@@ -52,7 +52,7 @@ public class PlanlistActivity extends AppCompatActivity{
         mDatas = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
 
-            SaveCheckBox dataBean = new SaveCheckBox("" + i, "title"+ i, "describetion"+ i);
+            SaveCheckBox dataBean = new SaveCheckBox("" + i, "title"+ i, "description"+ i);
             mDatas.add(dataBean);
         }
 

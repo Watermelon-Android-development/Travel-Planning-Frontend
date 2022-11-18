@@ -1,24 +1,27 @@
 package com.example.travelplan;
 
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.travelplan.ui.planlist.PlanlistAdapter;
-import com.example.travelplan.ui.planlist.SaveCheckBox;
-
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import java.util.ArrayList;
+
+import android.os.Handler;
+
 import java.util.List;
+
+import android.widget.ListView;
+
+import android.widget.Button;
+
+import com.example.travelplan.ui.planlist.SaveCheckBox;
+import com.example.travelplan.ui.planlist.PlanlistAdapter;
 
 public class PlanlistActivity extends AppCompatActivity{
 
@@ -41,13 +44,13 @@ public class PlanlistActivity extends AppCompatActivity{
         setContentView(R.layout.activity_planlist);
 
 
-        boxAllClick = (Button) findViewById(R.id.boxAllClick);
-        itemDelete = (Button) findViewById(R.id.itemDelete);
+        boxAllClick = (Button) findViewById(R.id.planboxAllClick);
+        itemDelete = (Button) findViewById(R.id.planitemDelete);
         handler = new Handler();
 
         itemDelete.setVisibility(View.INVISIBLE);
         boxAllClick.setVisibility(View.INVISIBLE);
-        listView = (ListView) findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.planlistView);
 
         mDatas = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
@@ -79,7 +82,7 @@ public class PlanlistActivity extends AppCompatActivity{
         //noinspection SimplifiableIfStatement
         if (id == R.id.edit) {
 
-            mAdapter. flage_edit= !mAdapter.flage_edit;
+            mAdapter.flage_edit= !mAdapter.flage_edit;
 
             if (mAdapter.flage_edit) {
                 item.setTitle("CANCEL");

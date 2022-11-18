@@ -66,7 +66,7 @@ public class PlanlistActivity extends AppCompatActivity{
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.right_top_favorite, menu);
+        inflater.inflate(R.menu.right_top_planlist, menu);
         return true;
     }
 

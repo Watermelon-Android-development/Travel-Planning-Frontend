@@ -9,4 +9,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray_1">#50B1AAAA</color>
     <color name="grey_2">#666666</color>
+    <color name="gray">	#BEBEBE</color>
+    <color name="dark_gray">#696969</color>
+    <color name="link_normal">#3c9cff</color>
+    <color name="link_active">#A020F0</color>
+    <color name="primary">#1E90FF</color>
+    <color name="primary_pressed">#4169E1</color>
+    <color name="bg_warning">#50FFC0CB</color>
+    <color name="text_warning">#BBCD2626</color>
 </resources>

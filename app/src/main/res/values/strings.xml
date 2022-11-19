@@ -7,4 +7,18 @@
     <string name="title_activity_description_page">description_page</string>
     <string name="title_activity_favorite">Favorite</string>
     <string name="title_activity_planlist">Planlist</string>
+    <string name="username_hint_login">Please enter user name</string>
+    <string name="username_hint_register">User name: only numbers and English characters</string>
+    <string name="password_hint_login">Please enter password</string>
+    <string name="password_hint_register">Password: only numbers and English characters</string>
+    <string name="re_password_hint">Re-enter the password</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="already_account">Already had an account?</string>
+    <string name="to_register">Register now</string>
+    <string name="to_login">Login now</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="warning1">Please enter correct username and password.</string>
+    <string name="warning2">Please enter information in correct form.</string>
+    <string name="warning3">The two passwords you entered did not match.</string>
 </resources>

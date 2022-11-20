@@ -1,5 +1,6 @@
 package com.example.travelplan.ui.dashboard;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.PolylineOptions;
 import com.example.travelplan.Favorite;
@@ -48,6 +51,14 @@ public class DashboardFragment extends Fragment {
         AMap aMap = mapView.getMap();//get aMap
         LatLng latLng = new LatLng(31.27,120.74);//construct a location; location can be searched on https://lbs.amap.com/tools/picker
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15)); //zoom rate
+        aMap.setMapLanguage(AMap.ENGLISH);
+
+//        //随便标了两个点
+//        LatLng latLng1 = new LatLng(31.27,120.74);
+//        final Marker marker1 = aMap.addMarker(new MarkerOptions().position(latLng1).title("loc1").snippet("this is A"));
+//
+//        LatLng latLng2 = new LatLng(31.26,120.75);
+//        final Marker marker2 = aMap.addMarker(new MarkerOptions().position(latLng2).title("loc2").snippet("this is B"));
 
 
 
@@ -105,6 +116,19 @@ public class DashboardFragment extends Fragment {
         return root;
     }
 
+    public interface InfoWindowAdapter {
+        View getInfoWindow(Marker marker);
+        View getInfoContents(Marker marker);
+    }
+
+    /**
+     * set map language
+     *
+     * @param language AMap.CHINESE, AMap.ENGLISH
+     * @since 5.5.0
+     */
+    public void setMapLanguage(String language){}
+
     @Override
     public void onSaveInstanceState(Bundle outstate){
         super.onSaveInstanceState(outstate);
@@ -114,5 +138,18 @@ public class DashboardFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
+        mapView.onResume();
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        //在activity执行onPause时执行mMapView.onPause ()，暂停地图的绘制
+        mapView.onPause();
     }
 }

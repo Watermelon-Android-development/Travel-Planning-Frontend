@@ -72,6 +72,10 @@ public class NotificationsFragment extends Fragment {
         this.startActivity(new Intent(getActivity(), PlanlistActivity.class));
     }
 
+    public void ChangeAvatar(View view) {
+
+
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

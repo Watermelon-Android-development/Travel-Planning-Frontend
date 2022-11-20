@@ -1,6 +1,7 @@
 package com.example.travelplan;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -65,7 +66,11 @@ public class Favorite extends AppCompatActivity{
         mAdapter = new FavoriteAdapter(this, mDatas);
         listView.setAdapter(mAdapter);
 
+
+
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -99,6 +104,8 @@ public class Favorite extends AppCompatActivity{
 
             mAdapter.notifyDataSetChanged();
         }
+
+
 
         return super.onOptionsItemSelected(item);
     }

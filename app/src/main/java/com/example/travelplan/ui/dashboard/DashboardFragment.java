@@ -41,8 +41,8 @@ public class DashboardFragment extends Fragment {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        //final TextView textView = binding.textDashboard;
+        //dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         mapView = (MapView)root.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
@@ -152,4 +152,6 @@ public class DashboardFragment extends Fragment {
         //在activity执行onPause时执行mMapView.onPause ()，暂停地图的绘制
         mapView.onPause();
     }
+
+
 }

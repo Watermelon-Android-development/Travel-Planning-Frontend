@@ -6,19 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".ui.dashboard.DashboardFragment">
 
-    <TextView
-        android:id="@+id/text_dashboard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
+
 
     <com.amap.api.maps2d.MapView
         android:id="@+id/map"
@@ -27,7 +16,60 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/display_bar" />
+
+    <LinearLayout
+        android:id="@+id/display_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical"
+            android:text="route:"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="200dp"
+            android:text="save" />
+
+    </LinearLayout>
+
+    <!--还没有写监听事件-->
+   <RadioGroup
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal"
+       app:layout_constraintTop_toBottomOf="@+id/display_bar"
+       app:layout_constraintRight_toRightOf="parent"
+      >
+       <RadioButton
+           android:id="@+id/rb_1"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="show all sides"
+           android:checked="true"/>
+
+       <RadioButton
+           android:id="@+id/rb_2"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="only show choosen sides"
+           />
+   </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+

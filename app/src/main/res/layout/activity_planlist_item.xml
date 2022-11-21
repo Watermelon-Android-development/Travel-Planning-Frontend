@@ -20,15 +20,6 @@
             android:layout_margin="6dp"
             android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/plan_material_item_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/ic_launcher" />
-
 
     </LinearLayout>
 
@@ -41,12 +32,6 @@
         android:paddingBottom="10dp"
         android:paddingTop="10dp">
 
-        <View
-            android:id="@+id/plan_user_head_img"
-            android:layout_width="5dp"
-            android:layout_height="fill_parent"
-            android:background="#4483c9" />
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -54,34 +39,35 @@
 
             <TextView
                 android:id="@+id/plan_text_title"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="Plan Title"
+                android:textColor="#555555"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/plan_text_desc"
+                android:layout_width="match_parent"
+                android:layout_height="94dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="Plan route"
+                android:textColor="#aaaaaa"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/plan_go_to_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:singleLine="true"
-                android:text="标题"
-                android:textColor="#555555"
-                android:textSize="16sp" />
+                android:layout_gravity="right"
+                android:text="Details" />
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/plan_text_desc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="bottom"
-                    android:singleLine="true"
-                    android:text="描述"
-                    android:textColor="#aaaaaa"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

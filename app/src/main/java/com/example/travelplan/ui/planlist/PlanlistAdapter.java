@@ -2,13 +2,17 @@ package com.example.travelplan.ui.planlist;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.example.travelplan.PlanDetailActivity;
+import com.example.travelplan.PlanlistActivity;
 import com.example.travelplan.ui.planlist.SaveCheckBox;
 import com.example.travelplan.R;
 
@@ -64,7 +68,18 @@ public class PlanlistAdapter extends BaseAdapter {
             holder.checkboxOperateData = (CheckBox) convertView.findViewById(R.id.plan_checkbox_operate_data);
             holder.textTitle = (TextView) convertView.findViewById(R.id.plan_text_title);
             holder.textDesc = (TextView) convertView.findViewById(R.id.plan_text_desc);
+            holder.textDetail = (Button) convertView.findViewById(R.id.plan_go_to_detail);;
+            View finalConvertView = convertView;
+            holder.textDetail.setOnClickListener(new View.OnClickListener(){
 
+                @Override
+
+                public void onClick(View v){
+
+                    Intent intent=new Intent(finalConvertView.getContext(), PlanDetailActivity.class);
+                    finalConvertView.getContext().startActivity(intent);
+                }
+            });
             convertView.setTag(holder);
 
         } else {
@@ -109,5 +124,8 @@ public class PlanlistAdapter extends BaseAdapter {
         public TextView textTitle;
 
         public TextView textDesc;
+        
+        public Button textDetail;
     }
+
 }

@@ -21,4 +21,6 @@
     <string name="warning1">Please enter correct username and password.</string>
     <string name="warning2">Please enter information in correct form.</string>
     <string name="warning3">The two passwords you entered did not match.</string>
+    <string name="about_us">We are Watermelon! Thanks for using our App!</string>
+    <string name="about_us2">If you have interests, please contact us!</string>
 </resources>

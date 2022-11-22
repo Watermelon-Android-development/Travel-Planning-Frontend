@@ -23,13 +23,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.travelplan.AboutUs;
 import com.example.travelplan.Favorite;
+import com.example.travelplan.Helper;
 import com.example.travelplan.PlanlistActivity;
 import com.example.travelplan.R;
 import com.example.travelplan.databinding.FragmentNotificationsBinding;
-import com.example.travelplan.ui.favorite.SaveCheckBox;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.imageview.ShapeableImageView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,18 +37,6 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.TemporalAdjuster;
 import java.util.List;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -59,6 +46,10 @@ import android.widget.Toast;
 
 
 public class NotificationsFragment extends Fragment {
+
+    private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
+
+    private boolean mChecked = false;
 
     private FragmentNotificationsBinding binding;
 
@@ -71,6 +62,8 @@ public class NotificationsFragment extends Fragment {
     private ImageView image2;
     private ImageView image3;
     private ImageView image4;
+
+    private TextView aboutus;
 
     int[] image = new int[]{
             R.drawable.avatar0,
@@ -95,7 +88,7 @@ public class NotificationsFragment extends Fragment {
         notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         buttonFavorite= (Button)root.findViewById(R.id.collection);
-        buttonFavorite.setOnClickListener(new View.OnClickListener(){
+        buttonFavorite.setOnClickListener(new OnClickListener(){
             @Override
 
             public void onClick(View v){
@@ -103,7 +96,7 @@ public class NotificationsFragment extends Fragment {
             }
         });
         buttonPlanlist= (Button)root.findViewById(R.id.planlist);
-        buttonPlanlist.setOnClickListener(new View.OnClickListener(){
+        buttonPlanlist.setOnClickListener(new OnClickListener(){
 
             @Override
 
@@ -113,15 +106,29 @@ public class NotificationsFragment extends Fragment {
         });
 
         avatar = (ImageView) root.findViewById(R.id.Avatar);
-        avatar.setImageResource(image[0]);
-        avatar.setOnClickListener(new View.OnClickListener() {
+        avatar.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 showpop(view);
-                //showdialog(0);
             }
         });
 
+
+        aboutus = (TextView) root.findViewById(R.id.aboutus);
+        aboutus.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ToAboutus(view);
+            }
+        });
+
+        aboutus = (TextView) root.findViewById(R.id.aboutus);
+        aboutus.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ToAboutus(view);
+            }
+        });
 
 //        image0.setImageResource(image[0]);
 //        image1.setImageResource(image[1]);
@@ -218,7 +225,6 @@ public class NotificationsFragment extends Fragment {
     public void changeAvatar(int n){
         avatar.setImageResource(image[n]);
         Toast.makeText(getContext(), "Changed!", Toast.LENGTH_SHORT).show();
-
     }
 
     //这个是跳转到collection的
@@ -234,13 +240,19 @@ public class NotificationsFragment extends Fragment {
         this.startActivity(new Intent(getActivity(), PlanlistActivity.class));
     }
 
+    //跳转关于我们
+    public void ToAboutus(View view) {
+
+        this.startActivity(new Intent(getActivity(), AboutUs.class));
+    }
+
+
 
     @Override
         public void onDestroyView () {
             super.onDestroyView();
             binding = null;
         }
-
 
 
 

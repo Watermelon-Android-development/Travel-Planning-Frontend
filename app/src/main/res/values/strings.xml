@@ -7,6 +7,7 @@
     <string name="title_activity_description_page">description_page</string>
     <string name="title_activity_favorite">Favorite</string>
     <string name="title_activity_planlist">Planlist</string>
+    <string name="title_activity_plandetail">Plan Details</string>
     <string name="username_hint_login">Please enter user name</string>
     <string name="username_hint_register">User name: only numbers and English characters</string>
     <string name="password_hint_login">Please enter password</string>

@@ -1,14 +1,14 @@
-package com.example.travelplan.ui.dashboard;
+package com.example.travelplan.ui.map;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class DashboardViewModel extends ViewModel {
+public class MapViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public DashboardViewModel() {
+    public MapViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is Map fragment");
     }

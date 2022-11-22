@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/navigation_Map"
-        android:name="com.example.travelplan.ui.dashboard.DashboardFragment"
+        android:name="com.example.travelplan.ui.map.MapFragment"
         android:label="@string/title_Map"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_map" />
 
     <fragment
         android:id="@+id/navigation_Profile"

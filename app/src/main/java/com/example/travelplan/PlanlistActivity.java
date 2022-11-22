@@ -26,11 +26,8 @@ import com.example.travelplan.ui.planlist.PlanlistAdapter;
 public class PlanlistActivity extends AppCompatActivity{
 
 
-    private Button buttonEdit;
     private Button boxAllClick;
     private Button itemDelete;
-
-
     private ListView listView;
 
     private List<SaveCheckBox> mDatas;

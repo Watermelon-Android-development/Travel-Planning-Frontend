@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class TravelDatabaseHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "Travel";
@@ -21,9 +22,9 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
 
     private final ReadWriteLock lock;
 
-    TravelDatabaseHelper(Context context, ReadWriteLock lock) {
+    TravelDatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
-        this.lock = lock;
+        lock = new ReentrantReadWriteLock();
     }
 
     @Override
@@ -226,9 +227,9 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
         planValues.put("ROUTE", planString);
         planValues.put("TITLE", title);
         try {
-            db.insert("PLANS", null, planValues);
+            db.insertOrThrow("PLANS", null, planValues);
         } catch (SQLiteConstraintException e) {
-            throw new SQLiteConstraintException("Plan title can't be same!");
+            System.out.println("TITLE can't be same!!!");
         }
         db.close();
         lock.writeLock().unlock();
@@ -307,7 +308,7 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
         return route;
     }
 
-    public void deleteTables() {
+    private void deleteTables() {
         lock.writeLock().lock();
         SQLiteDatabase db;
         db = getWritableDatabase();

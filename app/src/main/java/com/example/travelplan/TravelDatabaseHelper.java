@@ -24,7 +24,7 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
 
     TravelDatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
-        lock = new ReentrantReadWriteLock();
+        lock = new ReentrantReadWriteLock(true);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
                 + "DESCRIPTION TEXT, "
                 + "FAVORITE INTEGER);");
         for (int i = 0; i < 20; i++) {
-            this.insertSite(db, "a" + i, R.drawable.description_sight_1, 0, 0,
+            this.insertSite(db, "a" + (i+1), R.drawable.description_sight_1, 0, 0,
                     "This is a description", "park", false);
         }
 
@@ -277,15 +277,11 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
         if (cursorPlan.moveToFirst()) {
             String routeString = cursorPlan.getString(0);
             cursorPlan.close();
-            List<Integer> route = parseRoute(routeString);
-            StringBuilder sb = new StringBuilder();
-            for (int i : route) {
-                sb.append(i);
-            }
+            routeString = routeString.substring(0, routeString.length()-1);
             Site site;
             Cursor cursorSites = db.query("SITES",
                     new String[]{"NAME", "IMAGE_RESOURCE_ID", "X_LOCATION", "Y_LOCATION", "DESCRIPTION", "TYPE"}
-                    ,"_id in (" + sb.toString() +")",
+                    ,"_id in (" + routeString +")",
                     null, null, null, null);
             while (cursorSites.moveToNext()) {
                 site = new Site(cursorSites.getString(0), cursorSites.getInt(1), cursorSites.getFloat(2),

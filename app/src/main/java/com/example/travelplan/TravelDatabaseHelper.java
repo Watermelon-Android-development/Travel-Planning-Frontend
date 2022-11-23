@@ -24,7 +24,7 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
 
     TravelDatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
-        lock = new ReentrantReadWriteLock();
+        lock = new ReentrantReadWriteLock(true);
     }
 
     @Override

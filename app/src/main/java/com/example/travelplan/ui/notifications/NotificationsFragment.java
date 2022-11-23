@@ -1,8 +1,11 @@
 package com.example.travelplan.ui.notifications;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -13,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -37,12 +41,12 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.TemporalAdjuster;
 import java.util.List;
+
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 
 public class NotificationsFragment extends Fragment {
@@ -63,7 +67,7 @@ public class NotificationsFragment extends Fragment {
     private ImageView image3;
     private ImageView image4;
 
-    private TextView aboutus;
+    private TextView aboutus, name;
 
     int[] image = new int[]{
             R.drawable.avatar0,
@@ -73,6 +77,8 @@ public class NotificationsFragment extends Fragment {
             R.drawable.avatar4
     };
 
+    private SharedPreferences sp;
+
     int currentInt = 0;
 
 
@@ -81,31 +87,37 @@ public class NotificationsFragment extends Fragment {
         NotificationsViewModel notificationsViewModel =
                 new ViewModelProvider(this).get(NotificationsViewModel.class);
 
+        sp = getActivity().getSharedPreferences("Personal", MODE_PRIVATE);
+
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textNotifications;
         notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
-        buttonFavorite= (Button)root.findViewById(R.id.collection);
-        buttonFavorite.setOnClickListener(new OnClickListener(){
+        buttonFavorite = (Button) root.findViewById(R.id.collection);
+        buttonFavorite.setOnClickListener(new OnClickListener() {
             @Override
 
-            public void onClick(View v){
+            public void onClick(View v) {
                 ToFavorite(v);
             }
         });
-        buttonPlanlist= (Button)root.findViewById(R.id.planlist);
-        buttonPlanlist.setOnClickListener(new OnClickListener(){
+        buttonPlanlist = (Button) root.findViewById(R.id.planlist);
+        buttonPlanlist.setOnClickListener(new OnClickListener() {
 
             @Override
 
-            public void onClick(View v){
+            public void onClick(View v) {
                 ToPlanlist(v);
             }
         });
 
         avatar = (ImageView) root.findViewById(R.id.Avatar);
+        int i = sp.getInt("avatar", -1);
+        if (i != -1) {
+            avatar.setImageResource(image[i]);
+        }
         avatar.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,6 +125,14 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
+        name = (TextView) root.findViewById(R.id.name);
+        String nickName = sp.getString("name", "");
+        if (!TextUtils.isEmpty(nickName)) {
+            name.setText(nickName);
+        }
+        name.setOnClickListener(view -> {
+            showInput(name.getText().toString());
+        });
 
         aboutus = (TextView) root.findViewById(R.id.aboutus);
         aboutus.setOnClickListener(new OnClickListener() {
@@ -141,13 +161,33 @@ public class NotificationsFragment extends Fragment {
 
 
     }
-    public void showpop(View v){
+
+    /**
+     * 一个输入框的 dialog
+     */
+    private void showInput(String nickName) {
+        final EditText editText = new EditText(getContext());
+        editText.setText(nickName);
+        new AlertDialog.Builder(getContext()).setTitle("输入昵称").setView(editText)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        name.setText(editText.getText().toString());
+                        sp.edit().putString("name", editText.getText().toString()).apply();
+                        Toast.makeText(getContext(), "修改昵称为：" + editText.getText().toString()
+                                , Toast.LENGTH_LONG).show();
+                    }
+                }).create().show();
+    }
+
+
+    public void showpop(View v) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.avatarpop, null, false);
-        ImageView image0 = (ImageView)view.findViewById(R.id.image0);
-        ImageView image1 = (ImageView)view.findViewById(R.id.image1);
-        ImageView image2 = (ImageView)view.findViewById(R.id.image2);
-        ImageView image3 = (ImageView)view.findViewById(R.id.image3);
-        ImageView image4 = (ImageView)view.findViewById(R.id.image4);
+        ImageView image0 = (ImageView) view.findViewById(R.id.image0);
+        ImageView image1 = (ImageView) view.findViewById(R.id.image1);
+        ImageView image2 = (ImageView) view.findViewById(R.id.image2);
+        ImageView image3 = (ImageView) view.findViewById(R.id.image3);
+        ImageView image4 = (ImageView) view.findViewById(R.id.image4);
         final PopupWindow popupWindow = new PopupWindow(view,
                 1100, 900, true);
         popupWindow.setTouchable(true);
@@ -198,7 +238,7 @@ public class NotificationsFragment extends Fragment {
         });
     }
 
-    public void showdialog(int n){
+    public void showdialog(int n) {
         androidx.appcompat.app.AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Change");
@@ -217,13 +257,14 @@ public class NotificationsFragment extends Fragment {
 
             }
         });
-        AlertDialog dialog=builder.create();
+        AlertDialog dialog = builder.create();
         dialog.show();
     }
 
 
-    public void changeAvatar(int n){
+    public void changeAvatar(int n) {
         avatar.setImageResource(image[n]);
+        sp.edit().putInt("avatar", n).apply();
         Toast.makeText(getContext(), "Changed!", Toast.LENGTH_SHORT).show();
     }
 
@@ -247,13 +288,11 @@ public class NotificationsFragment extends Fragment {
     }
 
 
-
     @Override
-        public void onDestroyView () {
-            super.onDestroyView();
-            binding = null;
-        }
-
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 
 
 }

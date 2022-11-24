@@ -43,6 +43,7 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
                 + "X_LOCATION FLOAT, "
                 + "Y_LOCATION FLOAT, "
                 + "DESCRIPTION TEXT, "
+                + "TYPE TEXT,"
                 + "FAVORITE INTEGER);");
         for (int i = 0; i < 20; i++) {
             this.insertSite(db, "a" + (i+1), R.drawable.description_sight_1, 0, 0,
@@ -52,13 +53,11 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS PLANS (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "ROUTE TEXT, " +
                 "TITLE TEXT)");
-        db.close();
     }
 
-    public void initialize() {
+    private void initialize() {
         lock.writeLock().lock();
-        SQLiteDatabase db;
-        db = getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         db.execSQL("CREATE TABLE IF NOT EXISTS SITES (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "NAME TEXT, "
                 + "IMAGE_RESOURCE_ID INTEGER, "
@@ -80,7 +79,6 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
 
     private void insertSite(SQLiteDatabase db, String name, int resourceID, float xLocation, float yLocation,
                                    String description, String type, boolean favorite) {
-        db = getWritableDatabase();
         ContentValues siteValues = new ContentValues();
         siteValues.put("NAME", name);
         siteValues.put("IMAGE_RESOURCE_ID", resourceID);
@@ -234,8 +232,8 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
 
     public void insertPlan(List<Integer> plan, String title) {
         if (plan.isEmpty()) return;
-        SQLiteDatabase db;
         lock.writeLock().lock();
+        SQLiteDatabase db;
         db = getWritableDatabase();
         StringBuilder sb = new StringBuilder();
         for (Integer i: plan) {

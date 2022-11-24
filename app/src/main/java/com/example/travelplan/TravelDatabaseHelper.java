@@ -190,6 +190,26 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    public List<Site> getSitesByType(String type) {
+        lock.readLock().lock();
+        SQLiteDatabase db;
+        db = getReadableDatabase();
+        List<Site> list = new ArrayList<>();
+        Site site;
+        Cursor cursor = db.query("SITES",
+                new String[]{"NAME", "IMAGE_RESOURCE_ID", "X_LOCATION", "Y_LOCATION", "DESCRIPTION", "TYPE"}
+                ,"TYPE = ?", new String[] {type}, null, null, null);
+        while (cursor.moveToNext()) {
+            site = new Site(cursor.getString(0), cursor.getInt(1), cursor.getFloat(2),
+                    cursor.getFloat(3), cursor.getString(4), cursor.getString(5));
+            list.add(site);
+        }
+        cursor.close();
+        db.close();
+        lock.readLock().unlock();
+        return list;
+    }
+
     public void addFavoriteItem(int id) {
         lock.writeLock().lock();
         SQLiteDatabase db;

@@ -23,7 +23,7 @@ public class myAdapter extends RecyclerView.Adapter<myAdapter.MyViewHolder> {
   @NonNull
   @Override
   public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-      View view=View.inflate(context,R.layout.homepage_item,null);
+      View view=View.inflate(context,R.layout.fragment_home_item,null);
 
       return  new MyViewHolder(view);
   }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="200dp"
+    android:layout_height="200dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    app:cardCornerRadius="60dp">
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        >
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:src="@drawable/k4k_2878019"
+            android:scaleType = "centerCrop" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dip"
+            android:layout_gravity="center_horizontal|bottom"
+            android:id="@+id/tv"
+            android:padding="12dip"
+            android:textSize="20dp"
+            android:background="#AA000000"
+            android:textColor="#ffffffff"
+
+            android:text="Golden Gate" />
+
+    </FrameLayout>
+
+
+
+<!--    <View-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="20dp"-->
+<!--&lt;!&ndash;        android:background="#FF000000"/>&ndash;&gt;-->
+<!--    <TextView-->
+<!--        android:textSize="30sp"-->
+<!--        android:id="@+id/tv"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
+
+
+</LinearLayout>

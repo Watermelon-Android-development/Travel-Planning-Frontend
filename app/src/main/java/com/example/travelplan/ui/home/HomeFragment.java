@@ -52,7 +52,7 @@ public class HomeFragment extends Fragment {
 
         RecyclerView recyclerView= root.findViewById(R.id.rv);
 
-        GridLayoutManager gridLayoutManager= new GridLayoutManager(this.getContext(),2);
+        GridLayoutManager gridLayoutManager= new GridLayoutManager(this.getContext(),1);
         recyclerView.setLayoutManager(gridLayoutManager);
 
         myAdapter myAdapter= new  myAdapter(data,this.getContext());

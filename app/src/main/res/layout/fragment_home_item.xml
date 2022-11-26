@@ -16,7 +16,8 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:src="@drawable/k4k_2878019"
-            android:scaleType = "centerCrop" />
+            android:scaleType = "centerCrop"
+            android:id="@+id/iv"/>
 
         <TextView
             android:layout_width="wrap_content"

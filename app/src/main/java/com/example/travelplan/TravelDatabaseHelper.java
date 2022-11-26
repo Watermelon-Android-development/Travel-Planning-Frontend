@@ -22,7 +22,7 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
 
     private final ReadWriteLock lock;
 
-    public TravelDatabaseHelper(Context context) {
+    TravelDatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         lock = new ReentrantReadWriteLock(true);
     }
@@ -44,10 +44,14 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
                 + "Y_LOCATION FLOAT, "
                 + "DESCRIPTION TEXT, "
                 + "TYPE TEXT,"
-                + "FAVORITE INTEGER);");
+                + "OPEN_TIME TEXT,"
+                + "PLACE TEXT,"
+                + "MARK INTEGER,"
+                + "FAVORITE INTEGER,"
+                + "CHECK(MARK >=0 AND MARK <=5));");
         for (int i = 0; i < 20; i++) {
             this.insertSite(db, "a" + (i+1), R.drawable.description_sight_1, 0, 0,
-                    "This is a description", "park", false);
+                    "This is a description","park","0:00-24:00", "RenAi Road No. 111", 0, false);
         }
 
         db.execSQL("CREATE TABLE IF NOT EXISTS PLANS (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -65,9 +69,13 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
                 + "Y_LOCATION REAL, "
                 + "DESCRIPTION TEXT, "
                 + "TYPE TEXT,"
-                + "FAVORITE INTEGER);");
+                + "OPEN_TIME TEXT,"
+                + "PLACE TEXT,"
+                + "MARK INTEGER,"
+                + "CHECK(MARK >=0 AND MARK <=5));");
         for (int i = 0; i < 20; i++) {
-            this.insertSite(db, "a" + i, R.drawable.description_sight_1, 0, 0, "This is a description","park",false);
+            this.insertSite(db, "a" + (i+1), R.drawable.description_sight_1, 0, 0,
+                    "This is a description","park","0:00-24:00", "RenAi Road No. 111", 0, false);
         }
 
         db.execSQL("CREATE TABLE IF NOT EXISTS PLANS (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -78,7 +86,7 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void insertSite(SQLiteDatabase db, String name, int resourceID, float xLocation, float yLocation,
-                                   String description, String type, boolean favorite) {
+                                   String description, String type, String openTime, String place, int mark, boolean favorite) {
         ContentValues siteValues = new ContentValues();
         siteValues.put("NAME", name);
         siteValues.put("IMAGE_RESOURCE_ID", resourceID);
@@ -86,23 +94,30 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
         siteValues.put("Y_LOCATION", yLocation);
         siteValues.put("DESCRIPTION", description);
         siteValues.put("TYPE", type);
+        siteValues.put("OPEN_TIME", openTime);
+        siteValues.put("PLACE", place);
+        siteValues.put("MARK", mark);
         int favouriteFlag = (favorite)? 1: 0;
         siteValues.put("FAVORITE", favouriteFlag);
         db.insert("SITES", null, siteValues);
     }
 
     public class Site {
-        private final String name, type, description;
-        private final int id_img;
+        private final String name, type, description, openTime, place;
+        private final int id_img, mark;
         private final float x_coor, y_coor;
 
-        public Site(String name, int id_img, float x_coor, float y_coor, String description, String type) {
+        public Site(String name, int id_img, float x_coor, float y_coor,
+                    String description, String type, String openTime, String place, int mark) {
             this.name = name;
             this.type = type;
             this.description = description;
             this.id_img = id_img;
             this.x_coor = x_coor;
             this.y_coor = y_coor;
+            this.openTime = openTime;
+            this.place = place;
+            this.mark = mark;
         }
 
         public String getName() {
@@ -119,6 +134,18 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
 
         public float getX_coor() {
             return x_coor;
+        }
+
+        public int getMark() {
+            return mark;
+        }
+
+        public String getOpenTime() {
+            return openTime;
+        }
+
+        public String getPlace() {
+            return place;
         }
 
         public float getY_coor() {
@@ -155,11 +182,11 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
         List<Site> list = new ArrayList<>();
         Site site;
         Cursor cursor = db.query("SITES",
-                new String[]{"NAME", "IMAGE_RESOURCE_ID", "X_LOCATION", "Y_LOCATION", "DESCRIPTION", "TYPE"}
+                new String[]{"NAME", "IMAGE_RESOURCE_ID", "X_LOCATION", "Y_LOCATION", "DESCRIPTION", "TYPE", "OPEN_TIME", "PLACE", "MARK"}
                 ,null, null, null, null, null);
         while (cursor.moveToNext()) {
-            site = new Site(cursor.getString(0), cursor.getInt(1), cursor.getFloat(2),
-                    cursor.getFloat(3), cursor.getString(4), cursor.getString(5));
+            site = new Site(cursor.getString(0), cursor.getInt(1), cursor.getFloat(2), cursor.getFloat(3),
+                    cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getInt(8));
             list.add(site);
         }
         cursor.close();
@@ -175,11 +202,11 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
         List<Site> list = new ArrayList<>();
         Site site;
         Cursor cursor = db.query("SITES",
-                new String[]{"NAME", "IMAGE_RESOURCE_ID", "X_LOCATION", "Y_LOCATION", "DESCRIPTION", "TYPE"}
+                new String[]{"NAME", "IMAGE_RESOURCE_ID", "X_LOCATION", "Y_LOCATION", "DESCRIPTION", "TYPE", "OPEN_TIME", "PLACE", "MARK"}
                 ,"FAVORITE = ?", new String[] {Integer.toString(1)}, null, null, null);
         while (cursor.moveToNext()) {
-            site = new Site(cursor.getString(0), cursor.getInt(1), cursor.getFloat(2),
-                    cursor.getFloat(3), cursor.getString(4), cursor.getString(5));
+            site = new Site(cursor.getString(0), cursor.getInt(1), cursor.getFloat(2), cursor.getFloat(3),
+                    cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getInt(8));
             list.add(site);
         }
         cursor.close();
@@ -195,11 +222,11 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
         List<Site> list = new ArrayList<>();
         Site site;
         Cursor cursor = db.query("SITES",
-                new String[]{"NAME", "IMAGE_RESOURCE_ID", "X_LOCATION", "Y_LOCATION", "DESCRIPTION", "TYPE"}
+                new String[]{"NAME", "IMAGE_RESOURCE_ID", "X_LOCATION", "Y_LOCATION", "DESCRIPTION", "TYPE", "OPEN_TIME", "PLACE", "MARK"}
                 ,"TYPE = ?", new String[] {type}, null, null, null);
         while (cursor.moveToNext()) {
-            site = new Site(cursor.getString(0), cursor.getInt(1), cursor.getFloat(2),
-                    cursor.getFloat(3), cursor.getString(4), cursor.getString(5));
+            site = new Site(cursor.getString(0), cursor.getInt(1), cursor.getFloat(2), cursor.getFloat(3),
+                    cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getInt(8));
             list.add(site);
         }
         cursor.close();
@@ -298,12 +325,12 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
             routeString = routeString.substring(0, routeString.length()-1);
             Site site;
             Cursor cursorSites = db.query("SITES",
-                    new String[]{"NAME", "IMAGE_RESOURCE_ID", "X_LOCATION", "Y_LOCATION", "DESCRIPTION", "TYPE"}
+                    new String[]{"NAME", "IMAGE_RESOURCE_ID", "X_LOCATION", "Y_LOCATION", "DESCRIPTION", "TYPE", "OPEN_TIME", "PLACE", "MARK"}
                     ,"_id in (" + routeString +")",
                     null, null, null, null);
             while (cursorSites.moveToNext()) {
-                site = new Site(cursorSites.getString(0), cursorSites.getInt(1), cursorSites.getFloat(2),
-                        cursorSites.getFloat(3), cursorSites.getString(4), cursorSites.getString(5));
+                site = new Site(cursorSites.getString(0), cursorSites.getInt(1), cursorSites.getFloat(2), cursorSites.getFloat(3),
+                        cursorSites.getString(4), cursorSites.getString(5), cursorSites.getString(6), cursorSites.getString(7), cursorSites.getInt(8));
                 list.add(site);
             }
             cursorSites.close();

@@ -49,43 +49,73 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
                 + "MARK INTEGER,"
                 + "FAVORITE INTEGER,"
                 + "CHECK(MARK >=0 AND MARK <=5));");
-        for (int i = 0; i < 20; i++) {
-            this.insertSite(db, "a" + (i+1), R.drawable.description_sight_1, 0, 0,
-                    "This is a description","park","0:00-24:00", "RenAi Road No. 111", 0, false);
-        }
-
-        db.execSQL("CREATE TABLE IF NOT EXISTS PLANS (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "ROUTE TEXT, " +
-                "TITLE TEXT)");
-    }
-
-    private void initialize() {
-        lock.writeLock().lock();
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("CREATE TABLE IF NOT EXISTS SITES (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "NAME TEXT, "
-                + "IMAGE_RESOURCE_ID INTEGER, "
-                + "X_LOCATION REAL, "
-                + "Y_LOCATION REAL, "
-                + "DESCRIPTION TEXT, "
-                + "TYPE TEXT,"
-                + "OPEN_TIME TEXT,"
-                + "PLACE TEXT,"
-                + "MARK INTEGER,"
-                + "CHECK(MARK >=0 AND MARK <=5));");
-        for (int i = 0; i < 20; i++) {
-            this.insertSite(db, "a" + (i+1), R.drawable.description_sight_1, 0, 0,
-                    "This is a description","park","0:00-24:00", "RenAi Road No. 111", 0, false);
-        }
+        this.insertSite(db, "Bailu Park" , R.drawable.site0, 120.720819, 31.270827,
+                "This is a description","scenery","0:00-24:00",
+                "No.101, Cuiwei Street, Suzhou Industrial Park", 5, false);
+        this.insertSite(db, "Jinji Lake Scenic Area" , R.drawable.site1, 120.701151, 31.301202,
+                "This is a description","scenery","0:00-24:00",
+                "Jinjihu Ring Lake, Suzhou Industrial Park", 5, false);
+        this.insertSite(db, "Shangfangshan Forest Animal World" , R.drawable.site2, 120.582076, 31.238321,
+                "This is a description","zoo","7:30-16:30",
+                "NWuyue Road South 200 Meters, Huqiu District", 5, false);
+        this.insertSite(db, "Suzhou Paradise Forest World" , R.drawable.site3, 120.477035, 31.323242,
+                "This is a description","playground","9:15-17:15",
+                "No.99, Xiangshan Road, Huqiu District", 4, false);
+        this.insertSite(db, "Tianpingshan Scenery Spot" , R.drawable.site4, 120.504155, 31.287304,
+                "This is a description","scenery","8:00-17:00",
+                "Lingtian Road, Muduzhen, Wuzhong District", 5, false);
+        this.insertSite(db, "Panmen Scenic Spots" , R.drawable.site5, 120.617335, 31.288477,
+                "This is a description","scenery","8:30-17:00",
+                "No.49, East Street, GUsu District", 5, false);
+        this.insertSite(db, "Suzhou Museum" , R.drawable.site6, 120.627856, 31.322948,
+                "This is a description","museum","9:00-17:00",
+                "No.204, Dongbei Street, Gusu District", 5, false);
+        this.insertSite(db, "Suzhou Center" , R.drawable.site7, 120.585300, 31.298930,
+                "This is a description","mall","10:00-22:00",
+                "Intersection of Xinggang Street and Suxiu Road, Wuzhong District", 5, false);
+        this.insertSite(db, "Huqiu Wetland Park" , R.drawable.site8, 120.571201, 31.365051,
+                "This is a description","scenery","6:00-20:00",
+                "No.1800, Yangchenghu West Road, Xiangcheng District", 4, false);
+        this.insertSite(db, "H.Brothers Film Paradise" , R.drawable.site9, 120.786430, 31.375192,
+                "This is a description","playground","9:30-21:30",
+                "No.188, Yangchenghu Avenue, Wuzhong District", 5, false);
+        this.insertSite(db, "Moon Bay" , R.drawable.site10, 120.718439, 31.262379,
+                "This is a description","scenery","0:00-24:00",
+                "Intersection of Yueliangwan Road and Wanshou Street, Suzhou Industrial Park", 5, false);
+        this.insertSite(db, "Suzhou Dushu Lake Christian Church" , R.drawable.site11, 120.719354, 31.268678,
+                "This is a description","church","8:00-16:00",
+                "No.99, Cuiwei Street, Huqiu District", 5, false);
+        this.insertSite(db, "Longhu Shishan Raradise Walk" , R.drawable.site12, 120.556139, 31.294375,
+                "This is a description","mall","10:00-22:00",
+                "No.181, Tayuan Road, Huqiu District ", 5, false);
+        this.insertSite(db, "Xietang Old Steetk" , R.drawable.site13, 120.738641, 31.303093,
+                "This is a description","block","0:00-24:00",
+                "No.1088, Songtao Street, Wuzhong DIstrict", 5, false);
+        this.insertSite(db, "Yuanrong Times Square" , R.drawable.site14, 120.712640, 31.320805,
+                "This is a description","mall","9:00-22:00",
+                "No.268, Wangdun Road, Suzhou Industrial Park", 5, false);
+        this.insertSite(db, "Suzhou True Color Museum" , R.drawable.site15, 120.671562, 31.253693,
+                "This is a description","museum","10:00-17:00",
+                "No.219, Tongda Road, Wuzhong District", 5, false);
+        this.insertSite(db, "Guanqian Street" , R.drawable.site16, 120.625637, 31.310624,
+                "This is a description","block","0:00-24:00",
+                "Guanqian Street, Gusu District", 5, false);
+        this.insertSite(db, "Hanshan Temple" , R.drawable.site17, 120.568391, 31.310469,
+                "This is a description","temple","9:00-16:30",
+                "No.24, Hanshangsi Long, Gusu District", 5, false);
+        this.insertSite(db, "Xiyuan Temple" , R.drawable.site18, 120.587334, 31.314823,
+                "This is a description","temple","8:00-17:00",
+                "No.18, Xiyuan Long, Liuyuan Road, Gusu District", 5, false);
+        this.insertSite(db, "Suzhou Yuyao Relic Site Park" , R.drawable.site19, 120.612421, 31.361302,
+                "This is a description","scenery","8:00-18:00",
+                "No.95, Yangchenghu West Road, Xiangcheng District", 4, false);
 
         db.execSQL("CREATE TABLE IF NOT EXISTS PLANS (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "ROUTE TEXT, " +
                 "TITLE TEXT UNIQUE)");
-        db.close();
-        lock.writeLock().unlock();
     }
 
-    private void insertSite(SQLiteDatabase db, String name, int resourceID, float xLocation, float yLocation,
+    private void insertSite(SQLiteDatabase db, String name, int resourceID, double xLocation, double yLocation,
                                    String description, String type, String openTime, String place, int mark, boolean favorite) {
         ContentValues siteValues = new ContentValues();
         siteValues.put("NAME", name);
@@ -104,17 +134,17 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
 
     public class Site {
         private final String name, type, description, openTime, place;
-        private final int id_img, mark;
-        private final float x_coor, y_coor;
+        private final int imgID, mark;
+        private final double xCoor, yCoor;
 
-        public Site(String name, int id_img, float x_coor, float y_coor,
+        public Site(String name, int imgID, double xCoor, double yCoor,
                     String description, String type, String openTime, String place, int mark) {
             this.name = name;
             this.type = type;
             this.description = description;
-            this.id_img = id_img;
-            this.x_coor = x_coor;
-            this.y_coor = y_coor;
+            this.imgID = imgID;
+            this.xCoor = xCoor;
+            this.yCoor = yCoor;
             this.openTime = openTime;
             this.place = place;
             this.mark = mark;
@@ -128,12 +158,12 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
             return type;
         }
 
-        public int getId_img() {
-            return id_img;
+        public int getImgID() {
+            return imgID;
         }
 
-        public float getX_coor() {
-            return x_coor;
+        public double getXCoor() {
+            return xCoor;
         }
 
         public int getMark() {
@@ -148,8 +178,8 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
             return place;
         }
 
-        public float getY_coor() {
-            return y_coor;
+        public double getyCoor() {
+            return yCoor;
         }
 
         public String getDescription() {
@@ -241,7 +271,7 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
         db = getWritableDatabase();
         ContentValues favValues = new ContentValues();
         favValues.put("FAVORITE", 1);
-        db.update("SITES", favValues, "_id = ?", new String[] {Integer.toString(id)});
+        db.update("SITES", favValues, "_id = ?", new String[] {Integer.toString(id+1)});
         db.close();
         lock.writeLock().unlock();
     }
@@ -252,7 +282,7 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
         db = getWritableDatabase();
         ContentValues favValues = new ContentValues();
         favValues.put("FAVORITE", 0);
-        db.update("SITES", favValues, "_id = ?", new String[] {Integer.toString(id)});
+        db.update("SITES", favValues, "_id = ?", new String[] {Integer.toString(id+1)});
         db.close();
         lock.writeLock().unlock();
     }

@@ -23,11 +23,13 @@
             >
 
             <ImageView
-                android:id="@+id/description_pic1"
+                android:id="@+id/description_image"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/description_sight_1" />
+                app:srcCompat="@drawable/description_sight_1"
+                android:layout_marginVertical="10dp"
+                android:scaleType="centerCrop"/>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -190,56 +192,28 @@
             android:textColor="@color/black"
             />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="A showcase of melting glaciers, alpine meadows, carved valleys, and spectacular lakes. With over 700 miles of trails, Glacier is a paradise for adventurous visitors seeking
-        wilderness steeped in human history.
-        Relive the days of old through historic chalets,
-        lodges, and the famous Going-to-the-Sun Road."
-            android:maxLines="6"
-            android:ellipsize="end"
-            android:paddingLeft="20dp"
-            android:paddingRight="15dp"
-            android:textSize="18sp"
 
-
-            android:textColor="@color/black"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="A showcase of melting glaciers, alpine meadows, carved valleys, and spectacular lakes. With over 700 miles of trails, Glacier is a paradise for adventurous visitors seeking
-        wilderness steeped in human history.
-        Relive the days of old through historic chalets,
-        lodges, and the famous Going-to-the-Sun Road."
-            android:maxLines="6"
-            android:ellipsize="end"
-            android:paddingLeft="20dp"
-            android:paddingRight="15dp"
-            android:textSize="18sp"
-
-
-            android:textColor="@color/black"
-            />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
+            <android.widget.Button
                 android:id="@+id/lovebutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="100dp"
-                android:drawableLeft="@drawable/favarite_shift"
+                android:background="@drawable/favarite_shift"
+                android:drawableLeft="@drawable/heart_line"
+                android:paddingHorizontal="20dp"
                 android:paddingVertical="10dp"
                 android:text="favorite"
+                android:textColor="@color/white"
                 android:textSize="20dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                />
         </RelativeLayout>
 
 

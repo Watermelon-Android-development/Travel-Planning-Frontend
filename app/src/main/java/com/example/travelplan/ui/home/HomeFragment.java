@@ -63,8 +63,8 @@ public class HomeFragment extends Fragment {
         protected Boolean doInBackground(Void... voids) {
             data = travelDatabaseHelper.getAllSites();
             myAdapter= new myAdapter(data,getContext());
-            Log.e("test","test_home"+ data.get(0).getId_img());
-            Log.e("test","test_home"+ data.get(1).getId_img());
+            Log.e("test","test_home"+ data.get(0).getImgID());
+            Log.e("test","test_home"+ data.get(1).getImgID());
 
             myAdapter.setRecyclerItemClickListener(new myAdapter.OnRecyclerItemClickListener() {
                 @Override
@@ -159,7 +159,8 @@ public class HomeFragment extends Fragment {
         binding = null;
     }
     public void startActivity2(View view,int position){
-
-        startActivity(new Intent(this.getContext(), description_page.class));
+        Intent inte=new Intent(this.getContext(), description_page.class);
+        inte.putExtra("Position",position);
+        startActivity(inte);
     }
 }

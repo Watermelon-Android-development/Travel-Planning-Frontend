@@ -66,9 +66,15 @@ public class Favorite extends AppCompatActivity{
         mAdapter = new FavoriteAdapter(this, mDatas);
         listView.setAdapter(mAdapter);
 
+        ActionBar actionBar=getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
 
     }
+
 
 
 
@@ -105,6 +111,11 @@ public class Favorite extends AppCompatActivity{
             mAdapter.notifyDataSetChanged();
         }
 
+        switch (item.getItemId()){
+            case  android.R.id.home:
+                this.finish();
+                return true;
+        }
 
 
         return super.onOptionsItemSelected(item);

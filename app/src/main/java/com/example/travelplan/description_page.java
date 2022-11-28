@@ -1,16 +1,138 @@
 package com.example.travelplan;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.List;
 
 public class description_page extends AppCompatActivity {
+    private int position;
 
+    private final TravelDatabaseHelper travelDatabaseHelper=new TravelDatabaseHelper(this);
+
+    private List<TravelDatabaseHelper.Site> data;
+
+    private boolean btn_flag;
+
+
+    //详情页面渲染
+    private class page_render extends AsyncTask<Void,Void,Boolean> {
+        @Override
+        protected void onPreExecute(){
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids){
+            data=travelDatabaseHelper.getAllSites();
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success){
+            //String name
+            String rl_name=data.get(position).getName();
+            Log.e("description","Name: " + rl_name);
+            TextView name=findViewById(R.id.item_name);
+            name.setText(rl_name);
+
+            //int imgID
+            int image_index= data.get(position).getImgID();
+            ImageView image=findViewById(R.id.description_image);
+            image.setImageResource(image_index);
+
+
+
+            //int mark
+            int rl_mark=data.get(position).getMark();
+            RatingBar mark=findViewById(R.id.item_rating);
+            mark.setRating(rl_mark);
+
+            //String type
+            String rl_type=data.get(position).getType();
+            TextView type=findViewById(R.id.item_kind);
+            type.setText(rl_type);
+
+            //String place
+            String rl_place=data.get(position).getPlace();
+            TextView place=findViewById(R.id.item_location);
+            place.setText(rl_place);
+
+            //String phone
+            String rl_phone=data.get(position).getPhone();
+            TextView phone=findViewById(R.id.item_phone);
+            phone.setText(rl_phone);
+
+            //String openTime
+            String rl_openTime=data.get(position).getOpenTime();
+            TextView openTime=findViewById(R.id.item_time);
+            openTime.setText(rl_openTime);
+
+            //String description
+            String rl_description=data.get(position).getDescription();
+            TextView description=findViewById(R.id.description);
+            description.setText(rl_description);
+
+            //boolean isFavorite
+            Boolean favouriteflag=data.get(position).getIsFavorite();
+            Button favorite_btn=findViewById(R.id.lovebutton);
+            if(favouriteflag){
+                favorite_btn.setActivated(true);
+            }
+            else{
+                favorite_btn.setActivated(false);
+            }
+
+
+        }
+
+
+
+    }
+
+    //favorite按钮
+    private class btn_click extends AsyncTask<Void,Void,Boolean> {
+        @Override
+        protected void onPreExecute(){
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids){
+            data=travelDatabaseHelper.getAllSites();
+            Boolean favouriteflag_1=data.get(position).getIsFavorite();
+            Button favorite_btn=findViewById(R.id.lovebutton);
+            if(favouriteflag_1){
+                favorite_btn.setActivated(false);
+                travelDatabaseHelper.deleteFavoriteItem(position);
+            }
+            else{
+                favorite_btn.setActivated(true);
+                travelDatabaseHelper.addFavoriteItem(position);
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success){
+
+        }
+
+
+
+    }
 
 
     @Override
@@ -24,28 +146,24 @@ public class description_page extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        Intent i=getIntent();
+        position=i.getIntExtra("Position",-1);
+        Log.e("description","position:" + position);
+
+        new page_render().execute();
+
 
 
         /**
          * 只实现了点击爱心图标切换的功能
          * 现有问题：点击切换后，退出子页面重进会重新加载初始图标，不会保留之前切换后的内容
          * */
-       Button bt_click=(Button) findViewById(R.id.lovebutton);
+       Button bt_click=findViewById(R.id.lovebutton);
         bt_click.setOnClickListener(new View.OnClickListener() {
-            int bt_flag=0;
+
             @Override
             public void onClick(View view) {
-                switch (bt_flag){
-                    case 0:
-                        bt_click.setActivated(false);
-                        bt_flag=1;
-                        break;
-
-                    case 1:
-                        bt_click.setActivated(true);
-                        bt_flag=0;
-                        break;
-                }
+                new btn_click().execute();
             }
         });
 

@@ -45,7 +45,7 @@ public class myAdapter extends RecyclerView.Adapter<myAdapter.MyViewHolder> {
   @Override
   public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
       holder.tv.setText(data.get(position).getName());
-      int image_index= data.get(position).getId_img();
+      int image_index= data.get(position).getImgID();
 
       holder.iv.setImageDrawable(context.getResources().getDrawable( R.drawable.k4k_2878019));
 //      String path= Environment.getExternalStorageDirectory()+ File.separator+"k4k_2878019";

@@ -72,8 +72,8 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         protected Boolean doInBackground(Void... voids) {
             data = travelDatabaseHelper.getAllSites();
 //            myAdapter= new myAdapter(data,getContext());
-            Log.e("test","test_map"+ data.get(0).getX_coor());
-            Log.e("test","test_map"+ data.get(0).getY_coor());
+            Log.e("test","test_map"+ data.get(0).getxCoor());
+            Log.e("test","test_map"+ data.get(0).getyCoor());
 
 
             List<List<Double>> list1=new ArrayList<List<Double>>();

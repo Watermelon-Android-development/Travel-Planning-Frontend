@@ -1,6 +1,7 @@
 package com.example.travelplan;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -60,6 +61,12 @@ public class PlanlistActivity extends AppCompatActivity{
         mAdapter = new PlanlistAdapter(this, mDatas);
         listView.setAdapter(mAdapter);
 
+        ActionBar actionBar=getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
     }
 
     @Override
@@ -93,6 +100,12 @@ public class PlanlistActivity extends AppCompatActivity{
             }
 
             mAdapter.notifyDataSetChanged();
+        }
+
+        switch (item.getItemId()){
+            case  android.R.id.home:
+                this.finish();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

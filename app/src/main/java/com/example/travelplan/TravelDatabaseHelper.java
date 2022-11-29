@@ -136,12 +136,13 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
 
     public class Site {
         private final String name, type, description, openTime, place, phone;
-        private final int imgID, mark;
+        private final int id, imgID, mark;
         private final double xCoor, yCoor;
         private final boolean isFavorite;
 
-        public Site(String name, int imgID, double xCoor, double yCoor,
-                    String description, String type, String openTime, String place, int mark, String phone, boolean isFavorite) {
+        public Site(String name, int imgID, double xCoor, double yCoor, String description,
+                    String type, String openTime, String place, int mark, String phone, boolean isFavorite, int id) {
+            this.id = id;
             this.name = name;
             this.type = type;
             this.description = description;
@@ -153,6 +154,10 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
             this.phone = phone;
             this.mark = mark;
             this.isFavorite = isFavorite;
+        }
+
+        public int getId() {
+            return id;
         }
 
         public String getName() {
@@ -226,12 +231,14 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
         List<Site> list = new ArrayList<>();
         Site site;
         Cursor cursor = db.query("SITES",
-                new String[]{"NAME", "IMAGE_RESOURCE_ID", "X_LOCATION", "Y_LOCATION", "DESCRIPTION", "TYPE", "OPEN_TIME", "PLACE", "MARK", "PHONE", "FAVORITE"}
+                new String[]{"NAME", "IMAGE_RESOURCE_ID", "X_LOCATION", "Y_LOCATION", "DESCRIPTION",
+                        "TYPE", "OPEN_TIME", "PLACE", "MARK", "PHONE", "FAVORITE", "_id"}
                 ,null, null, null, null, null);
         while (cursor.moveToNext()) {
             boolean isFavorite = cursor.getInt(10) == 1;
             site = new Site(cursor.getString(0), cursor.getInt(1), cursor.getDouble(2), cursor.getDouble(3),
-                    cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getInt(8), cursor.getString(9), isFavorite);
+                    cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7),
+                    cursor.getInt(8), cursor.getString(9), isFavorite, cursor.getInt(11));
             list.add(site);
         }
         cursor.close();
@@ -247,12 +254,14 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
         List<Site> list = new ArrayList<>();
         Site site;
         Cursor cursor = db.query("SITES",
-                new String[]{"NAME", "IMAGE_RESOURCE_ID", "X_LOCATION", "Y_LOCATION", "DESCRIPTION", "TYPE", "OPEN_TIME", "PLACE", "MARK", "PHONE", "FAVORITE"}
+                new String[]{"NAME", "IMAGE_RESOURCE_ID", "X_LOCATION", "Y_LOCATION", "DESCRIPTION",
+                        "TYPE", "OPEN_TIME", "PLACE", "MARK", "PHONE", "FAVORITE", "_id"}
                 ,"FAVORITE = ?", new String[]{String.valueOf(1)}, null, null, null);
         while (cursor.moveToNext()) {
             boolean isFavorite = cursor.getInt(10) == 1;
             site = new Site(cursor.getString(0), cursor.getInt(1), cursor.getDouble(2), cursor.getDouble(3),
-                    cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getInt(8), cursor.getString(9), isFavorite);
+                    cursor.getString(4), cursor.getString(5), cursor.getString(6),
+                    cursor.getString(7), cursor.getInt(8), cursor.getString(9), isFavorite, cursor.getInt(11));
             list.add(site);
         }
         cursor.close();
@@ -268,12 +277,14 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
         List<Site> list = new ArrayList<>();
         Site site;
         Cursor cursor = db.query("SITES",
-                new String[]{"NAME", "IMAGE_RESOURCE_ID", "X_LOCATION", "Y_LOCATION", "DESCRIPTION", "TYPE", "OPEN_TIME", "PLACE", "MARK", "PHONE", "FAVORITE"}
+                new String[]{"NAME", "IMAGE_RESOURCE_ID", "X_LOCATION", "Y_LOCATION", "DESCRIPTION",
+                        "TYPE", "OPEN_TIME", "PLACE", "MARK", "PHONE", "FAVORITE", "_id"}
                 ,"TYPE = ?", new String[] {type}, null, null, null);
         while (cursor.moveToNext()) {
             boolean isFavorite = cursor.getInt(10) == 1;
             site = new Site(cursor.getString(0), cursor.getInt(1), cursor.getDouble(2), cursor.getDouble(3),
-                    cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getInt(8), cursor.getString(9), isFavorite);
+                    cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7),
+                    cursor.getInt(8), cursor.getString(9), isFavorite, cursor.getInt(11));
             list.add(site);
         }
         cursor.close();
@@ -288,7 +299,7 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
         db = getWritableDatabase();
         ContentValues favValues = new ContentValues();
         favValues.put("FAVORITE", 1);
-        db.update("SITES", favValues, "_id = ?", new String[] {Integer.toString(id+1)});
+        db.update("SITES", favValues, "_id = ?", new String[] {Integer.toString(id)});
         db.close();
         lock.writeLock().unlock();
     }
@@ -299,7 +310,7 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
         db = getWritableDatabase();
         ContentValues favValues = new ContentValues();
         favValues.put("FAVORITE", 0);
-        db.update("SITES", favValues, "_id = ?", new String[] {Integer.toString(id+1)});
+        db.update("SITES", favValues, "_id = ?", new String[] {Integer.toString(id)});
         db.close();
         lock.writeLock().unlock();
     }
@@ -372,13 +383,15 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
             routeString = routeString.substring(0, routeString.length()-1);
             Site site;
             Cursor cursorSites = db.query("SITES",
-                    new String[]{"NAME", "IMAGE_RESOURCE_ID", "X_LOCATION", "Y_LOCATION", "DESCRIPTION", "TYPE", "OPEN_TIME", "PLACE", "MARK", "PHONE", "FAVORITE"}
+                    new String[]{"NAME", "IMAGE_RESOURCE_ID", "X_LOCATION", "Y_LOCATION", "DESCRIPTION",
+                            "TYPE", "OPEN_TIME", "PLACE", "MARK", "PHONE", "FAVORITE", "_id"}
                     ,"_id in (" + routeString +")",
                     null, null, null, null);
             while (cursorSites.moveToNext()) {
                 boolean isFavorite = cursorSites.getInt(10) == 1;
                 site = new Site(cursorSites.getString(0), cursorSites.getInt(1), cursorSites.getFloat(2), cursorSites.getFloat(3),
-                        cursorSites.getString(4), cursorSites.getString(5), cursorSites.getString(6), cursorSites.getString(7), cursorSites.getInt(8), cursorSites.getString(9), isFavorite);
+                        cursorSites.getString(4), cursorSites.getString(5), cursorSites.getString(6), cursorSites.getString(7),
+                        cursorSites.getInt(8), cursorSites.getString(9), isFavorite, cursorSites.getInt(11));
                 list.add(site);
             }
             cursorSites.close();

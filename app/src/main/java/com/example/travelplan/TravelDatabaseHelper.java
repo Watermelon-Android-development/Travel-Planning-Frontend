@@ -139,6 +139,7 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
         private final int id, imgID, mark;
         private final double xCoor, yCoor;
         private final boolean isFavorite;
+        public boolean isCheck;
 
         public Site(String name, int imgID, double xCoor, double yCoor, String description,
                     String type, String openTime, String place, int mark, String phone, boolean isFavorite, int id) {
@@ -209,6 +210,7 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
     public class Plan {
         private final String title;
         private final List<Integer> route;
+        public boolean isCheck;
 
         public Plan(String title, List<Integer> route) {
             this.title = title;

@@ -12,6 +12,11 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -44,6 +49,7 @@ public class HomeFragment extends Fragment {
     RecyclerView recyclerView;
     myAdapter myAdapter;
     View root;
+    private String kindResult;
 
 
     class getAllSites extends AsyncTask<Void, Void, Boolean> {

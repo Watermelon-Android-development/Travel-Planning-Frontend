@@ -8,9 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.travelplan.R;
+import com.example.travelplan.TravelDatabaseHelper;
 
 import java.util.List;
 
@@ -19,13 +22,13 @@ public class PlandetailAdapter extends BaseAdapter {
 
     private Context mContext;
 
-    private List<PlanDetail> mDatas;
+    private List<TravelDatabaseHelper.Site> mDatas;
 
     private LayoutInflater mInflater;
 
 
 
-    public PlandetailAdapter(Context mContext, List<PlanDetail> mDatas) {
+    public PlandetailAdapter(Context mContext, List<TravelDatabaseHelper.Site> mDatas) {
         this.mContext = mContext;
         this.mDatas = mDatas;
 
@@ -58,10 +61,10 @@ public class PlandetailAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.activity_plandetail_item, null);
 
             holder = new ViewHolder();
-
-            holder.siteName = (TextView) convertView.findViewById(R.id.site_name);
-            holder.siteLocation = (TextView) convertView.findViewById(R.id.site_location);
-            holder.siteOpentime = (TextView) convertView.findViewById(R.id.site_opentime);
+            holder.siteImage = convertView.findViewById(R.id.detail_image);
+            holder.siteName = convertView.findViewById(R.id.site_name);
+            holder.siteLocation = convertView.findViewById(R.id.site_location);
+            holder.siteOpentime = convertView.findViewById(R.id.site_opentime);
             convertView.setTag(holder);
 
         } else {
@@ -69,18 +72,19 @@ public class PlandetailAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        final PlanDetail dataBean = mDatas.get(position);
+        final TravelDatabaseHelper.Site dataBean = mDatas.get(position);
         if (dataBean != null) {
+            holder.siteImage.setImageResource(dataBean.getImgID());
             holder.siteName.setText(dataBean.getName());
-            holder.siteLocation.setText(dataBean.getLocation());
-            holder.siteOpentime.setText(dataBean.getOpentime());
+            holder.siteLocation.setText(dataBean.getPlace());
+            holder.siteOpentime.setText(dataBean.getOpenTime());
         }
         return convertView;
     }
 
     class ViewHolder {
 
-
+        public ImageView siteImage;
         public TextView siteName;
         public TextView siteLocation;
         public TextView siteOpentime;

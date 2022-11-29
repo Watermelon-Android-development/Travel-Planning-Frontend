@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<!--    <item-->
+<!--        android:id="@+id/edit"-->
+<!--        android:title="Edit"-->
+<!--        app:showAsAction="always"-->
+<!--        android:orderInCategory="100"-->
+<!--        />-->
+    <item
+        android:id="@+id/all"
+        android:orderInCategory="101"
+        app:showAsAction="never"
+        android:title="All" />
+    <item
+        android:id="@+id/zoo"
+        android:orderInCategory="101"
+        app:showAsAction="never"
+        android:title="Zoo" />
+
+    <item
+        android:id="@+id/scenery"
+        android:orderInCategory="101"
+        app:showAsAction="never"
+        android:title="Scenery" />
+    <item
+        android:id="@+id/playground"
+        android:orderInCategory="101"
+        app:showAsAction="never"
+        android:title="Playground" />
+
+    <item
+        android:id="@+id/museum"
+        android:orderInCategory="101"
+        app:showAsAction="never"
+        android:title="Museum" />
+    <item
+        android:id="@+id/temple"
+        android:orderInCategory="101"
+        app:showAsAction="never"
+        android:title="Temple" />
+    <item
+        android:id="@+id/mall"
+        android:orderInCategory="101"
+        app:showAsAction="never"
+        android:title="Mall" />
+    />
+    <item
+        android:id="@+id/church"
+        android:orderInCategory="101"
+        app:showAsAction="never"
+        android:title="Church" />
+    />
+    <item
+        android:id="@+id/block"
+        android:orderInCategory="101"
+        app:showAsAction="never"
+        android:title="Block" />
+    />
+    />
+
+</menu>

@@ -20,7 +20,7 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/watermelon"
+        android:icon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelPlan"
@@ -49,7 +49,8 @@
         <activity
             android:name=".HomePage"
             android:exported="false"
-            android:label="@string/title_activity_home_page">
+            android:label="@string/title_activity_home_page"
+            android:theme="@style/newTheme">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

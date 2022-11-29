@@ -13,7 +13,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/material_item_img"
+            android:id="@+id/detail_image"
             android:layout_width="match_parent"
             android:layout_height="117dp"
             android:layout_gravity="center_vertical"

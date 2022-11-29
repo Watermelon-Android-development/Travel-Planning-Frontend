@@ -111,6 +111,7 @@ public class HomeFragment extends Fragment {
                 new ViewModelProvider(this).get(HomeViewModel.class);
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
+        setHasOptionsMenu(true);
 
 //        View root = binding.getRoot();
         root = binding.getRoot();
@@ -152,6 +153,108 @@ public class HomeFragment extends Fragment {
 
 
     }
+    
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.right_top_home,menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+
+            case  R.id.all:
+//                kindResult="all";
+                new getAllSites().execute();
+                Toast.makeText(this.getContext(),"There are all location",Toast.LENGTH_SHORT).show();
+                break;
+            case  R.id.zoo:
+                kindResult="zoo";
+                new ShowKind().execute();
+                Toast.makeText(this.getContext(),"The selected location category is zoo",Toast.LENGTH_SHORT).show();
+                break;
+            case  R.id.scenery:
+                kindResult="scenery";
+                new ShowKind().execute();
+                Toast.makeText(this.getContext(),"The selected location category is scenery",Toast.LENGTH_SHORT).show();
+                break;
+            case  R.id.playground:
+                kindResult="playground";
+                new ShowKind().execute();
+                Toast.makeText(this.getContext(),"The selected location category is playground",Toast.LENGTH_SHORT).show();
+                break;
+            case  R.id.museum:
+                kindResult="museum";
+                new ShowKind().execute();
+                Toast.makeText(this.getContext(),"The selected location category is museum",Toast.LENGTH_SHORT).show();
+                break;
+            case  R.id.temple:
+                kindResult="temple";
+                new ShowKind().execute();
+                Toast.makeText(this.getContext(),"The selected location category is temple",Toast.LENGTH_SHORT).show();
+                break;
+            case  R.id.mall:
+                kindResult="mall";
+                new ShowKind().execute();
+                Toast.makeText(this.getContext(),"The selected location category is mall",Toast.LENGTH_SHORT).show();
+                break;
+            case  R.id.church:
+                kindResult="church";
+                new ShowKind().execute();
+                Toast.makeText(this.getContext(),"The selected location category is church",Toast.LENGTH_SHORT).show();
+                break;
+            case  R.id.block:
+                kindResult="block";
+                new ShowKind().execute();
+                Toast.makeText(this.getContext(),"The selected location category is block",Toast.LENGTH_SHORT).show();
+                break;
+
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    class ShowKind extends AsyncTask<Void,Void,Boolean> {
+//        String title;
+        @Override
+        protected void onPreExecute(){
+//        AllSite=travelDatabaseHelper.getAllFavoriteSites();
+
+        }
+        @Override
+        protected Boolean doInBackground(Void... voids){
+            data = travelDatabaseHelper.getSitesByType(kindResult);
+            myAdapter= new myAdapter(data,getContext());
+
+            myAdapter.setRecyclerItemClickListener(new myAdapter.OnRecyclerItemClickListener() {
+                @Override
+                public void onRecyclerItemClick(int position) {
+                    startActivity2(root,position);
+                }
+            });
+            return true;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute (Boolean success){
+
+            recyclerView.setAdapter(myAdapter);
+        }
+
+
+
+    }
+
 
     @Override
     public void onDestroyView() {

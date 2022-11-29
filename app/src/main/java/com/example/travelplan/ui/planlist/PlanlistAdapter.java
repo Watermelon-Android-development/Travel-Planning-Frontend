@@ -3,6 +3,7 @@ package com.example.travelplan.ui.planlist;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.travelplan.PlanDetailActivity;
-import com.example.travelplan.PlanlistActivity;
-import com.example.travelplan.ui.planlist.SaveCheckBox;
+import com.example.travelplan.TravelDatabaseHelper;
 import com.example.travelplan.R;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class PlanlistAdapter extends BaseAdapter {
 
     private Context mContext;
 
-    private List<SaveCheckBox> mDatas;
+    private List<TravelDatabaseHelper.Plan> mDatas;
 
     private LayoutInflater mInflater;
 
@@ -32,7 +32,7 @@ public class PlanlistAdapter extends BaseAdapter {
 
 
 
-    public PlanlistAdapter(Context mContext, List<SaveCheckBox> mDatas) {
+    public PlanlistAdapter(Context mContext, List<TravelDatabaseHelper.Plan> mDatas) {
         this.mContext = mContext;
         this.mDatas = mDatas;
 
@@ -69,17 +69,7 @@ public class PlanlistAdapter extends BaseAdapter {
             holder.textTitle = (TextView) convertView.findViewById(R.id.plan_text_title);
             holder.textDesc = (TextView) convertView.findViewById(R.id.plan_text_desc);
             holder.textDetail = (Button) convertView.findViewById(R.id.plan_go_to_detail);;
-            View finalConvertView = convertView;
-            holder.textDetail.setOnClickListener(new View.OnClickListener(){
 
-                @Override
-
-                public void onClick(View v){
-
-                    Intent intent=new Intent(finalConvertView.getContext(), PlanDetailActivity.class);
-                    finalConvertView.getContext().startActivity(intent);
-                }
-            });
             convertView.setTag(holder);
 
         } else {
@@ -87,11 +77,18 @@ public class PlanlistAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        final SaveCheckBox dataBean = mDatas.get(position);
+        final TravelDatabaseHelper.Plan dataBean = mDatas.get(position);
         if (dataBean != null) {
-            holder.textTitle.setText(dataBean.title);
-            holder.textDesc.setText(dataBean.desc);
+            holder.textTitle.setText(dataBean.getTitle());
+            holder.textDesc.setText((CharSequence) dataBean.getRoute());
+            View finalConvertView = convertView;
+            holder.textDetail.setOnClickListener(v -> {
 
+                Intent intent=new Intent(finalConvertView.getContext(), PlanDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("title", dataBean.getTitle());
+                finalConvertView.getContext().startActivity(intent);
+            });
 
 
             if (flage_edit) {

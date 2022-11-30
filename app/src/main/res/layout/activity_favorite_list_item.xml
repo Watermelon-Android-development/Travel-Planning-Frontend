@@ -22,7 +22,7 @@
 
         <ImageView
             android:id="@+id/material_item_img"
-            android:layout_width="wrap_content"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:adjustViewBounds="true"
@@ -41,11 +41,6 @@
         android:paddingBottom="10dp"
         android:paddingTop="10dp">
 
-        <View
-            android:id="@+id/user_head_img"
-            android:layout_width="5dp"
-            android:layout_height="fill_parent"
-            android:background="#4483c9" />
 
         <LinearLayout
             android:layout_width="fill_parent"

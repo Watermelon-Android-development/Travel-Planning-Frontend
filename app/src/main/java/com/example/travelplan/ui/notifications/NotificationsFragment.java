@@ -13,6 +13,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -62,6 +63,7 @@ public class NotificationsFragment extends Fragment {
     private Button buttonFavorite;
     private Button buttonPlanlist;
     private ImageView avatar;
+    private ImageView quit;
 
     private ImageView image0;
     private ImageView image1;
@@ -192,6 +194,7 @@ public class NotificationsFragment extends Fragment {
         ImageView image2 = (ImageView) view.findViewById(R.id.image2);
         ImageView image3 = (ImageView) view.findViewById(R.id.image3);
         ImageView image4 = (ImageView) view.findViewById(R.id.image4);
+        ImageView quit = (ImageView) view.findViewById(R.id.quit);
         final PopupWindow popupWindow = new PopupWindow(view,
                 1100, 900, true);
         popupWindow.setTouchable(true);
@@ -238,6 +241,13 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 showdialog(4);
+            }
+        });
+
+        quit.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                popupWindow.dismiss();
             }
         });
     }
@@ -296,6 +306,10 @@ public class NotificationsFragment extends Fragment {
 
         this.startActivity(new Intent(getActivity(), Helper.class));
     }
+
+
+
+    
     @Override
     public void onDestroyView() {
         super.onDestroyView();

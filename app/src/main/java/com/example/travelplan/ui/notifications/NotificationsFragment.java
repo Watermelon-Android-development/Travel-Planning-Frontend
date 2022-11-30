@@ -6,6 +6,8 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -67,7 +69,8 @@ public class NotificationsFragment extends Fragment {
     private ImageView image3;
     private ImageView image4;
 
-    private TextView aboutus, name;
+    private TextView aboutus,helper;
+    private TextView name;
 
     int[] image = new int[]{
             R.drawable.avatar0,
@@ -142,13 +145,15 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
-        aboutus = (TextView) root.findViewById(R.id.aboutus);
-        aboutus.setOnClickListener(new OnClickListener() {
+        helper = (TextView) root.findViewById(R.id.helper);
+        helper.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToAboutus(view);
+                ToHelper(view);
             }
         });
+
+
 
 //        image0.setImageResource(image[0]);
 //        image1.setImageResource(image[1]);
@@ -162,19 +167,18 @@ public class NotificationsFragment extends Fragment {
 
     }
 
-    /**
-     * 一个输入框的 dialog
-     */
+
+    // dialog
     private void showInput(String nickName) {
         final EditText editText = new EditText(getContext());
         editText.setText(nickName);
-        new AlertDialog.Builder(getContext()).setTitle("输入昵称").setView(editText)
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(getContext()).setTitle("Input the username").setView(editText)
+                .setPositiveButton("confrim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         name.setText(editText.getText().toString());
                         sp.edit().putString("name", editText.getText().toString()).apply();
-                        Toast.makeText(getContext(), "修改昵称为：" + editText.getText().toString()
+                        Toast.makeText(getContext(), "Username change into：" + editText.getText().toString()
                                 , Toast.LENGTH_LONG).show();
                     }
                 }).create().show();
@@ -255,6 +259,7 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
+
             }
         });
         AlertDialog dialog = builder.create();
@@ -287,7 +292,10 @@ public class NotificationsFragment extends Fragment {
         this.startActivity(new Intent(getActivity(), AboutUs.class));
     }
 
+    public void ToHelper(View view) {
 
+        this.startActivity(new Intent(getActivity(), Helper.class));
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

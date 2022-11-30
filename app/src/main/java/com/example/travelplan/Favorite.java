@@ -239,7 +239,7 @@ public class Favorite extends AppCompatActivity{
 
                         Toast.makeText(Favorite.this,"跳转静态界面",Toast.LENGTH_SHORT).show();
 //                                                startActivity(new Intent(getApplication(),i));
-                        startActivity2(view,i);
+                        startActivity2(view,mDatas.get((i)).getId()-1);
                     }
                 });
 

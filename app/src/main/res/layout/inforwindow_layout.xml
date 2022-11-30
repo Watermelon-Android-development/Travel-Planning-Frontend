@@ -33,12 +33,13 @@
 
 <!--        android:background="#00000000"-->
 <!--        android:textColor="#ffffffff"/>-->
-    <Button
-        android:id="@+id/bt_1"
-        android:layout_width="match_parent"
-        android:layout_height="28dp"
-        android:textSize="8sp"
-        android:text="add to route" />
+<!--    <Button-->
+<!--        android:id="@+id/bt_1"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="28dp"-->
+<!--        android:textSize="8sp"-->
+<!--        android:text="click image to add" />-->
+
     <FrameLayout
         android:layout_width="100dp"
         android:layout_height="60dp"

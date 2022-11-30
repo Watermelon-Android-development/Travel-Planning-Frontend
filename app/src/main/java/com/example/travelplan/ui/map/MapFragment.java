@@ -1,43 +1,48 @@
 package com.example.travelplan.ui.map;
 
-import static com.amap.api.maps2d.AMap.MAP_TYPE_NORMAL;
+import static android.content.Context.MODE_PRIVATE;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.amap.api.maps2d.AMapUtils;
+import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.CameraUpdateFactory;
+import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.UiSettings;
 import com.amap.api.maps2d.model.BitmapDescriptor;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
-import com.amap.api.maps2d.model.MyLocationStyle;
 import com.example.travelplan.R;
 import com.example.travelplan.TravelDatabaseHelper;
 import com.example.travelplan.databinding.FragmentMapBinding;
-import com.amap.api.maps2d.AMap;
-import com.amap.api.maps2d.MapView;
-import com.example.travelplan.myAdapter;
-import com.example.travelplan.ui.home.HomeFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, AMap.OnMapClickListener{
 
@@ -51,6 +56,8 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     private AMap aMap;
     private Marker clickMaker;
     View root;
+    private  List<String> route_list=new ArrayList<>();
+
 
 
 
@@ -61,8 +68,28 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         // 作用：执行 线程任务前的操作
         @Override
         protected void onPreExecute() {
-//            text.setText("加载中");
-            // 执行前显示提示
+
+            if (!isFristRun()){
+//                AlertDialog alertDialog2 = new AlertDialog.Builder(getContext())
+//                        .setTitle("Click on the image to add to route")
+////                        .setMessage("有多个按钮")
+//                        .setIcon(R.drawable.click_on_image)
+//
+//                        .setPositiveButton("Got it", new DialogInterface.OnClickListener()
+//                                {//添加按钮
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+////                                Toast.makeText(getContext(),"这是确定按钮", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                        )
+//
+//                        .create();
+//                alertDialog2.show();
+                Bitmap  bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.click_on_image);
+                showDialog(getContext(),bitmap);
+            };
+
         }
 
         // 方法2：doInBackground（）
@@ -70,68 +97,34 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         // 此处通过计算从而模拟“加载进度”的情况
         @Override
         protected Boolean doInBackground(Void... voids) {
+
             data = travelDatabaseHelper.getAllSites();
-//            myAdapter= new myAdapter(data,getContext());
-            Log.e("test","test_map"+ data.get(0).getxCoor());
-            Log.e("test","test_map"+ data.get(0).getyCoor());
+//            Log.e("test","test_map"+ data.get(0).getxCoor());
+//            Log.e("test","test_map"+ data.get(0).getyCoor());
 
 
-            List<List<Double>> list1=new ArrayList<List<Double>>();
-
-            List<Double> list_1=new ArrayList<Double>();
-            double loc1_w=31.270827;
-            double loc1_j=120.720819;
-            list_1.add(loc1_w);
-            list_1.add(loc1_j);
-            list1.add(list_1);
-            List<Double> list_2=new ArrayList<Double>();
-            double loc2_w=31.301202;
-            double loc2_j=120.701151;
-            list_2.add(loc2_w);
-            list_2.add(loc2_j);
-            list1.add(list_2);
-            List<Double> list_3=new ArrayList<Double>();
-            double loc3_w=31.238321;
-            double loc3_j=120.582076;
-            list_3.add(loc3_w);
-            list_3.add(loc3_j);
-            list1.add(list_3);
-            List<Double> list_4=new ArrayList<Double>();
-            double loc4_w=31.323242;
-            double loc4_j=120.477035;
-            list_4.add(loc4_w);
-            list_4.add(loc4_j);
-            list1.add(list_4);
-            List<Double> list_5=new ArrayList<Double>();
-            double loc5_w=31.287304;
-            double loc5_j=120.504155;
-            list_5.add(loc5_w);
-            list_5.add(loc5_j);
-            list1.add(list_5);
-
-
-            List<String> lst_title= new ArrayList<>();
-            lst_title.add("park");
-            lst_title.add("lake");
-            lst_title.add("zoo");
-            lst_title.add("Playground");
-            lst_title.add("mountain");
-
-            List<String> lst2= new ArrayList<>();
-            lst2.add("白鹭园");
-            lst2.add("金鸡湖景区");
-            lst2.add("上方山森林动物世界");
-            lst2.add("苏州乐园森林世界");
-            lst2.add("天平山风景名胜区");
-
-            for (int i = 0; i < 5;i++){
-                Double lat =list1.get(i).get(0); //latitude
-                Double lng =list1.get(i).get(1); //longitude
+            for (int i = 0; i < 13;i++){
+//                Log.e("test", "doInBackground: "+i );
+                Double lat =data.get(i).getyCoor(); //latitude
+                Double lng =data.get(i).getxCoor(); //longitude
                 LatLng latLng3  = new LatLng(lat,lng);
                 //定义Marker样式
                 MarkerOptions options = new MarkerOptions();
                 options.position(latLng3);//定位设置
-                options.title(lst_title.get(i)).snippet(lst2.get(i));//标题内容设置
+
+//                int imageID =data.get(i).getImgID();
+
+                String imageID = String.valueOf(data.get(i).getImgID());
+
+//                options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));
+                options.draggable(true);
+                options.title(imageID+","+i);//标题内容设置  存储图片ID
+                options.snippet(data.get(i).getName());
+                ArrayList<BitmapDescriptor> arr1 =  new ArrayList<>();
+                arr1.add(0,BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));
+//                arr1.add(1,BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));
+                options.icons(arr1);
+//               options.title(lst_title.get(i)).snippet(lst2.get(i));//标题内容设置
                 aMap.addMarker(options);
             }
 //
@@ -174,6 +167,10 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+
+
+
         travelDatabaseHelper= new TravelDatabaseHelper(this.getActivity());
 
 
@@ -182,6 +179,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
         binding = FragmentMapBinding.inflate(inflater, container, false);
         root = binding.getRoot();
+
 
         mapView = (MapView)root.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
@@ -197,25 +195,10 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
             setMapAttribute();
         }
 
-//        LatLng latLng = new LatLng(31.288477,120.617335);//construct a location; location can be searched on https://lbs.amap.com/tools/picker
-//        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11)); //zoom rate
-//        aMap.setMapLanguage(AMap.ENGLISH);
-
-
-
 
         new getAllLocs().execute();
 
-//        //随便标了两个点
-//        LatLng latLng1 = new LatLng(31.27,120.74);
-//        final Marker marker1 = aMap.addMarker(new MarkerOptions().position(latLng1).title("loc1").snippet("this is A"));
 //
-//        MarkerOptions markerOption = new MarkerOptions();
-//        markerOption.position(latLng);
-//        markerOption.title("标题").snippet("今天考完试了很开心");
-//        markerOption.draggable(false);//设置Marker可拖动
-////      markerOption.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon1));
-//        aMap.addMarker(markerOption);//非常重要
 
 
 //        aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(),15)); //更新地图
@@ -268,7 +251,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 //        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11)); //zoom rate
         aMap.setMapLanguage(AMap.ENGLISH);
         //设置默认缩放级别
-        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11)); //zoom rate
+        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,12)); //zoom rate
         //隐藏的右下角缩放按钮
         uiSettings.setZoomControlsEnabled(true);
         //设置marker点击事件监听
@@ -306,15 +289,99 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
     }
 
+    /*
+     * 弹出图片
+     */
+    private void showDialog(Context context, Bitmap bitmap){
+        Dialog dia = new Dialog(context);
+        dia.setContentView(R.layout.dialog);
+        ImageView imageView = (ImageView) dia.findViewById(R.id.ivdialog);
+        //可以set任何格式图片
+        imageView.setImageBitmap(bitmap);
+        dia.show();
+        //选择true的话点击其他地方可以使dialog消失，为false的话不会消失
+        dia.setCanceledOnTouchOutside(true); // Sets whether this dialog is
+        Window w = dia.getWindow();
+        WindowManager.LayoutParams lp = w.getAttributes();
+        lp.x = 0;
+        lp.y = 40;
+        dia.onWindowAttributesChanged(lp);
+    }
+
+    private boolean isFristRun() {
+        //实例化SharedPreferences对象（第一步）
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(
+                "share", MODE_PRIVATE);
+        //实例化SharedPreferences.Editor对象（第二步）
+        boolean isFirstRun = sharedPreferences.getBoolean("isFirstRun", true);
+        Editor editor = sharedPreferences.edit();
+        if (!isFirstRun) {
+            return false;
+        } else {
+            //保存数据 （第三步）
+
+
+            editor.putBoolean("isFirstRun", false);
+            //提交当前数据 （第四步）
+            editor.commit();
+            return true;
+        }
+    }
+
+
 
     @Override
     public void onInfoWindowClick(Marker marker) {
 
-        Log.e("Test", "onInfoWindowClick: 标题为：" + marker.getTitle() + "  的InfoWindow被点击了");
+//        Log.e("Test", "onInfoWindowClick: 标题为：" + marker.getTitle() + "  的InfoWindow被点击了");
+//        marker.setIcon(R.drawable.icon_loc);
+        if(marker.isDraggable())
+        {
+            Log.e("Test", "蓝色变红色; "+marker.getId());
+            String id=marker.getTitle().split(",")[1];
+            route_list.add(id);
+            Log.e("Test", "route_list; "+route_list);
+            marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));
+            marker.setDraggable(false);
 
+            Toast toast=Toast.makeText(this.getContext(), "添加到route", Toast.LENGTH_LONG);
+            showMyToast(toast, 2*1000);
+
+        }
+        else{
+            Log.e("Test", "红色变蓝色");
+            String id=marker.getTitle().split(",")[1];
+            route_list.remove(id);
+            Log.e("Test", "route_list; "+route_list);
+            marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));
+            marker.setDraggable(true);
+//            Toast.makeText(this.getContext(), "从route删除", Toast.LENGTH_LONG).show();
+            Toast toast=Toast.makeText(this.getContext(), "从route删除", Toast.LENGTH_LONG);
+            showMyToast(toast, 2*1000);
+        }
+//        Log.e("Test", "onInfoWindowClick: 标题为：" + marker.getSnippet()+ "  的InfoWindow被点击了");
+//        marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));
 
     }
-    /**
+
+    public void showMyToast(final Toast toast, final int cnt) {
+        final Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                toast.show();
+            }
+        }, 0, 3000);
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                toast.cancel();
+                timer.cancel();
+            }
+        }, cnt );
+    }
+
+    /*
      * 监听自定义窗口infoWindow事件回调
      */
     @Override
@@ -333,6 +400,11 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     private void render(Marker marker, View infoWindow) {
 //        TextView title = infoWindow.findViewById(R.id.info_window_title);
         TextView content = infoWindow.findViewById(R.id.info_window_content);
+        ImageView imageView=infoWindow.findViewById(R.id.iv_1);
+
+       int imageID=Integer.parseInt(marker.getTitle().split(",")[0]);
+
+        imageView.setImageResource(imageID);
 //        title.setText(marker.getTitle());
         content.setText(marker.getSnippet());
     }
@@ -392,7 +464,9 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         mapView.onResume();
     }
     @Override
-    public void onPause() {
+    public void onPause(
+
+    ) {
         super.onPause();
         //在activity执行onPause时执行mMapView.onPause ()，暂停地图的绘制
         mapView.onPause();

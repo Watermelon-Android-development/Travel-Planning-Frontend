@@ -29,8 +29,7 @@ public class PlanDetailActivity extends AppCompatActivity {
         protected Boolean doInBackground(String... strings) {
             try {
                 Intent myintent = getIntent();
-                Bundle bundle = myintent.getExtras();
-                String planTitle = bundle.getString("title");
+                String planTitle = myintent.getStringExtra("title");
                 List<TravelDatabaseHelper.Site> mDatas = travelDatabaseHelper.getPlanDetails(planTitle);
                 mAdapter = new PlandetailAdapter(PlanDetailActivity.this, mDatas);
             } catch (SQLiteException e){

@@ -58,17 +58,17 @@ public class PlanlistAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
 
-        ViewHolder holder = null;
+        ViewHolder holder;
 
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.activity_planlist_item, null);
 
             holder = new ViewHolder();
 
-            holder.checkboxOperateData = (CheckBox) convertView.findViewById(R.id.plan_checkbox_operate_data);
-            holder.textTitle = (TextView) convertView.findViewById(R.id.plan_text_title);
-            holder.textDesc = (TextView) convertView.findViewById(R.id.plan_text_desc);
-            holder.textDetail = (Button) convertView.findViewById(R.id.plan_go_to_detail);;
+            holder.checkboxOperateData = convertView.findViewById(R.id.plan_checkbox_operate_data);
+            holder.textTitle = convertView.findViewById(R.id.plan_text_title);
+            holder.textDesc = convertView.findViewById(R.id.plan_text_desc);
+            holder.textDetail = convertView.findViewById(R.id.plan_go_to_detail);;
 
             convertView.setTag(holder);
 
@@ -80,13 +80,22 @@ public class PlanlistAdapter extends BaseAdapter {
         final TravelDatabaseHelper.Plan dataBean = mDatas.get(position);
         if (dataBean != null) {
             holder.textTitle.setText(dataBean.getTitle());
-            holder.textDesc.setText((CharSequence) dataBean.getRoute());
+            List<Integer> pos = dataBean.getRoute();
+            String route2 = pos.get(0).toString() + "-->";
+            for (int i = 1; i<pos.size();i++){
+                if (i == pos.size() - 1){
+                    route2 = route2 + pos.get(i).toString();
+                }
+                else{
+                    route2 = route2 + pos.get(i).toString() + "-->";
+                }
+            }
+            holder.textDesc.setText(route2);
             View finalConvertView = convertView;
             holder.textDetail.setOnClickListener(v -> {
 
                 Intent intent=new Intent(finalConvertView.getContext(), PlanDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("title", dataBean.getTitle());
+                intent.putExtra("title", dataBean.getTitle());
                 finalConvertView.getContext().startActivity(intent);
             });
 

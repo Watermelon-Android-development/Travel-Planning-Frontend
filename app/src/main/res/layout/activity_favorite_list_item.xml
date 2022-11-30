@@ -21,13 +21,16 @@
             android:visibility="gone" />
 
         <ImageView
-            android:id="@+id/material_item_img"
-            android:layout_width="match_parent"
-            android:layout_height="116dp"
+            android:id="@+id/favorite_iamge"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:src="@mipmap/ic_launcher" />
+
 
 
     </LinearLayout>
@@ -58,25 +61,46 @@
                 android:textSize="16sp" />
 
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/text_desc"
+                    android:id="@+id/rank"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:gravity="bottom"
-                    android:singleLine="true"
-                    android:text="location"
+                    android:text="rank"
                     android:textColor="#aaaaaa"
                     android:textSize="14sp" />
 
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/kind"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="bottom"
+                    android:text="kind"
+                    android:textColor="#aaaaaa"
+                    android:textSize="14sp" />
+
+
             </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

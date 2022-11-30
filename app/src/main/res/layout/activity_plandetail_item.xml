@@ -10,16 +10,19 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
 
         <ImageView
             android:id="@+id/detail_image"
-            android:layout_width="match_parent"
-            android:layout_height="117dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center_vertical"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/description_sight_1" />
+            android:src="@drawable/description_sight_1"
+
+            />
 
         <LinearLayout
             android:layout_width="295dp"
@@ -27,7 +30,9 @@
             android:layout_gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:paddingBottom="10dp"
+            android:layout_marginLeft="10dp"
+            >
 
             <LinearLayout
                 android:layout_width="fill_parent"

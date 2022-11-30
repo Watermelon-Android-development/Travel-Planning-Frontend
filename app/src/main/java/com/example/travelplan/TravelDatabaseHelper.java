@@ -58,7 +58,7 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
                 "Jinjihu Ring Lake, Suzhou Industrial Park", 5,"4007558558", false);
         this.insertSite(db, "Shangfangshan Forest Animal World" , R.drawable.site2, 120.582076, 31.238321,
                 "This is a description","zoo","7:30-16:30",
-                "NWuyue Road South 200 Meters, Huqiu District", 5, "0512-68230800",false);
+                "Wuyue Road South 200 Meters, Huqiu District", 5, "0512-68230800",false);
         this.insertSite(db, "Suzhou Paradise Forest World" , R.drawable.site3, 120.477035, 31.323242,
                 "This is a description","playground","9:15-17:15",
                 "No.99, Xiangshan Road, Huqiu District", 4, "0512-68717155",false);
@@ -89,27 +89,27 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
         this.insertSite(db, "Longhu Shishan Raradise Walk" , R.drawable.site12, 120.556139, 31.294375,
                 "This is a description","mall","10:00-22:00",
                 "No.181, Tayuan Road, Huqiu District ", 5, "0512-83800288",false);
-        this.insertSite(db, "Xietang Old Steetk" , R.drawable.site13, 120.738641, 31.303093,
-                "This is a description","block","0:00-24:00",
-                "No.1088, Songtao Street, Wuzhong DIstrict", 5, "0512-62587188",false);
-        this.insertSite(db, "Yuanrong Times Square" , R.drawable.site14, 120.712640, 31.320805,
-                "This is a description","mall","9:00-22:00",
-                "No.268, Wangdun Road, Suzhou Industrial Park", 5, "0512-66966666",false);
-        this.insertSite(db, "Suzhou True Color Museum" , R.drawable.site15, 120.671562, 31.253693,
-                "This is a description","museum","10:00-17:00",
-                "No.219, Tongda Road, Wuzhong District", 5, "0512-65968890",false);
-        this.insertSite(db, "Guanqian Street" , R.drawable.site16, 120.625637, 31.310624,
-                "This is a description","block","0:00-24:00",
-                "Guanqian Street, Gusu District", 5, "None",false);
-        this.insertSite(db, "Hanshan Temple" , R.drawable.site17, 120.568391, 31.310469,
-                "This is a description","temple","9:00-16:30",
-                "No.24, Hanshangsi Long, Gusu District", 5, "0512-67236213",false);
-        this.insertSite(db, "Xiyuan Temple" , R.drawable.site18, 120.587334, 31.314823,
-                "This is a description","temple","8:00-17:00",
-                "No.18, Xiyuan Long, Liuyuan Road, Gusu District", 5, "0512-65529219",false);
-        this.insertSite(db, "Suzhou Yuyao Relic Site Park" , R.drawable.site19, 120.612421, 31.361302,
-                "This is a description","scenery","8:00-18:00",
-                "No.95, Yangchenghu West Road, Xiangcheng District", 4, "0512-66182178",false);
+//        this.insertSite(db, "Xietang Old Steetk" , R.drawable.site13, 120.738641, 31.303093,
+//                "This is a description","block","0:00-24:00",
+//                "No.1088, Songtao Street, Wuzhong DIstrict", 5, "0512-62587188",false);
+//        this.insertSite(db, "Yuanrong Times Square" , R.drawable.site14, 120.712640, 31.320805,
+//                "This is a description","mall","9:00-22:00",
+//                "No.268, Wangdun Road, Suzhou Industrial Park", 5, "0512-66966666",false);
+//        this.insertSite(db, "Suzhou True Color Museum" , R.drawable.site15, 120.671562, 31.253693,
+//                "This is a description","museum","10:00-17:00",
+//                "No.219, Tongda Road, Wuzhong District", 5, "0512-65968890",false);
+//        this.insertSite(db, "Guanqian Street" , R.drawable.site16, 120.625637, 31.310624,
+//                "This is a description","block","0:00-24:00",
+//                "Guanqian Street, Gusu District", 5, "None",false);
+//        this.insertSite(db, "Hanshan Temple" , R.drawable.site17, 120.568391, 31.310469,
+//                "This is a description","temple","9:00-16:30",
+//                "No.24, Hanshangsi Long, Gusu District", 5, "0512-67236213",false);
+//        this.insertSite(db, "Xiyuan Temple" , R.drawable.site18, 120.587334, 31.314823,
+//                "This is a description","temple","8:00-17:00",
+//                "No.18, Xiyuan Long, Liuyuan Road, Gusu District", 5, "0512-65529219",false);
+//        this.insertSite(db, "Suzhou Yuyao Relic Site Park" , R.drawable.site19, 120.612421, 31.361302,
+//                "This is a description","scenery","8:00-18:00",
+//                "No.95, Yangchenghu West Road, Xiangcheng District", 4, "0512-66182178",false);
 
         db.execSQL("CREATE TABLE IF NOT EXISTS PLANS (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "ROUTE TEXT, " +
@@ -358,6 +358,7 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
             plan = new Plan(title, route);
             list.add(plan);
         }
+        cursor.close();
         db.close();
         lock.readLock().unlock();
         return list;

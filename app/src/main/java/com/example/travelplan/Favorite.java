@@ -54,7 +54,6 @@ public class Favorite extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
 
-
 //        buttonEdit = findViewById(R.id.edit);
         boxAllClick = (Button) findViewById(R.id.boxAllClick);
         itemDelete = (Button) findViewById(R.id.itemDelete);
@@ -64,13 +63,6 @@ public class Favorite extends AppCompatActivity{
         boxAllClick.setVisibility(View.INVISIBLE);
         listView = (ListView) findViewById(R.id.listView);
 
-
-
-//        Intent i=getIntent();
-//        position=i.getIntExtra("Position",-1);
-
-
-        new ShowFavorite().execute();
 
 
         itemDelete.setOnClickListener(new View.OnClickListener() {
@@ -101,12 +93,17 @@ public class Favorite extends AppCompatActivity{
         if(actionBar!=null){
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
+
         }
 
 
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new ShowFavorite().execute();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -122,7 +119,6 @@ public class Favorite extends AppCompatActivity{
 
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.edit) {
 
             mAdapter. flage_edit= !mAdapter.flage_edit;
@@ -153,7 +149,7 @@ public class Favorite extends AppCompatActivity{
 
 
     /**
-     * 全选，取消全选
+     * DESELECT ALL,SELECT ALL
      * @param view
      */
     public void btnSelectAllList(View view) {
@@ -176,7 +172,7 @@ public class Favorite extends AppCompatActivity{
     }
 
     /**
-     * 删除---没有实现，只是先写在这里
+     * deletion
      *
      */
     public void btnDeleteList() {
@@ -201,8 +197,10 @@ public class Favorite extends AppCompatActivity{
 //                    }
 //                }
                 new DeleteFavoriteItem().execute();
-                Toast.makeText(Favorite.this, "Option is deleted succesfully", Toast.LENGTH_SHORT);
                 mAdapter.notifyDataSetChanged();
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
             }
 
         });
@@ -210,18 +208,21 @@ public class Favorite extends AppCompatActivity{
         builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
             }
         });
         AlertDialog dialog=builder.create();
         dialog.show();
     }
 
-    public void startActivity2(View view,int position){
+    public void jumpTodesc(View view,int position){
         Intent inte=new Intent(this.getApplicationContext(), description_page.class);
         inte.putExtra("Position",position);
         startActivity(inte);
     }
+
     private class ShowFavorite extends AsyncTask<TravelDatabaseHelper.Plan, Void, Boolean> {
         @Override
         protected void onPreExecute(){
@@ -237,9 +238,10 @@ public class Favorite extends AppCompatActivity{
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
 
-                        Toast.makeText(Favorite.this,"跳转静态界面",Toast.LENGTH_SHORT).show();
-//                                                startActivity(new Intent(getApplication(),i));
-                        startActivity2(view,mDatas.get((i)).getId()-1);
+                        Toast.makeText(Favorite.this,"Jump to"+mDatas.get(i).getName(),Toast.LENGTH_SHORT).show();
+
+//                        Log.e("favorite ","get  "+(mDatas.get((i)).getId()-1));
+                        jumpTodesc(view,mDatas.get((i)).getId()-1);
                     }
                 });
 
@@ -293,7 +295,6 @@ public class Favorite extends AppCompatActivity{
         protected void onPostExecute(Boolean success){
             if (success) {
 //                btnDeleteList();
-
                 listView.setAdapter(mAdapter);
                 Toast.makeText(Favorite.this, "Delete successfully", Toast.LENGTH_SHORT).show();
             }
@@ -301,6 +302,7 @@ public class Favorite extends AppCompatActivity{
         }
 
     }
+
 
 }
 

@@ -71,9 +71,10 @@ public class FavoriteAdapter extends BaseAdapter {
             holder = new ViewHolder();
 
             holder.checkboxOperateData = (CheckBox) convertView.findViewById(R.id.checkbox_operate_data);
-            holder.textTitle = (TextView) convertView.findViewById(R.id.text_title);
-            holder.textDesc = (TextView) convertView.findViewById(R.id.text_desc);
-            holder.material_item_img=(ImageView) convertView.findViewById(R.id.material_item_img);
+            holder.title = (TextView) convertView.findViewById(R.id.text_title);
+            holder.rank = (TextView) convertView.findViewById(R.id.rank);
+            holder.kind = (TextView) convertView.findViewById(R.id.kind);
+            holder.favorite_iamge=(ImageView) convertView.findViewById(R.id.favorite_iamge);
 
             convertView.setTag(holder);
 
@@ -84,11 +85,13 @@ public class FavoriteAdapter extends BaseAdapter {
 
         final TravelDatabaseHelper.Site dataBean = mDatas.get(position);
         if (dataBean != null) {
-            holder.textTitle.setText(dataBean.getName());
-            holder.textDesc.setText(dataBean.getPlace());
+            String mark = String.valueOf(dataBean.getMark());
+            holder.title.setText(dataBean.getName());
+            holder.rank.setText("Mark: "+mark);
+            holder.kind.setText("Type: "+dataBean.getType());
 
             int image_index= dataBean.getImgID();
-            holder.material_item_img.setImageResource( image_index);
+            holder.favorite_iamge.setImageResource( image_index);
 
 
 
@@ -121,10 +124,10 @@ public class FavoriteAdapter extends BaseAdapter {
 
         public CheckBox checkboxOperateData;
 
-        public TextView textTitle;
-
-        public TextView textDesc;
-        public ImageView material_item_img;
+        public TextView title;
+        public TextView rank;
+        public TextView kind;
+        public ImageView favorite_iamge;
 
 
     }

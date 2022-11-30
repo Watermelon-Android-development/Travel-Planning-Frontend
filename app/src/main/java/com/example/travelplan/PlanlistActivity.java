@@ -120,6 +120,12 @@ public class PlanlistActivity extends AppCompatActivity{
 
 
         new GetPlanTask().execute();
+        
+        ActionBar actionBar=getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
     }
 
@@ -155,8 +161,15 @@ public class PlanlistActivity extends AppCompatActivity{
 
             mAdapter.notifyDataSetChanged();
         }
+        
+        switch (item.getItemId()){
+            case  android.R.id.home:
+                this.finish();
+                return true;
+        }
 
         return super.onOptionsItemSelected(item);
+        
     }
 
 

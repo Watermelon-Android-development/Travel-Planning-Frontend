@@ -7,16 +7,18 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginVertical="25dp">
 
         <ImageView
             android:id="@+id/detail_image"
-            android:layout_width="match_parent"
-            android:layout_height="117dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:src="@drawable/description_sight_1" />
@@ -60,8 +62,8 @@
                     android:id="@+id/site_opentime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
                     android:layout_gravity="center"
+                    android:gravity="center_vertical"
                     android:singleLine="true"
                     android:text="Site Opentime"
                     android:textColor="#555555"

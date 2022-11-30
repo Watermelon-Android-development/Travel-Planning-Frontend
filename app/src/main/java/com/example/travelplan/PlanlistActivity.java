@@ -15,6 +15,7 @@ import android.view.View;
 
 import android.os.Handler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.widget.ListView;
@@ -45,6 +46,17 @@ public class PlanlistActivity extends AppCompatActivity{
         @Override
         protected Boolean doInBackground(TravelDatabaseHelper.Plan... plans) {
             try {
+                //在saveplan完成并测试好后删除
+                List<Integer> route = new ArrayList<>(5);
+                route.add(1);
+                route.add(2);
+                route.add(3);
+                route.add(4);
+                travelDatabaseHelper.insertPlan(route, "lighter");
+                travelDatabaseHelper.insertPlan(route, "lighter2");
+                travelDatabaseHelper.insertPlan(route, "lighter3");
+                travelDatabaseHelper.insertPlan(route, "lighter4");
+                travelDatabaseHelper.insertPlan(route, "lighter5");
                 mDatas = travelDatabaseHelper.getAllPlans();
                 mAdapter = new PlanlistAdapter(PlanlistActivity.this, mDatas);
             } catch (SQLiteException e){
@@ -73,8 +85,8 @@ public class PlanlistActivity extends AppCompatActivity{
             try {
                 for (int i = 0,len=mDatas.size(); i < len; i++) {
                     if (mDatas.get(i).isCheck){
-                        mDatas.remove(i);
                         travelDatabaseHelper.deletePlans(mDatas.get(i).getTitle());
+                        mDatas.remove(i);
                         len--;
                         i--;
                     }

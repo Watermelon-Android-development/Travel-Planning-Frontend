@@ -1,15 +1,21 @@
 package com.example.travelplan.ui.favorite;
-//
-//public class FavoriteAdapter {
-//}
+
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
+import com.example.travelplan.TravelDatabaseHelper;
+import com.example.travelplan.myAdapter;
 import com.example.travelplan.ui.favorite.SaveCheckBox;
 import com.example.travelplan.R;
 
@@ -21,7 +27,7 @@ public class FavoriteAdapter extends BaseAdapter {
 
     private Context mContext;
 
-    private List<SaveCheckBox> mDatas;
+    private List<TravelDatabaseHelper.Site> mDatas;
 
     private LayoutInflater mInflater;
 
@@ -30,7 +36,7 @@ public class FavoriteAdapter extends BaseAdapter {
 
 
 
-    public FavoriteAdapter(Context mContext, List<SaveCheckBox> mDatas) {
+    public FavoriteAdapter(Context mContext, List<TravelDatabaseHelper.Site> mDatas) {
         this.mContext = mContext;
         this.mDatas = mDatas;
 
@@ -44,7 +50,7 @@ public class FavoriteAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
+    public TravelDatabaseHelper.Site getItem(int i) {
         return mDatas.get(i);
     }
 
@@ -59,7 +65,7 @@ public class FavoriteAdapter extends BaseAdapter {
         ViewHolder holder = null;
 
         if (convertView == null) {
-            // 下拉项布局
+            //
             convertView = mInflater.inflate(R.layout.activity_favorite_list_item, null);
 
             holder = new ViewHolder();
@@ -67,6 +73,7 @@ public class FavoriteAdapter extends BaseAdapter {
             holder.checkboxOperateData = (CheckBox) convertView.findViewById(R.id.checkbox_operate_data);
             holder.textTitle = (TextView) convertView.findViewById(R.id.text_title);
             holder.textDesc = (TextView) convertView.findViewById(R.id.text_desc);
+            holder.material_item_img=(ImageView) convertView.findViewById(R.id.material_item_img);
 
             convertView.setTag(holder);
 
@@ -75,13 +82,18 @@ public class FavoriteAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        final SaveCheckBox dataBean = mDatas.get(position);
+        final TravelDatabaseHelper.Site dataBean = mDatas.get(position);
         if (dataBean != null) {
-            holder.textTitle.setText(dataBean.title);
-            holder.textDesc.setText(dataBean.desc);
+            holder.textTitle.setText(dataBean.getName());
+            holder.textDesc.setText(dataBean.getPlace());
+
+            int image_index= dataBean.getImgID();
+            holder.material_item_img.setImageResource( image_index);
 
 
-            // 根据isSelected来设置checkbox的显示状况
+
+
+
             if (flage_edit) {
                 holder.checkboxOperateData.setVisibility(View.VISIBLE);
             } else {
@@ -90,7 +102,7 @@ public class FavoriteAdapter extends BaseAdapter {
 
             holder.checkboxOperateData.setChecked(dataBean.isCheck);
 
-            //注意这里设置的不是onCheckedChangListener，还是值得思考一下的
+
             holder.checkboxOperateData.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -112,5 +124,11 @@ public class FavoriteAdapter extends BaseAdapter {
         public TextView textTitle;
 
         public TextView textDesc;
+        public ImageView material_item_img;
+
+
     }
+
+
+
 }

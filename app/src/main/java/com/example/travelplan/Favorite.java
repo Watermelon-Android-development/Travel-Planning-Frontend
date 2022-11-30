@@ -77,7 +77,7 @@ public class Favorite extends AppCompatActivity{
 
             @Override
             public void onClick(View view) {
-                new DeleteFavoriteItem().execute();
+                btnDeleteList();
             }
         });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -193,13 +193,14 @@ public class Favorite extends AppCompatActivity{
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                for (int i = 0,len=mDatas.size(); i < len; i++) {
-                    if (mDatas.get(i).isCheck==true){
-                        mDatas.remove(i);
-                        len--;
-                        i--;
-                    }
-                }
+//                for (int i = 0,len=mDatas.size(); i < len; i++) {
+//                    if (mDatas.get(i).isCheck==true){
+//                        mDatas.remove(i);
+//                        len--;
+//                        i--;
+//                    }
+//                }
+                new DeleteFavoriteItem().execute();
                 Toast.makeText(Favorite.this, "Option is deleted succesfully", Toast.LENGTH_SHORT);
                 mAdapter.notifyDataSetChanged();
             }
@@ -229,7 +230,7 @@ public class Favorite extends AppCompatActivity{
         @Override
         protected Boolean doInBackground(TravelDatabaseHelper.Plan... plans) {
             try {
-                mDatas = travelDatabaseHelper.getAllSites();
+                mDatas = travelDatabaseHelper.getAllFavoriteSites();
                 mAdapter = new FavoriteAdapter(Favorite.this, mDatas);
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override

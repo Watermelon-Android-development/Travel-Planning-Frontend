@@ -112,15 +112,17 @@ public class description_page extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... voids){
             data=travelDatabaseHelper.getAllSites();
-            Boolean favouriteflag_1=data.get(position).getIsFavorite();
+            Boolean favouriteflag_1=data.get(position).getIsFavorite(); //默认是false，灰色
             Button favorite_btn=findViewById(R.id.lovebutton);
             if(favouriteflag_1){
-                favorite_btn.setActivated(false);
-                travelDatabaseHelper.deleteFavoriteItem(position);
+                favorite_btn.setActivated(false); //按钮变灰色
+                //Log.e("取消收藏","取消前的flag = "+favouriteflag_1);
+                travelDatabaseHelper.deleteFavoriteItem(position+1);
             }
             else{
-                favorite_btn.setActivated(true);
-                travelDatabaseHelper.addFavoriteItem(position);
+                favorite_btn.setActivated(true); //按钮变紫色
+               // Log.e("增加收藏","增加前的flag = "+favouriteflag_1);
+                travelDatabaseHelper.addFavoriteItem(position+1);
             }
             return true;
         }

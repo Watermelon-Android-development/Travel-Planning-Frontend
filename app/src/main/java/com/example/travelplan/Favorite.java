@@ -7,7 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteException;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,12 +21,17 @@ import android.os.Handler;
 
 import java.util.List;
 
+import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.travelplan.ui.favorite.SaveCheckBox;
 import com.example.travelplan.ui.favorite.FavoriteAdapter;
+import com.example.travelplan.ui.planlist.PlanlistAdapter;
 
 public class Favorite extends AppCompatActivity{
 
@@ -35,7 +43,8 @@ public class Favorite extends AppCompatActivity{
 
     private ListView listView;
 
-    private List<SaveCheckBox> mDatas;
+    private List<TravelDatabaseHelper.Site> mDatas;
+    private final TravelDatabaseHelper travelDatabaseHelper = new TravelDatabaseHelper(this);
 
     private FavoriteAdapter mAdapter;
     private Handler handler;
@@ -55,16 +64,38 @@ public class Favorite extends AppCompatActivity{
         boxAllClick.setVisibility(View.INVISIBLE);
         listView = (ListView) findViewById(R.id.listView);
 
-        mDatas = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-
-            SaveCheckBox dataBean = new SaveCheckBox("" + i, "title"+ i, "describetion"+ i);
-            mDatas.add(dataBean);
-        }
 
 
-        mAdapter = new FavoriteAdapter(this, mDatas);
-        listView.setAdapter(mAdapter);
+//        Intent i=getIntent();
+//        position=i.getIntExtra("Position",-1);
+
+
+        new ShowFavorite().execute();
+
+
+        itemDelete.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                new DeleteFavoriteItem().execute();
+            }
+        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(Favorite.this,"XXX",Toast.LENGTH_SHORT).show();
+            }
+        });
+//        mDatas = new ArrayList<>();
+//        for (int i = 0; i < 20; i++) {
+//
+//            SaveCheckBox dataBean = new SaveCheckBox("" + i, "title"+ i, "describetion"+ i);
+//            mDatas.add(dataBean);
+//        }
+
+
+//        mAdapter = new FavoriteAdapter(this, mDatas);
+//        listView.setAdapter(mAdapter);
 
         ActionBar actionBar=getSupportActionBar();
         if(actionBar!=null){
@@ -74,7 +105,6 @@ public class Favorite extends AppCompatActivity{
 
 
     }
-
 
 
 
@@ -147,15 +177,15 @@ public class Favorite extends AppCompatActivity{
 
     /**
      * 删除---没有实现，只是先写在这里
-     * @param view
+     *
      */
-    public void btnDeleteList(View view) {
+    public void btnDeleteList() {
 
-        showDialog(view);
+        showDialog();
 
     }
 
-    public void showDialog(View view){
+    public void showDialog(){
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
         builder.setTitle("DELETE");
         builder.setMessage("Are you sure to delete all the options?");
@@ -170,6 +200,7 @@ public class Favorite extends AppCompatActivity{
                         i--;
                     }
                 }
+                Toast.makeText(Favorite.this, "Option is deleted succesfully", Toast.LENGTH_SHORT);
                 mAdapter.notifyDataSetChanged();
             }
 
@@ -183,6 +214,91 @@ public class Favorite extends AppCompatActivity{
         });
         AlertDialog dialog=builder.create();
         dialog.show();
+    }
+
+    public void startActivity2(View view,int position){
+        Intent inte=new Intent(this.getApplicationContext(), description_page.class);
+        inte.putExtra("Position",position);
+        startActivity(inte);
+    }
+    private class ShowFavorite extends AsyncTask<TravelDatabaseHelper.Plan, Void, Boolean> {
+        @Override
+        protected void onPreExecute(){
+        }
+
+        @Override
+        protected Boolean doInBackground(TravelDatabaseHelper.Plan... plans) {
+            try {
+                mDatas = travelDatabaseHelper.getAllSites();
+                mAdapter = new FavoriteAdapter(Favorite.this, mDatas);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+
+                        Toast.makeText(Favorite.this,"跳转静态界面",Toast.LENGTH_SHORT).show();
+//                                                startActivity(new Intent(getApplication(),i));
+                        startActivity2(view,i);
+                    }
+                });
+
+            } catch (SQLiteException e){
+                return false;
+            }
+            return true;
+        }
+        @Override
+        protected void onPostExecute(Boolean success){
+
+            if(success){
+
+                listView.setAdapter(mAdapter);
+                Toast.makeText(Favorite.this, "All Favorites Shows", Toast.LENGTH_SHORT);
+            }
+            else Toast.makeText(Favorite.this, "Database unavailable", Toast.LENGTH_SHORT);
+        }
+    }
+
+    private class DeleteFavoriteItem extends AsyncTask<String, Void, Boolean> {
+        @Override
+        protected void onPreExecute(){
+        }
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+
+
+            try {
+
+                for (int i = 0,len=mDatas.size(); i < len; i++) {
+//                    Log.e("GET"," "+i);
+//                    Log.e("LEN"," "+len);
+                    if (len==0)return true;
+                    if (mDatas.get(i).isCheck){
+                        travelDatabaseHelper.deleteFavoriteItem(mDatas.get(i).getId());
+                        mDatas.remove(i);
+                        len--;
+                        i--;
+                    }
+
+                }
+            } catch (SQLiteException e){
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success){
+            if (success) {
+//                btnDeleteList();
+
+                listView.setAdapter(mAdapter);
+                Toast.makeText(Favorite.this, "Delete successfully", Toast.LENGTH_SHORT).show();
+            }
+            else Toast.makeText(Favorite.this, "Database unavailable", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 }

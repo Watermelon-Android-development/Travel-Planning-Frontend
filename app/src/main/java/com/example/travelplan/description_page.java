@@ -113,6 +113,12 @@ public class description_page extends AppCompatActivity {
         protected Boolean doInBackground(Void... voids){
             data=travelDatabaseHelper.getAllSites();
             Boolean favouriteflag_1=data.get(position).getIsFavorite(); //默认是false，灰色
+
+            return favouriteflag_1;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean favouriteflag_1){
             Button favorite_btn=findViewById(R.id.lovebutton);
             if(favouriteflag_1){
                 favorite_btn.setActivated(false); //按钮变灰色
@@ -121,15 +127,9 @@ public class description_page extends AppCompatActivity {
             }
             else{
                 favorite_btn.setActivated(true); //按钮变紫色
-               // Log.e("增加收藏","增加前的flag = "+favouriteflag_1);
+                // Log.e("增加收藏","增加前的flag = "+favouriteflag_1);
                 travelDatabaseHelper.addFavoriteItem(position+1);
             }
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success){
-
         }
 
 

@@ -35,10 +35,13 @@ import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
+import com.amap.api.maps2d.model.PolylineOptions;
 import com.example.travelplan.R;
 import com.example.travelplan.TravelDatabaseHelper;
 import com.example.travelplan.databinding.FragmentMapBinding;
 
+import java.lang.reflect.Array;
+import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -100,9 +103,10 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         protected Boolean doInBackground(Void... voids) {
 
             data = travelDatabaseHelper.getAllSites();
+            aMap.clear();
             Log.e("test22", "data: "+data.get(0).getxCoor() );
 
-            String location_string =sp.getString("name","");
+            String location_string =sp.getString("sites","");
             List<String> location_list = new ArrayList<String>();
             location_list.addAll(Arrays.asList(location_string.split(",")));
             List<Integer> int_list =new ArrayList<Integer>();
@@ -150,7 +154,23 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 //               options.title(lst_title.get(i)).snippet(lst2.get(i));//标题内容设置
                 aMap.addMarker(options);
             }
+
 //            SharedPreferences.Editor editor = sp.edit();
+            ArrayList<LatLng> latLngList = new ArrayList<LatLng>();
+            Log.e("int_list", "content: "+int_list );
+            for (int i = 0; i < int_list.size(); i++) {
+                latLngList.add(new LatLng(data.get(int_list.get(i)).getyCoor(), data.get(int_list.get(i)).getxCoor()));
+            }
+
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("route",sp.getString("sites",""));
+            editor.apply();
+
+            PolylineOptions pl = new PolylineOptions()
+                    .addAll(latLngList)
+                    .width(5)
+                    .setDottedLine(false);
+            aMap.addPolyline(pl);
 
 
             return true;
@@ -365,7 +385,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 //        marker.setIcon(R.drawable.icon_loc);
         if(marker.isDraggable())
         {
-            Log.e("sp_before", "sp: "+sp.getString("name", "") );
+            Log.e("sp_before", "sp: "+sp.getString("sites", "") );
             Log.e("Test", "蓝色变红色; "+marker.getId());
             String id=marker.getTitle().split(",")[1];  //get infoWin ID
             marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));
@@ -373,9 +393,8 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
             Toast toast=Toast.makeText(this.getContext(), "添加到route", Toast.LENGTH_LONG);
             showMyToast(toast, 2*1000);
 
-
             SharedPreferences.Editor editor = sp.edit();
-            String location_string =sp.getString("name","");
+            String location_string =sp.getString("sites","");
             List<String> location_list = new ArrayList<String>();
             location_list.addAll(Arrays.asList(location_string.split(",")));
             if (location_list.contains("")){
@@ -390,18 +409,18 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
                 }
             }
             if(temp){
-                editor.putString("name",sp.getString("name","")+id+",");
+                editor.putString("sites",sp.getString("sites","")+id+",");
                 editor.apply();
 
             }
 
 
-          Log.e("final_sp", "sp: "+sp.getString("name", "") );
+          Log.e("final_sp", "sp: "+sp.getString("sites", "") );
 
 
         }
         else{
-            Log.e("sp_before", "sp: "+sp.getString("name", "") );
+            Log.e("sp_before", "sp: "+sp.getString("sites", "") );
             Log.e("Test", "红色变蓝色");
             String id=marker.getTitle().split(",")[1];
             marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));
@@ -410,7 +429,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
             showMyToast(toast, 2*1000);
 
             SharedPreferences.Editor editor = sp.edit();
-            String location_string =sp.getString("name","");
+            String location_string =sp.getString("sites","");
             List<String> location_list = new ArrayList<String>(); //content in sp
             location_list.addAll(Arrays.asList(location_string.split(",")));
             if (location_list.contains("")){
@@ -431,9 +450,9 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
             for (int i = 0; i < len_af; i++) {
                 final_list += location_list.get(i)+",";
             }
-            editor.putString("name",final_list);
+            editor.putString("sites",final_list);
             editor.apply();
-            Log.e("final_sp", "sp: "+sp.getString("name", "") );
+            Log.e("final_sp", "sp: "+sp.getString("sites", "") );
 
 
 
@@ -444,7 +463,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         }
 //        Log.e("Test", "onInfoWindowClick: 标题为：" + marker.getSnippet()+ "  的InfoWindow被点击了");
 //        marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));
-
+        new getAllLocs().execute();
     }
 
     public void showMyToast(final Toast toast, final int cnt) {

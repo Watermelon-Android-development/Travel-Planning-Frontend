@@ -11,6 +11,7 @@ import android.util.Log;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -113,6 +114,7 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE IF NOT EXISTS PLANS (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "ROUTE TEXT, " +
+                "ROUTE_NAME TEXT," +
                 "TITLE TEXT UNIQUE)");
     }
 
@@ -210,12 +212,19 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
     public class Plan {
         private final String title;
         private final List<Integer> route;
+        private final List<String> routeName;
         public boolean isCheck;
 
-        public Plan(String title, List<Integer> route) {
+        public Plan(String title, List<Integer> route, List<String> routeName) {
             this.title = title;
             this.route = route;
+            this.routeName = routeName;
         }
+
+        public List<String> getRouteName() {
+            return routeName;
+        }
+
 
         public List<Integer> getRoute() {
             return route;
@@ -327,9 +336,23 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
             sb.append(i);
             sb.append(",");
         }
-        String planString = sb.toString();
+        sb = sb.deleteCharAt(sb.length() - 1);
+        String routeString = sb.toString();
+        Cursor cursorSites = db.query("SITES",
+                new String[]{"NAME"}
+                ,"_id in (" + routeString +")",
+                null, null, null, null);
+        StringBuilder sb2 = new StringBuilder();
+        while (cursorSites.moveToNext()) {
+            sb2.append(cursorSites.getString(0));
+            sb2.append(",");
+        }
+        sb2 = sb2.deleteCharAt(sb2.length() - 1);
+        String routeName = sb2.toString();
+        cursorSites.close();
         ContentValues planValues = new ContentValues();
-        planValues.put("ROUTE", planString);
+        planValues.put("ROUTE", routeString);
+        planValues.put("ROUTE_NAME", routeName);
         planValues.put("TITLE", title);
         try {
             db.insertOrThrow("PLANS", null, planValues);
@@ -346,16 +369,18 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
         db = getReadableDatabase();
         ArrayList<Plan> list = new ArrayList<>();
         Cursor cursor = db.query("PLANS",
-                new String[]{"ROUTE", "TITLE"},
+                new String[]{"ROUTE", "ROUTE_NAME", "TITLE"},
                 null,
                 null,
                 null, null ,null);
         while (cursor.moveToNext()) {
-            String title = cursor.getString(1);
             String routeString = cursor.getString(0);
+            String routeNameString = cursor.getString(1);
+            String title = cursor.getString(2);
             Plan plan;
             List<Integer> route = parseRoute(routeString);
-            plan = new Plan(title, route);
+            List<String> routeName = parseRouteName(routeNameString);
+            plan = new Plan(title, route, routeName);
             list.add(plan);
         }
         cursor.close();
@@ -383,7 +408,6 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
         if (cursorPlan.moveToFirst()) {
             String routeString = cursorPlan.getString(0);
             cursorPlan.close();
-            routeString = routeString.substring(0, routeString.length()-1);
             Site site;
             Cursor cursorSites = db.query("SITES",
                     new String[]{"NAME", "IMAGE_RESOURCE_ID", "X_LOCATION", "Y_LOCATION", "DESCRIPTION",
@@ -407,10 +431,15 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
     private List<Integer> parseRoute(String routeString) {
         String[] routeArr = routeString.split(",");
         ArrayList<Integer> route = new ArrayList<>();
-        for (int i = 0; i < routeArr.length; i++) {
-            route.add(Integer.parseInt(routeArr[i]));
+        for (String s : routeArr) {
+            route.add(Integer.parseInt(s));
         }
         return route;
+    }
+
+    private List<String> parseRouteName(String routeNameString) {
+        String[] routeArr = routeNameString.split(",");
+        return Arrays.asList(routeArr);
     }
 
     private void deleteTables() {

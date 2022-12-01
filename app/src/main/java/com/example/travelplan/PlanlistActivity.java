@@ -39,6 +39,7 @@ public class PlanlistActivity extends AppCompatActivity{
     private PlanlistAdapter mAdapter;
     private Handler handler;
 
+
     private class GetPlanTask extends AsyncTask<TravelDatabaseHelper.Plan, Void, Boolean> {
         @Override
         protected void onPreExecute(){

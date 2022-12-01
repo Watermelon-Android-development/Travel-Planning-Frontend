@@ -80,7 +80,7 @@ public class PlanlistAdapter extends BaseAdapter {
         final TravelDatabaseHelper.Plan dataBean = mDatas.get(position);
         if (dataBean != null) {
             holder.textTitle.setText(dataBean.getTitle());
-            List<Integer> pos = dataBean.getRoute();
+            List<String> pos = dataBean.getRouteName();
             String route2 = pos.get(0).toString() + "-->";
             for (int i = 1; i<pos.size();i++){
                 if (i == pos.size() - 1){

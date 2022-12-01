@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
@@ -29,12 +30,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp">
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="192dp"
+            android:background="@drawable/atml_back"
             android:orientation="vertical">
 
             <TextView
@@ -45,7 +47,7 @@
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="Plan Title"
-                android:textColor="#555555"
+                android:textColor="#353333"
                 android:textSize="14sp" />
 
             <TextView
@@ -56,7 +58,7 @@
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="Plan route"
-                android:textColor="#aaaaaa"
+                android:textColor="#000000"
                 android:textSize="24sp" />
 
             <Button

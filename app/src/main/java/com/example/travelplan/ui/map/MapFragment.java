@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,13 +40,13 @@ import com.example.travelplan.TravelDatabaseHelper;
 import com.example.travelplan.databinding.FragmentMapBinding;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 
 public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, AMap.OnMapClickListener{
-
     private FragmentMapBinding binding;
     private TravelDatabaseHelper travelDatabaseHelper;
     private MapView mapView = null;
@@ -56,7 +57,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     private AMap aMap;
     private Marker clickMaker;
     View root;
-    private  List<String> route_list=new ArrayList<>();
+    private SharedPreferences sp;
 
 
 
@@ -69,7 +70,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         @Override
         protected void onPreExecute() {
 
-            if (!isFristRun()){
+            if (isFristRun()){
 //                AlertDialog alertDialog2 = new AlertDialog.Builder(getContext())
 //                        .setTitle("Click on the image to add to route")
 ////                        .setMessage("有多个按钮")
@@ -99,8 +100,21 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         protected Boolean doInBackground(Void... voids) {
 
             data = travelDatabaseHelper.getAllSites();
-//            Log.e("test","test_map"+ data.get(0).getxCoor());
-//            Log.e("test","test_map"+ data.get(0).getyCoor());
+            Log.e("test22", "data: "+data.get(0).getxCoor() );
+
+            String location_string =sp.getString("name","");
+            List<String> location_list = new ArrayList<String>();
+            location_list.addAll(Arrays.asList(location_string.split(",")));
+            List<Integer> int_list =new ArrayList<Integer>();
+//            location_list.add("??");
+            if (location_list.contains("")){
+                location_list.remove("");
+            }
+            for (int i = 0; i < location_list.size(); i++) {
+                int index =Integer.parseInt(location_list.get(i));
+                int_list.add(index);
+
+            }
 
 
             for (int i = 0; i < 13;i++){
@@ -116,18 +130,28 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
                 String imageID = String.valueOf(data.get(i).getImgID());
 
-//                options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));
-                options.draggable(true);
+//
+                if (int_list.contains(i)){
+                    options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));
+                    options.draggable(false);
+                }
+                else{options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));
+                    options.draggable(true);}
+
+
+
                 options.title(imageID+","+i);//标题内容设置  存储图片ID
                 options.snippet(data.get(i).getName());
-                ArrayList<BitmapDescriptor> arr1 =  new ArrayList<>();
-                arr1.add(0,BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));
-//                arr1.add(1,BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));
-                options.icons(arr1);
+//                    ArrayList<BitmapDescriptor> arr1 =  new ArrayList<>();
+//                    arr1.add(0,BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));
+//
+////                arr1.add(1,BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));
+//                    options.icons(arr1);
 //               options.title(lst_title.get(i)).snippet(lst2.get(i));//标题内容设置
                 aMap.addMarker(options);
             }
-//
+//            SharedPreferences.Editor editor = sp.edit();
+
 
             return true;
         }
@@ -169,6 +193,10 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
                              ViewGroup container, Bundle savedInstanceState) {
 
 
+        sp = getActivity().getSharedPreferences("Personal", MODE_PRIVATE);
+
+
+            //提交
 
 
         travelDatabaseHelper= new TravelDatabaseHelper(this.getActivity());
@@ -337,27 +365,82 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 //        marker.setIcon(R.drawable.icon_loc);
         if(marker.isDraggable())
         {
+            Log.e("sp_before", "sp: "+sp.getString("name", "") );
             Log.e("Test", "蓝色变红色; "+marker.getId());
-            String id=marker.getTitle().split(",")[1];
-            route_list.add(id);
-            Log.e("Test", "route_list; "+route_list);
+            String id=marker.getTitle().split(",")[1];  //get infoWin ID
             marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));
             marker.setDraggable(false);
-
             Toast toast=Toast.makeText(this.getContext(), "添加到route", Toast.LENGTH_LONG);
             showMyToast(toast, 2*1000);
 
+
+            SharedPreferences.Editor editor = sp.edit();
+            String location_string =sp.getString("name","");
+            List<String> location_list = new ArrayList<String>();
+            location_list.addAll(Arrays.asList(location_string.split(",")));
+            if (location_list.contains("")){
+                location_list.remove("");
+            }
+
+            int len = location_list.size();
+            boolean temp =true;
+            for (int i = 0; i < len; i++) {
+                if (location_list.get(i).equals(id)){
+                    temp=false;
+                }
+            }
+            if(temp){
+                editor.putString("name",sp.getString("name","")+id+",");
+                editor.apply();
+
+            }
+
+
+          Log.e("final_sp", "sp: "+sp.getString("name", "") );
+
+
         }
         else{
+            Log.e("sp_before", "sp: "+sp.getString("name", "") );
             Log.e("Test", "红色变蓝色");
             String id=marker.getTitle().split(",")[1];
-            route_list.remove(id);
-            Log.e("Test", "route_list; "+route_list);
             marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));
             marker.setDraggable(true);
-//            Toast.makeText(this.getContext(), "从route删除", Toast.LENGTH_LONG).show();
             Toast toast=Toast.makeText(this.getContext(), "从route删除", Toast.LENGTH_LONG);
             showMyToast(toast, 2*1000);
+
+            SharedPreferences.Editor editor = sp.edit();
+            String location_string =sp.getString("name","");
+            List<String> location_list = new ArrayList<String>(); //content in sp
+            location_list.addAll(Arrays.asList(location_string.split(",")));
+            if (location_list.contains("")){
+                location_list.remove("");
+            }
+            int len =location_list.size();
+            int index =-23;
+            for (int i = 0; i < len; i++) {
+                if (location_list.get(i).equals(id)){
+                    index=i;
+                }
+            }
+            if (index > -23) {
+                location_list.remove(index);
+            }
+            int len_af= location_list.size();
+            String final_list = "";
+            for (int i = 0; i < len_af; i++) {
+                final_list += location_list.get(i)+",";
+            }
+            editor.putString("name",final_list);
+            editor.apply();
+            Log.e("final_sp", "sp: "+sp.getString("name", "") );
+
+
+
+
+
+
+
         }
 //        Log.e("Test", "onInfoWindowClick: 标题为：" + marker.getSnippet()+ "  的InfoWindow被点击了");
 //        marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));

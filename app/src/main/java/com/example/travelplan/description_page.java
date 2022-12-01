@@ -81,7 +81,7 @@ public class description_page extends AppCompatActivity {
             openTime.setText(rl_openTime);
 
             //String description
-            String rl_description=data.get(position).getDescription();
+            int rl_description=data.get(position).getDescription();
             TextView description=findViewById(R.id.description);
             description.setText(rl_description);
 

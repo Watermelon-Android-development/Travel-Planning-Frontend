@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,63 +13,72 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <CheckBox
-            android:id="@+id/plan_checkbox_operate_data"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_margin="6dp"
-            android:visibility="gone" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="192dp"
-            android:background="@drawable/atml_back"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/plan_text_title"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_gravity="center_vertical"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="Plan Title"
-                android:textColor="#353333"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/plan_text_desc"
-                android:layout_width="match_parent"
-                android:layout_height="94dp"
-                android:layout_gravity="center_vertical"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="Plan route"
-                android:textColor="#000000"
-                android:textSize="24sp" />
-
-            <Button
-                android:id="@+id/plan_go_to_detail"
+            <CheckBox
+                android:id="@+id/plan_checkbox_operate_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="Details" />
+                android:layout_gravity="center_vertical"
+                android:layout_margin="6dp"
+                android:visibility="gone" />
+
 
         </LinearLayout>
 
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="192dp"
+                android:background="@drawable/atml_back"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/plan_text_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Plan Title"
+                    android:textColor="#353333"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/plan_text_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="94dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Plan route"
+                    android:textColor="#000000"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/plan_go_to_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="Details" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
     </LinearLayout>
 
-</LinearLayout>
+
+</ScrollView>

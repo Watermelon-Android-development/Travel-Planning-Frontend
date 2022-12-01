@@ -69,6 +69,7 @@ public class PlanlistActivity extends AppCompatActivity{
         protected void onPostExecute(Boolean success){
             if(success){
                 listView = findViewById(R.id.planlistView);
+                listView.setDivider(null);
                 listView.setAdapter(mAdapter);
                 Toast.makeText(PlanlistActivity.this, "All plans", Toast.LENGTH_SHORT);
             }

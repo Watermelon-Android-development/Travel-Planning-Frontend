@@ -3,6 +3,7 @@ package com.example.travelplan.ui.plandetail;
 //public class FavoriteAdapter {
 //}
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -53,6 +54,7 @@ public class PlandetailAdapter extends BaseAdapter {
         return i;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
 
@@ -63,6 +65,7 @@ public class PlandetailAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.activity_plandetail_item, null);
 
             holder = new ViewHolder();
+            holder.siteNumber = convertView.findViewById(R.id.number);
             holder.siteImage = convertView.findViewById(R.id.detail_image);
             holder.siteName = convertView.findViewById(R.id.site_name);
             holder.siteLocation = convertView.findViewById(R.id.site_location);
@@ -76,6 +79,7 @@ public class PlandetailAdapter extends BaseAdapter {
 
         final TravelDatabaseHelper.Site dataBean = mDatas.get(position);
         if (dataBean != null) {
+            holder.siteNumber.setText(mDatas.indexOf(dataBean)+1+"");
             holder.siteImage.setImageResource(dataBean.getImgID());
             holder.siteName.setText(dataBean.getName());
             holder.siteLocation.setText(dataBean.getPlace());
@@ -86,6 +90,7 @@ public class PlandetailAdapter extends BaseAdapter {
 
     class ViewHolder {
 
+        public TextView siteNumber;
         public ImageView siteImage;
         public TextView siteName;
         public TextView siteLocation;

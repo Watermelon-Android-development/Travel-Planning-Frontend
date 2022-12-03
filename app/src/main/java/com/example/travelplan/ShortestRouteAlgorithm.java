@@ -31,7 +31,7 @@ public class ShortestRouteAlgorithm {
 
     private static void dfs(boolean[] isVisited, int current, double distance, List<Integer> curResult) {
         isVisited[current] = true;
-        curResult.add(origin.get(current));
+        if (current != 0) curResult.add(origin.get(current-1));
         for (int i = 0; i < isVisited.length; i++) {
             if (!isVisited[i]) break;
             if (i == isVisited.length - 1) {

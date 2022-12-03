@@ -69,13 +69,13 @@ public class HomeFragment extends Fragment {
         protected Boolean doInBackground(Void... voids) {
             data = travelDatabaseHelper.getAllSites();
             myAdapter= new myAdapter(data,getContext());
-            Log.e("test","test_home"+ data.get(0).getImgID());
-            Log.e("test","test_home"+ data.get(1).getImgID());
+//            Log.e("test","test_home"+ data.get(0).getImgID());
+//            Log.e("test","test_home"+ data.get(1).getImgID());
 
             myAdapter.setRecyclerItemClickListener(new myAdapter.OnRecyclerItemClickListener() {
                 @Override
                 public void onRecyclerItemClick(int position) {
-                    Log.e("test", "onRecyclerItemClick: "+position);
+//                    Log.e("test", "onRecyclerItemClick: "+position);
                     startActivity2(root,position);
                 }
             });

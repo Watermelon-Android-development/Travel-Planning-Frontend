@@ -41,6 +41,7 @@ import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.PolylineOptions;
 import com.example.travelplan.R;
+import com.example.travelplan.ShortestRouteAlgorithm;
 import com.example.travelplan.TravelDatabaseHelper;
 import com.example.travelplan.databinding.FragmentMapBinding;
 
@@ -65,6 +66,13 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     private Marker clickMaker;
     View root;
     private SharedPreferences sp;
+    private List<Integer> icon_list= List.of(R.drawable.num_1,R.drawable.num_2,R.drawable.num_3,R.drawable.num_4,R.drawable.num_5);
+    private int temp_id;
+//     icon_list.set(0,R.drawable.num_1);
+//        icon_list.set(1,R.drawable.num_2);
+//        icon_list.set(2,R.drawable.num_3);
+//        icon_list.set(3,R.drawable.num_4);
+//        icon_list.set(4,R.drawable.num_5);
 
 
 
@@ -78,22 +86,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         protected void onPreExecute() {
 
             if (isFristRun()){
-//                AlertDialog alertDialog2 = new AlertDialog.Builder(getContext())
-//                        .setTitle("Click on the image to add to route")
-////                        .setMessage("有多个按钮")
-//                        .setIcon(R.drawable.click_on_image)
-//
-//                        .setPositiveButton("Got it", new DialogInterface.OnClickListener()
-//                                {//添加按钮
-//                            @Override
-//                            public void onClick(DialogInterface dialogInterface, int i) {
-////                                Toast.makeText(getContext(),"这是确定按钮", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                        )
-//
-//                        .create();
-//                alertDialog2.show();
                 Bitmap  bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.click_on_image);
                 showDialog(getContext(),bitmap);
             };
@@ -106,27 +98,28 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         @Override
         protected Boolean doInBackground(Void... voids) {
 
-            data = travelDatabaseHelper.getAllSites();
-            aMap.clear();  //清空地图上的所有覆盖物
-            Log.e("test22", "data: "+data.get(0).getxCoor() );
 
+
+            data = travelDatabaseHelper.getAllFavoriteSites();
+            aMap.clear();  //清空地图上的所有覆盖物
+            Log.e("sp_before_sort", "sp: "+sp.getString("sites", "") );
             String location_string =sp.getString("sites","");
-            List<String> location_list = new ArrayList<String>();
+            List<String> location_list = new ArrayList<String>(); //single string to string list
             location_list.addAll(Arrays.asList(location_string.split(",")));
-            List<Integer> int_list =new ArrayList<Integer>();
+
 //            location_list.add("??");
             if (location_list.contains("")){
                 location_list.remove("");
             }
+            List<Integer> int_list =new ArrayList<Integer>(); //string list to int list
             for (int i = 0; i < location_list.size(); i++) {
                 int index =Integer.parseInt(location_list.get(i));
                 int_list.add(index);
-
             }
+            Log.e("int_list", "test_here: "+int_list);
+            //拿到route的景点
 
-
-            for (int i = 0; i < 13;i++){
-//                Log.e("test", "doInBackground: "+i );
+            for (int i = 0; i < data.size();i++){
                 Double lat =data.get(i).getyCoor(); //latitude
                 Double lng =data.get(i).getxCoor(); //longitude
                 LatLng latLng3  = new LatLng(lat,lng);
@@ -140,7 +133,10 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
 //
                 if (int_list.contains(i)){
-                    options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));
+
+                    options.icon(BitmapDescriptorFactory.fromResource(icon_list.get(int_list.indexOf(i))));
+                    //怎么拿到指定图片
+//                    options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));
                     options.draggable(false);
                 }
                 else{options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));
@@ -159,16 +155,37 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
                 aMap.addMarker(options);
             }
 
-//            SharedPreferences.Editor editor = sp.edit();
-            ArrayList<LatLng> latLngList = new ArrayList<LatLng>();
-            Log.e("int_list", "content: "+int_list );
+//             waiting for change  !!!!!
+            double[] MY_LOCATION = new double[2];
+            MY_LOCATION[0]=31.272138;
+            MY_LOCATION[1]=120.740444;
+
+            ArrayList<TravelDatabaseHelper.Site> sites_for_sort = new ArrayList<TravelDatabaseHelper.Site>();
+//            Log.e("int_list_content", "content: "+int_list );
             for (int i = 0; i < int_list.size(); i++) {
-                latLngList.add(new LatLng(data.get(int_list.get(i)).getyCoor(), data.get(int_list.get(i)).getxCoor()));
+                sites_for_sort.add(data.get(int_list.get(i)));
+
+            }
+            Log.e("sites_for_sort_content", "content: "+sites_for_sort );
+            List<Integer> site_sorted = new ArrayList <Integer> ();
+//            Log.e("sites_for_sort", "content: "+sites_for_sort );
+            site_sorted=ShortestRouteAlgorithm.getShortestRoute(MY_LOCATION,sites_for_sort);
+            Log.e("site_sorted_content", "content: "+site_sorted );
+            ArrayList<LatLng> latLngList = new ArrayList<LatLng>();
+//            Log.e("int_list", "content: "+int_list );
+            for (int i = 0; i < site_sorted.size(); i++) {
+                latLngList.add(new LatLng(data.get(site_sorted.get(i)).getyCoor(), data.get(site_sorted.get(i)).getxCoor()));
+            }
+
+            String final_route="";
+            for (int i = 0; i < site_sorted.size(); i++){
+                final_route = site_sorted.get(i)+",";
             }
 
             SharedPreferences.Editor editor = sp.edit();
-            editor.putString("route",sp.getString("sites",""));
+            editor.putString("route",final_route);
             editor.apply();
+            Log.e("final_route_content", "content: "+final_route );
 
             PolylineOptions pl = new PolylineOptions()
                     .addAll(latLngList)
@@ -227,9 +244,9 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         @Override
         protected Boolean doInBackground(Void... voids) {
 
-            data = travelDatabaseHelper.getAllSites();
+            data = travelDatabaseHelper.getAllFavoriteSites();
             aMap.clear();  //清空地图上的所有覆盖物
-            Log.e("test22", "data: " + data.get(0).getxCoor());
+//            Log.e("test22", "data: " + data.get(0).getxCoor());
 
             String location_string = sp.getString("sites", "");
             List<String> location_list = new ArrayList<String>();
@@ -247,7 +264,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
             }
 
 
-            for (int i = 0; i < 13; i++) {
+            for (int i = 0; i < data.size(); i++) {
 //                Log.e("test", "doInBackground: "+i );
 //
                 if (int_list.contains(i)) {
@@ -386,52 +403,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
             }
         });
-
-
-//
-
-
-//        aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(),15)); //更新地图
-
-        //添加一个marker的点击事件
-//        aMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
-//            @Override
-//            public boolean onMarkerClick(Marker marker) {
-//
-//                //当点击的时候打开infoWindow
-//                if (marker.isInfoWindowShown()){
-//                    marker.hideInfoWindow();
-//                }
-//                else {
-//                    marker.showInfoWindow();}
-//
-////                Log.e("test", "onMarkerClick: test");
-////                //这里在添加点击监听事件后，原来的InfoWindow被取消了，可以在回调方法中手动实现
-////
-//
-//                return true;
-//            }
-//        });
-
-
-        //添加一个InfoWindow的点击事件
-//        aMap.setOnInfoWindowClickListener(new AMap.OnInfoWindowClickListener() {
-//            @Override
-//            public void onInfoWindowClick(Marker marker) {
-//
-//                Log.e("Test", "onInfoWindowClick: 标题为：" + marker.getTitle() + "  的InfoWindow被点击了");
-//
-//            }
-//        });
-//        root.findViewById(R.id.bt_1).setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v) {
-////                Toast.makeText(getApplicationContext(),"Button 3 clicked",Toast.LENGTH_LONG).show();
-//                Log.e("test", "onClick: 11111");
-//            }
-//        });
-
-
         return root;
     }
 
@@ -529,13 +500,10 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-
-//        Log.e("Test", "onInfoWindowClick: 标题为：" + marker.getTitle() + "  的InfoWindow被点击了");
-//        marker.setIcon(R.drawable.icon_loc);
         if(marker.isDraggable())
         {
             Log.e("sp_before", "sp: "+sp.getString("sites", "") );
-            Log.e("Test", "蓝色变红色; "+marker.getId());
+            Log.e("Test", "蓝色变红色; ");
             String id=marker.getTitle().split(",")[1];  //get infoWin ID
             marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));
             marker.setDraggable(false);
@@ -656,7 +624,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
        int imageID=Integer.parseInt(marker.getTitle().split(",")[0]);
 
         imageView.setImageResource(imageID);
-//        title.setText(marker.getTitle());
         content.setText(marker.getSnippet());
     }
 

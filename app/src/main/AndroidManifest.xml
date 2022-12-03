@@ -28,18 +28,22 @@
 
         <activity
             android:name=".Helper"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".AboutUs"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="af02f5ab56c2a6a7bf5eee71b95856d4" />
+            android:value="af02f5ab56c2a6a7bf5eee71b95856d4"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".description_page"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -48,7 +52,8 @@
             android:name=".HomePage"
             android:exported="false"
             android:label="@string/title_activity_home_page"
-            android:theme="@style/newTheme">
+            android:theme="@style/newTheme"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -71,7 +76,8 @@
         <activity
             android:name=".Favorite"
             android:exported="false"
-            android:label="@string/title_activity_favorite">
+            android:label="@string/title_activity_favorite"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -79,7 +85,8 @@
         <activity
             android:name=".PlanlistActivity"
             android:exported="false"
-            android:label="@string/title_activity_planlist">
+            android:label="@string/title_activity_planlist"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -87,20 +94,12 @@
         <activity
             android:name=".PlanDetailActivity"
             android:exported="false"
-            android:label="@string/title_activity_plandetail">
+            android:label="@string/title_activity_plandetail"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-<!--        <activity android:name=".LoginActivity"-->
-
-<!--            android:exported="true">-->
-<!--        <intent-filter>-->
-<!--                        <action android:name="android.intent.action.MAIN" />-->
-
-<!--                        <category android:name="android.intent.category.LAUNCHER" />-->
-<!--                    </intent-filter>-->
-<!--        </activity>-->
     </application>
 
     

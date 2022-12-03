@@ -5,13 +5,15 @@ import java.util.List;
 
 public class ShortestRouteAlgorithm {
     private static List<Integer> origin, result;
-    private static double shortestDistance = Double.POSITIVE_INFINITY;
+    private static double shortestDistance;
     private static double[][] allLocations, allDistances;
     public static List<Integer> getShortestRoute(double[] userPosition, List<TravelDatabaseHelper.Site> sites) {
+        shortestDistance = Double.POSITIVE_INFINITY;
         allLocations = new double[sites.size() + 1][2];
         allDistances = new double[allLocations.length][allLocations.length];
         allLocations[0] = userPosition.clone();
         origin = new ArrayList<>();
+        result = new ArrayList<>();
         for (int i = 0; i < sites.size(); i++) {
             allLocations[i+1] = new double[]{sites.get(i).getxCoor(), sites.get(i).getyCoor()};
             origin.add(sites.get(i).getId());
@@ -19,8 +21,8 @@ public class ShortestRouteAlgorithm {
         for (int i = 0; i < allLocations.length; i++) {
             for (int j = 0; j < allLocations.length; j++) {
                 if (j == i || allDistances[i][j] != 0) continue;
-                double distance = Math.sqrt(Math.pow(allLocations[i][0] - allLocations[j][0], 2)
-                        + Math.pow(allLocations[i][1] - allLocations[j][1], 2));
+                double distance = Math.sqrt(Math.pow((allLocations[i][0] - allLocations[j][0]) * 100, 2)
+                        + Math.pow((allLocations[i][1] - allLocations[j][1]) * 100, 2));
                 allDistances[i][j] = allDistances[j][i] = distance;
             }
         }

@@ -157,24 +157,23 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
 //             waiting for change  !!!!!
             double[] MY_LOCATION = new double[2];
-            MY_LOCATION[0]=31.272138;
-            MY_LOCATION[1]=120.740444;
+            MY_LOCATION[0]=120.740444;
+            MY_LOCATION[1]=31.272138;
 
             ArrayList<TravelDatabaseHelper.Site> sites_for_sort = new ArrayList<TravelDatabaseHelper.Site>();
 //            Log.e("int_list_content", "content: "+int_list );
             for (int i = 0; i < int_list.size(); i++) {
                 sites_for_sort.add(data.get(int_list.get(i)));
-
             }
             Log.e("sites_for_sort_content", "content: "+sites_for_sort );
-            List<Integer> site_sorted = new ArrayList <Integer> ();
+            List<Integer> site_sorted;
 //            Log.e("sites_for_sort", "content: "+sites_for_sort );
             site_sorted=ShortestRouteAlgorithm.getShortestRoute(MY_LOCATION,sites_for_sort);
             Log.e("site_sorted_content", "content: "+site_sorted );
             ArrayList<LatLng> latLngList = new ArrayList<LatLng>();
 //            Log.e("int_list", "content: "+int_list );
             for (int i = 0; i < site_sorted.size(); i++) {
-                latLngList.add(new LatLng(data.get(site_sorted.get(i)).getyCoor(), data.get(site_sorted.get(i)).getxCoor()));
+                latLngList.add(new LatLng(data.get(site_sorted.get(i)-1).getyCoor(), data.get(site_sorted.get(i)-1).getxCoor()));
             }
 
             String final_route="";

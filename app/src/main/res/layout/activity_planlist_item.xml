@@ -54,7 +54,7 @@
                     android:gravity="center"
                     android:text="Plan Title"
                     android:textColor="#353333"
-                    android:textSize="14sp" />
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/plan_text_desc"
@@ -64,7 +64,7 @@
                     android:gravity="center"
                     android:text="Plan route"
                     android:textColor="#000000"
-                    android:textSize="24sp" />
+                    android:textSize="16sp" />
 
                 <Button
                     android:id="@+id/plan_go_to_detail"

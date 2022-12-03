@@ -28,10 +28,9 @@
 
         <ImageView
             android:id="@+id/detail_image"
-            android:layout_width="0dp"
+            android:layout_width="105dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:src="@drawable/description_sight_1" />

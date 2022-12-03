@@ -1,6 +1,7 @@
 package com.example.travelplan.ui.planlist;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -55,6 +56,7 @@ public class PlanlistAdapter extends BaseAdapter {
         return i;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
 
@@ -67,7 +69,7 @@ public class PlanlistAdapter extends BaseAdapter {
 
             holder.checkboxOperateData = convertView.findViewById(R.id.plan_checkbox_operate_data);
             holder.textTitle = convertView.findViewById(R.id.plan_text_title);
-            holder.textDesc = convertView.findViewById(R.id.plan_text_desc);
+            holder.textDesc = convertView.findViewById(R.id.sitenumber);
             holder.textDetail = convertView.findViewById(R.id.plan_go_to_detail);;
 
             convertView.setTag(holder);
@@ -80,17 +82,7 @@ public class PlanlistAdapter extends BaseAdapter {
         final TravelDatabaseHelper.Plan dataBean = mDatas.get(position);
         if (dataBean != null) {
             holder.textTitle.setText(dataBean.getTitle());
-            List<String> pos = dataBean.getRouteName();
-            String route2 = pos.get(0).toString() + "-->";
-            for (int i = 1; i<pos.size();i++){
-                if (i == pos.size() - 1){
-                    route2 = route2 + pos.get(i).toString();
-                }
-                else{
-                    route2 = route2 + pos.get(i).toString() + "-->";
-                }
-            }
-            holder.textDesc.setText(route2);
+            holder.textDesc.setText(dataBean.getRoute().size() + " dest. in total");
             View finalConvertView = convertView;
             holder.textDetail.setOnClickListener(v -> {
 

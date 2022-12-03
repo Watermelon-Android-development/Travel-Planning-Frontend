@@ -122,11 +122,13 @@ public class description_page extends AppCompatActivity {
             Button favorite_btn=findViewById(R.id.lovebutton);
             if(favouriteflag_1){
                 favorite_btn.setActivated(false); //按钮变灰色
+                favorite_btn.setText("FAVORITE");
                 //Log.e("取消收藏","取消前的flag = "+favouriteflag_1);
                 travelDatabaseHelper.deleteFavoriteItem(position+1);
             }
             else{
                 favorite_btn.setActivated(true); //按钮变紫色
+                favorite_btn.setText("FAVORITED !");
                 // Log.e("增加收藏","增加前的flag = "+favouriteflag_1);
                 travelDatabaseHelper.addFavoriteItem(position+1);
             }
@@ -156,10 +158,7 @@ public class description_page extends AppCompatActivity {
 
 
 
-        /**
-         * 只实现了点击爱心图标切换的功能
-         * 现有问题：点击切换后，退出子页面重进会重新加载初始图标，不会保留之前切换后的内容
-         * */
+
        Button bt_click=findViewById(R.id.lovebutton);
         bt_click.setOnClickListener(new View.OnClickListener() {
 

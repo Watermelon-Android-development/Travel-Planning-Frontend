@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:orientation="horizontal">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:background="@drawable/suzhou"
         android:gravity="center_vertical"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginVertical="5dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -26,6 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="6dp"
+                android:buttonTint="#FFFFFF"
                 android:visibility="gone" />
 
 
@@ -33,8 +38,8 @@
 
 
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="234dp"
             android:layout_gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingTop="10dp"
@@ -42,36 +47,49 @@
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="192dp"
-                android:background="@drawable/atml_back"
+                android:layout_height="224dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/plan_text_title"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="176dp"
                     android:layout_gravity="center"
-                    android:gravity="center"
+                    android:layout_marginLeft="13dp"
+                    android:gravity="left|bottom"
                     android:text="Plan Title"
-                    android:textColor="#353333"
-                    android:textSize="24sp" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="34sp" />
 
-                <TextView
-                    android:id="@+id/plan_text_desc"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="94dp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="Plan route"
-                    android:textColor="#000000"
-                    android:textSize="16sp" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/plan_go_to_detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:text="Details" />
+                    <TextView
+                        android:id="@+id/sitenumber"
+                        android:layout_width="50dp"
+                        android:layout_height="33dp"
+                        android:layout_gravity="left|bottom"
+                        android:layout_marginLeft="20dp"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:text="n dest. in total"
+                        android:textColor="#FFFFFF"
+                        android:textSize="20sp"
+                        tools:ignore="RtlHardcoded" />
+
+                    <Button
+                        android:id="@+id/plan_go_to_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:gravity="center"
+                        android:text="Details"
+                        android:layout_marginRight="10dp"
+                        android:textColorLink="#FFFFFF"
+                        tools:ignore="RtlHardcoded" />
+                </LinearLayout>
 
             </LinearLayout>
 

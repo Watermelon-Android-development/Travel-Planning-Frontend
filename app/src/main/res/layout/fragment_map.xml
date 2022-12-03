@@ -8,7 +8,6 @@
 
 
 
-
     <com.amap.api.maps2d.MapView
         android:id="@+id/map"
         android:layout_width="match_parent"
@@ -18,6 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/display_bar"
         />
+
 
     <LinearLayout
         android:id="@+id/display_bar"
@@ -47,6 +47,7 @@
 
     <!--还没有写监听事件-->
    <RadioGroup
+       android:id="@+id/radio_group"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:orientation="horizontal"
@@ -54,19 +55,20 @@
        app:layout_constraintRight_toRightOf="parent"
       >
        <RadioButton
-           android:id="@+id/rb_1"
+           android:id="@+id/rb_showall"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:text="show all sides"
            android:checked="true"/>
 
        <RadioButton
-           android:id="@+id/rb_2"
+           android:id="@+id/rb_shownotall"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:text="only show choosen sides"
            />
    </RadioGroup>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -79,7 +79,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         @Override
         protected void onPreExecute() {
 
-            if (isFristRun()){
+            if (!isFristRun()){
                 Bitmap  bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.click_on_image);
                 showDialog(getContext(),bitmap);
             };

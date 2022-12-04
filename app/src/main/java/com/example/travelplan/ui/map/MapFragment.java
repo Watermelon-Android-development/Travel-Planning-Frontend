@@ -67,12 +67,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     View root;
     private SharedPreferences sp;
     private List<Integer> icon_list= List.of(R.drawable.num_1,R.drawable.num_2,R.drawable.num_3,R.drawable.num_4,R.drawable.num_5);
-    private int temp_id;
-//     icon_list.set(0,R.drawable.num_1);
-//        icon_list.set(1,R.drawable.num_2);
-//        icon_list.set(2,R.drawable.num_3);
-//        icon_list.set(3,R.drawable.num_4);
-//        icon_list.set(4,R.drawable.num_5);
 
 
 
@@ -102,8 +96,8 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
             data = travelDatabaseHelper.getAllFavoriteSites();
             aMap.clear();  //清空地图上的所有覆盖物
-            Log.e("sp_before_sort", "sp: "+sp.getString("sites", "") );
-            String location_string =sp.getString("sites","");
+            Log.e("sp_before_sort", "sp: "+sp.getString("route", "") );
+            String location_string =sp.getString("route","");
             List<String> location_list = new ArrayList<String>(); //single string to string list
             location_list.addAll(Arrays.asList(location_string.split(",")));
 
@@ -113,12 +107,43 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
             }
             List<Integer> int_list =new ArrayList<Integer>(); //string list to int list
             for (int i = 0; i < location_list.size(); i++) {
-                int index =Integer.parseInt(location_list.get(i));
-                int_list.add(index);
+                int id =Integer.parseInt(location_list.get(i));
+                int_list.add(id);
             }
-            Log.e("int_list", "test_here: "+int_list);
+            Log.e(" int_list", ": "+int_list);
             //拿到route的景点
 
+            List<Integer> int_list_2 =new ArrayList<Integer>(); //string list to int list
+            for (int i = 0; i < data.size(); i++) {
+                int_list_2.add((data.get(i).getId()));
+            }
+            Log.e(" int_list_2", ": "+int_list_2);
+            int_list.retainAll(int_list_2);
+            Log.e("updated_int_list", ": "+int_list);
+//            waiting for change  !!!!!
+            double[] MY_LOCATION = new double[2];
+            MY_LOCATION[0]=120.740444;
+            MY_LOCATION[1]=31.272138;
+
+            ArrayList<TravelDatabaseHelper.Site> sites_for_sort = new ArrayList<TravelDatabaseHelper.Site>();
+//            Log.e("int_list_content", "content: "+int_list );
+            for (int i = 0; i < int_list.size(); i++) {
+                int num=int_list.get(i);
+                int get_index=int_list_2.indexOf(num);
+                Log.e(" get_inedx", ": "+get_index );
+                sites_for_sort.add(data.get(get_index));
+                Log.e(" sites_for_sort", "id: "+data.get(get_index).getId() );
+            }
+
+            Log.e("sites_for_sort_content", "content: "+sites_for_sort );
+            List<Integer> site_sorted;
+//            Log.e("sites_for_sort", "content: "+sites_for_sort );
+            site_sorted=ShortestRouteAlgorithm.getShortestRoute(MY_LOCATION,sites_for_sort);
+
+//            for (int i = 0; i < site_sorted.size();i++){
+//                site_sorted.set(i,site_sorted.get(i)-1);
+//            }
+            Log.e("site_sorted_content", "content: "+site_sorted );
             for (int i = 0; i < data.size();i++){
                 Double lat =data.get(i).getyCoor(); //latitude
                 Double lng =data.get(i).getxCoor(); //longitude
@@ -132,9 +157,9 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
                 String imageID = String.valueOf(data.get(i).getImgID());
 
 //
-                if (int_list.contains(i)){
+                if (site_sorted.contains(data.get(i).getId())){
 
-                    options.icon(BitmapDescriptorFactory.fromResource(icon_list.get(int_list.indexOf(i))));
+                    options.icon(BitmapDescriptorFactory.fromResource(icon_list.get(site_sorted.indexOf(data.get(i).getId()))));
                     //怎么拿到指定图片
 //                    options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));
                     options.draggable(false);
@@ -144,41 +169,21 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
 
 
-                options.title(imageID+","+i);//标题内容设置  存储图片ID
+                options.title(imageID+","+data.get(i).getId());//标题内容设置  存储图片ID
                 options.snippet(data.get(i).getName());
-//                    ArrayList<BitmapDescriptor> arr1 =  new ArrayList<>();
-//                    arr1.add(0,BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));
-//
-////                arr1.add(1,BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));
-//                    options.icons(arr1);
-//               options.title(lst_title.get(i)).snippet(lst2.get(i));//标题内容设置
                 aMap.addMarker(options);
             }
 
-//             waiting for change  !!!!!
-            double[] MY_LOCATION = new double[2];
-            MY_LOCATION[0]=120.740444;
-            MY_LOCATION[1]=31.272138;
-
-            ArrayList<TravelDatabaseHelper.Site> sites_for_sort = new ArrayList<TravelDatabaseHelper.Site>();
-//            Log.e("int_list_content", "content: "+int_list );
-            for (int i = 0; i < int_list.size(); i++) {
-                sites_for_sort.add(data.get(int_list.get(i)));
-            }
-            Log.e("sites_for_sort_content", "content: "+sites_for_sort );
-            List<Integer> site_sorted;
-//            Log.e("sites_for_sort", "content: "+sites_for_sort );
-            site_sorted=ShortestRouteAlgorithm.getShortestRoute(MY_LOCATION,sites_for_sort);
-            Log.e("site_sorted_content", "content: "+site_sorted );
+//
             ArrayList<LatLng> latLngList = new ArrayList<LatLng>();
 //            Log.e("int_list", "content: "+int_list );
             for (int i = 0; i < site_sorted.size(); i++) {
-                latLngList.add(new LatLng(data.get(site_sorted.get(i)-1).getyCoor(), data.get(site_sorted.get(i)-1).getxCoor()));
+                latLngList.add(new LatLng(data.get(int_list_2.indexOf(site_sorted.get(i))).getyCoor(), data.get(int_list_2.indexOf(site_sorted.get(i))).getxCoor()));
             }
 
             String final_route="";
             for (int i = 0; i < site_sorted.size(); i++){
-                final_route = site_sorted.get(i)+",";
+                final_route += site_sorted.get(i)+",";
             }
 
             SharedPreferences.Editor editor = sp.edit();
@@ -281,12 +286,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
                     options.draggable(false);
                     options.title(imageID + "," + i);//标题内容设置  存储图片ID
                     options.snippet(data.get(i).getName());
-//                    ArrayList<BitmapDescriptor> arr1 =  new ArrayList<>();
-//                    arr1.add(0,BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));
-//
-////                arr1.add(1,BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));
-//                    options.icons(arr1);
-//               options.title(lst_title.get(i)).snippet(lst2.get(i));//标题内容设置
                     aMap.addMarker(options);
 
                 }
@@ -501,7 +500,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     public void onInfoWindowClick(Marker marker) {
         if(marker.isDraggable())
         {
-            Log.e("sp_before", "sp: "+sp.getString("sites", "") );
+            Log.e("sp_before", "sp: "+sp.getString("route", "") );
             Log.e("Test", "蓝色变红色; ");
             String id=marker.getTitle().split(",")[1];  //get infoWin ID
             marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));
@@ -510,7 +509,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
             showMyToast(toast, 2*1000);
 
             SharedPreferences.Editor editor = sp.edit();
-            String location_string =sp.getString("sites","");
+            String location_string =sp.getString("route","");
             List<String> location_list = new ArrayList<String>();
             location_list.addAll(Arrays.asList(location_string.split(",")));
             if (location_list.contains("")){
@@ -525,18 +524,18 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
                 }
             }
             if(temp){
-                editor.putString("sites",sp.getString("sites","")+id+",");
+                editor.putString("route",sp.getString("route","")+id+",");
                 editor.apply();
 
             }
 
 
-          Log.e("final_sp", "sp: "+sp.getString("sites", "") );
+          Log.e("final_sp", "sp: "+sp.getString("route", "") );
 
 
         }
         else{
-            Log.e("sp_before", "sp: "+sp.getString("sites", "") );
+            Log.e("sp_before", "sp: "+sp.getString("route", "") );
             Log.e("Test", "红色变蓝色");
             String id=marker.getTitle().split(",")[1];
             marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));
@@ -545,7 +544,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
             showMyToast(toast, 2*1000);
 
             SharedPreferences.Editor editor = sp.edit();
-            String location_string =sp.getString("sites","");
+            String location_string =sp.getString("route","");
             List<String> location_list = new ArrayList<String>(); //content in sp
             location_list.addAll(Arrays.asList(location_string.split(",")));
             if (location_list.contains("")){
@@ -566,9 +565,9 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
             for (int i = 0; i < len_af; i++) {
                 final_list += location_list.get(i)+",";
             }
-            editor.putString("sites",final_list);
+            editor.putString("route",final_list);
             editor.apply();
-            Log.e("final_sp", "sp: "+sp.getString("sites", "") );
+            Log.e("final_sp", "sp: "+sp.getString("route", "") );
 
 
 

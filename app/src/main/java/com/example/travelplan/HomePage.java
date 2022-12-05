@@ -26,7 +26,6 @@ import com.example.travelplan.databinding.ActivityHomePageBinding;
 public class HomePage extends AppCompatActivity {
 
     private ActivityHomePageBinding binding;
-    MapFragment map;
     private double longitude = 0, latitude = 0;
     private AMapLocationClient mLocationClient = null;
     private boolean ifAskedPermission = false;
@@ -54,7 +53,6 @@ public class HomePage extends AppCompatActivity {
         super.onStart();
 
         if (!ifAskedPermission) {
-            map = new MapFragment();
             getLocation();
         }
     }
@@ -82,7 +80,7 @@ public class HomePage extends AppCompatActivity {
                 alertDialog.show();
                 longitude = MapFragment.CB_LONGITUDE;
                 latitude = MapFragment.CB_LATITUDE;
-                map.setLocation(longitude, latitude);
+                MapFragment.setLocation(longitude, latitude);
             }
         }
     }
@@ -103,11 +101,11 @@ public class HomePage extends AppCompatActivity {
             public void onLocationChanged(AMapLocation amapLocation) {
                 if (amapLocation != null) {
                     if (amapLocation.getErrorCode() == 0) {
+                        ifAskedPermission = true;
                         latitude = amapLocation.getLatitude();//获取纬度
                         longitude = amapLocation.getLongitude();//获取经度
                         if (mLocationClient != null) mLocationClient.stopLocation();
                     } else {
-                        //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
                         Log.e("AmapError", "location Error, ErrCode:"
                                 + amapLocation.getErrorCode() + ", errInfo:"
                                 + amapLocation.getErrorInfo());
@@ -120,13 +118,11 @@ public class HomePage extends AppCompatActivity {
                         }
                     }
                 }
-                map.setLocation(longitude, latitude);
+                MapFragment.setLocation(longitude, latitude);
             }
         };
         //设置定位回调监听
         mLocationClient.setLocationListener(mLocationListener);
-        //初始化AMapLocationClientOption对象
-        //声明AMapLocationClientOption对象
         AMapLocationClientOption mLocationOption = new AMapLocationClientOption();
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         mLocationOption.setOnceLocation(true);

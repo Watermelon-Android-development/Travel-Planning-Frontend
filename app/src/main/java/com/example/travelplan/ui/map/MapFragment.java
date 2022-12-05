@@ -84,7 +84,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
     private static double longitude, latitude;
 
-    public void setLocation(double longitude, double latitude) {
+    public static void setLocation(double longitude, double latitude) {
         MapFragment.longitude = longitude;
         MapFragment.latitude = latitude;
     }

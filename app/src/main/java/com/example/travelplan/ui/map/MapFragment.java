@@ -2,13 +2,16 @@ package com.example.travelplan.ui.map;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,9 +30,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.MapView;
@@ -50,11 +58,15 @@ import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
 
 public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, AMap.OnMapClickListener{
+    public static final double CB_LONGITUDE = 120.738274;
+    public static final double CB_LATITUDE = 31.272761;
+
     private FragmentMapBinding binding;
     private TravelDatabaseHelper travelDatabaseHelper;
     private MapView mapView = null;
@@ -67,7 +79,15 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     View root;
     private SharedPreferences sp;
     private List<Integer> icon_list= List.of(R.drawable.num_1,R.drawable.num_2,R.drawable.num_3,R.drawable.num_4,R.drawable.num_5);
+    //声明AMapLocationClient类对象
 
+
+    private static double longitude, latitude;
+
+    public void setLocation(double longitude, double latitude) {
+        MapFragment.longitude = longitude;
+        MapFragment.latitude = latitude;
+    }
 
 
 
@@ -120,10 +140,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
             Log.e(" int_list_2", ": "+int_list_2);
             int_list.retainAll(int_list_2);
             Log.e("updated_int_list", ": "+int_list);
-//            waiting for change  !!!!!
-            double[] MY_LOCATION = new double[2];
-            MY_LOCATION[0]=120.740444;
-            MY_LOCATION[1]=31.272138;
 
             ArrayList<TravelDatabaseHelper.Site> sites_for_sort = new ArrayList<TravelDatabaseHelper.Site>();
 //            Log.e("int_list_content", "content: "+int_list );
@@ -138,8 +154,10 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
             Log.e("sites_for_sort_content", "content: "+sites_for_sort );
             List<Integer> site_sorted;
 //            Log.e("sites_for_sort", "content: "+sites_for_sort );
-            site_sorted=ShortestRouteAlgorithm.getShortestRoute(MY_LOCATION,sites_for_sort);
-
+            double[] myLocation = new double[]{longitude, latitude};
+            site_sorted=ShortestRouteAlgorithm.getShortestRoute(myLocation,sites_for_sort);
+            System.out.println(longitude);
+            System.out.println(latitude);
 //            for (int i = 0; i < site_sorted.size();i++){
 //                site_sorted.set(i,site_sorted.get(i)-1);
 //            }
@@ -357,7 +375,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
         travelDatabaseHelper= new TravelDatabaseHelper(this.getActivity());
 
-
         MapViewModel mapViewModel =
                 new ViewModelProvider(this).get(MapViewModel.class);
 
@@ -403,7 +420,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         });
         return root;
     }
-
 
 
 

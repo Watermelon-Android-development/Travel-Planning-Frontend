@@ -3,6 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/TravelPlan/Travel-Planning-Frontend/app/src/main/res/layout/activity_description_page.xml" value="0.1671875" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/TravelPlan/Travel-Planning-Frontend/app/src/main/res/layout/activity_helper.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/TravelPlan/Travel-Planning-Frontend/app/src/main/res/layout/activity_home_page.xml" value="0.19333333333333333" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/TravelPlan/Travel-Planning-Frontend/app/src/main/res/layout/activity_login.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/TravelPlan/Travel-Planning-Frontend/app/src/main/res/layout/activity_splash.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/TravelPlan/Travel-Planning-Frontend/app/src/main/res/layout/avatarpop.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/TravelPlan/Travel-Planning-Frontend/app/src/main/res/layout/dialog.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/TravelPlan/Travel-Planning-Frontend/app/src/main/res/layout/fragment_home.xml" value="0.19074074074074074" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/TravelPlan/Travel-Planning-Frontend/app/src/main/res/layout/fragment_home_item.xml" value="0.19074074074074074" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/TravelPlan/Travel-Planning-Frontend/app/src/main/res/layout/fragment_map.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/TravelPlan/Travel-Planning-Frontend/app/src/main/res/layout/inforwindow_layout.xml" value="0.23802083333333332" />
         <entry key="..\:/xjtlu/Y4S1/CAN301/Travel-Planning-Frontend/app/src/main/res/drawable/add_icon.xml" value="0.1355" />
         <entry key="..\:/xjtlu/Y4S1/CAN301/Travel-Planning-Frontend/app/src/main/res/drawable/circle_avatar.xml" value="0.1" />
         <entry key="..\:/xjtlu/Y4S1/CAN301/Travel-Planning-Frontend/app/src/main/res/drawable/close_icon.xml" value="0.1645" />
@@ -20,19 +31,18 @@
         <entry key="..\:/xjtlu/Y4S1/CAN301/Travel-Planning-Frontend/app/src/main/res/layout/activity_planlist.xml" value="0.24947916666666667" />
         <entry key="..\:/xjtlu/Y4S1/CAN301/Travel-Planning-Frontend/app/src/main/res/layout/activity_planlist_item.xml" value="0.24947916666666667" />
         <entry key="..\:/xjtlu/Y4S1/CAN301/Travel-Planning-Frontend/app/src/main/res/layout/activity_splash.xml" value="0.11296296296296296" />
-        <entry key="..\:/xjtlu/Y4S1/CAN301/Travel-Planning-Frontend/app/src/main/res/layout/avatarpop.xml" value="0.536" />
+        <entry key="..\:/xjtlu/Y4S1/CAN301/Travel-Planning-Frontend/app/src/main/res/layout/avatarpop.xml" value="0.1" />
         <entry key="..\:/xjtlu/Y4S1/CAN301/Travel-Planning-Frontend/app/src/main/res/layout/dialog_avatar.xml" value="0.16" />
         <entry key="..\:/xjtlu/Y4S1/CAN301/Travel-Planning-Frontend/app/src/main/res/layout/fragment_dashboard.xml" value="0.24947916666666667" />
         <entry key="..\:/xjtlu/Y4S1/CAN301/Travel-Planning-Frontend/app/src/main/res/layout/fragment_home.xml" value="0.2" />
         <entry key="..\:/xjtlu/Y4S1/CAN301/Travel-Planning-Frontend/app/src/main/res/layout/fragment_map.xml" value="0.24947916666666667" />
-        <entry key="..\:/xjtlu/Y4S1/CAN301/Travel-Planning-Frontend/app/src/main/res/layout/fragment_notifications.xml" value="0.2" />
+        <entry key="..\:/xjtlu/Y4S1/CAN301/Travel-Planning-Frontend/app/src/main/res/layout/fragment_notifications.xml" value="0.25961538461538464" />
         <entry key="..\:/xjtlu/Y4S1/CAN301/Travel-Planning-Frontend/app/src/main/res/layout/helper1.xml" value="0.1" />
         <entry key="..\:/xjtlu/Y4S1/CAN301/Travel-Planning-Frontend/app/src/main/res/layout/helper2.xml" value="0.4" />
         <entry key="..\:/xjtlu/Y4S1/CAN301/Travel-Planning-Frontend/app/src/main/res/layout/helper_pop.xml" value="0.22056159420289856" />
         <entry key="..\:/xjtlu/Y4S1/CAN301/Travel-Planning-Frontend/app/src/main/res/layout/helper_pop2.xml" value="0.22056159420289856" />
         <entry key="..\:/xjtlu/Y4S1/CAN301/Travel-Planning-Frontend/app/src/main/res/layout/homepage_item.xml" value="0.10833333333333334" />
         <entry key="..\:/xjtlu/Y4S1/CAN301/Travel-Planning-Frontend/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2" />
-        <entry key="..\:/xjtlu/Y4S1/CAN301/Travel-Planning-Frontend/app/src/main/res/menu/right_top_favorite.xml" value="0.24947916666666667" />
       </map>
     </option>
   </component>

@@ -13,9 +13,7 @@
     <ListView
         android:id="@+id/listView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        >
-    </ListView>
+        android:layout_height="fill_parent"></ListView>
 
     <LinearLayout
         android:layout_width="fill_parent"

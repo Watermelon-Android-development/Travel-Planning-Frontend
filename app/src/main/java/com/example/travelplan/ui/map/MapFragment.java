@@ -84,6 +84,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     private MapView mapView = null;
     ProgressBar progressBar; // 进度条
     private List<TravelDatabaseHelper.Site> data;
+    private List<TravelDatabaseHelper.Plan> plan;
     View infoWindow = null;
     private UiSettings uiSettings;
     private AMap aMap;
@@ -95,7 +96,8 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     private RecyclerView recyclerView;
     private display_window_Adapter display_Adapter;
     private Boolean radio_btn_check=true;
-    private String rout_and_name;
+    private List<Integer> route;
+    private String route_name;
 
     private static double longitude, latitude;
 
@@ -471,6 +473,44 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         }
     }
 
+    class save_route extends AsyncTask<Void, Void, Boolean> {
+
+        // 方法1：onPreExecute（）
+        // 作用：执行 线程任务前的操作
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        // 方法2：doInBackground（）
+        // 作用：接收输入参数、执行任务中的耗时操作、返回 线程任务执行的结果
+        // 此处通过计算从而模拟“加载进度”的情况
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            travelDatabaseHelper.insertPlan(route,route_name);
+            Log.e("insert plan",route_name);
+            return true;
+        }
+
+
+
+        //         方法4：onPostExecute（）
+//         作用：接收线程任务执行结果、将执行结果显示到UI组件
+        @Override
+        protected void onPostExecute(Boolean success) {
+
+
+        }
+
+        // 方法5：onCancelled()
+        // 作用：将异步任务设置为：取消状态
+        @Override
+        protected void onCancelled() {
+
+
+        }
+    }
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -581,13 +621,26 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String input_text=input.getText().toString();
                         if(input_text!=null&&!input_text.isEmpty()){
-                            rout_and_name=sp.getString("route","")+input_text;
-                            Log.e("input text",rout_and_name);
+                            String route_str=sp.getString("route","");
 
-                            Intent inte=new Intent(getContext(), PlanDetailActivity.class);
-                            inte.putExtra("Route and name",rout_and_name);
+                            List<String> route_str_list = new ArrayList<String>();
+                            route_str_list.addAll(Arrays.asList(route_str.split(",")));
+                            if (route_str_list.contains("")) {
+                                route_str_list.remove("");
+                            }
+                            route=new ArrayList<Integer>();
+                            for (int j = 0; j < route_str_list.size(); j++) {
+                                int index = Integer.parseInt(route_str_list.get(j));
+                                route.add(index);
 
+                            }
+
+                           route_name=input_text;
+
+                            Log.e("route", String.valueOf(route));
+                            Log.e("route name",route_name);
                             SharedPreferences.Editor editor = sp.edit();
+                            new save_route().execute();
                             editor.clear();
                             editor.apply();
                             Log.e("sp has been clear","");

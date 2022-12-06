@@ -442,13 +442,4 @@ public class TravelDatabaseHelper extends SQLiteOpenHelper {
         return Arrays.asList(routeArr);
     }
 
-    private void deleteTables() {
-        lock.writeLock().lock();
-        SQLiteDatabase db;
-        db = getWritableDatabase();
-        db.execSQL("DROP TABLE IF EXISTS PLANS");
-        db.execSQL("DROP TABLE IF EXISTS SITES");
-        db.close();
-        lock.writeLock().unlock();
-    }
 }

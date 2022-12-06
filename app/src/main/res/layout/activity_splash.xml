@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:gravity="center_vertical"
     android:orientation="vertical"
-    android:background="@drawable/splash">
+    android:background="@drawable/load_pic">
 
     <ProgressBar
         android:id="@+id/progressBarLarge"

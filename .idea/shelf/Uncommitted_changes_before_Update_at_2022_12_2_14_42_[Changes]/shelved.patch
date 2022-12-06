@@ -1,0 +1,112 @@
+Index: app/src/main/res/layout/activity_favorite_list_item.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:background=\"#ffffff\"\r\n    android:orientation=\"horizontal\">\r\n\r\n    <LinearLayout\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_gravity=\"center_vertical\"\r\n        android:gravity=\"center_vertical\"\r\n        android:orientation=\"horizontal\">\r\n\r\n        <CheckBox\r\n            android:id=\"@+id/checkbox_operate_data\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_gravity=\"center_vertical\"\r\n            android:layout_margin=\"6dp\"\r\n            android:visibility=\"gone\" />\r\n\r\n        <ImageView\r\n            android:id=\"@+id/favorite_iamge\"\r\n            android:layout_width=\"110dp\"\r\n            android:layout_height=\"110dp\"\r\n            android:layout_margin=\"10dp\"\r\n            android:layout_weight=\"1\"\r\n            android:layout_gravity=\"center_vertical\"\r\n            android:adjustViewBounds=\"true\"\r\n            android:scaleType=\"centerCrop\"\r\n            android:src=\"@mipmap/ic_launcher\" />\r\n\r\n\r\n\r\n    </LinearLayout>\r\n\r\n\r\n    <LinearLayout\r\n        android:layout_width=\"fill_parent\"\r\n        android:layout_height=\"113dp\"\r\n        android:layout_gravity=\"center_vertical\"\r\n        android:orientation=\"horizontal\"\r\n        android:paddingTop=\"10dp\"\r\n        android:paddingBottom=\"10dp\">\r\n\r\n\r\n        <LinearLayout\r\n            android:layout_width=\"fill_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:orientation=\"vertical\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/text_title\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:gravity=\"center_vertical\"\r\n                android:singleLine=\"true\"\r\n                android:text=\"title\"\r\n                android:textColor=\"#555555\"\r\n                android:textSize=\"16sp\" />\r\n\r\n            <LinearLayout\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_marginTop=\"10dp\"\r\n                android:gravity=\"center_vertical\"\r\n                android:orientation=\"horizontal\">\r\n\r\n                <TextView\r\n                    android:id=\"@+id/rank\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"match_parent\"\r\n                    android:layout_gravity=\"center_vertical\"\r\n                    android:gravity=\"bottom\"\r\n                    android:text=\"rank\"\r\n                    android:textColor=\"#aaaaaa\"\r\n                    android:textSize=\"14sp\" />\r\n\r\n\r\n            </LinearLayout>\r\n\r\n            <LinearLayout\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_marginTop=\"10dp\"\r\n                android:gravity=\"center_vertical\"\r\n                android:orientation=\"horizontal\">\r\n\r\n                <TextView\r\n                    android:id=\"@+id/kind\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"match_parent\"\r\n                    android:layout_gravity=\"center_vertical\"\r\n                    android:gravity=\"bottom\"\r\n                    android:text=\"kind\"\r\n                    android:textColor=\"#aaaaaa\"\r\n                    android:textSize=\"14sp\" />\r\n\r\n\r\n            </LinearLayout>\r\n        </LinearLayout>\r\n\r\n    </LinearLayout>\r\n\r\n</LinearLayout>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_favorite_list_item.xml b/app/src/main/res/layout/activity_favorite_list_item.xml
+--- a/app/src/main/res/layout/activity_favorite_list_item.xml	(revision 859fa5cd2c8bb7b09dd432da186e8a6a6334feb9)
++++ b/app/src/main/res/layout/activity_favorite_list_item.xml	(date 1669795156578)
+@@ -55,10 +55,11 @@
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:gravity="center_vertical"
+-                android:singleLine="true"
+                 android:text="title"
++                android:maxLines="3"
+                 android:textColor="#555555"
+-                android:textSize="16sp" />
++                android:textSize="16sp"
++                android:textStyle="bold"/>
+ 
+             <LinearLayout
+                 android:layout_width="match_parent"
+Index: app/src/main/java/com/example/travelplan/description_page.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.travelplan;\r\n\r\nimport android.content.Intent;\r\nimport android.os.AsyncTask;\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.view.MenuItem;\r\nimport android.view.View;\r\nimport android.widget.Button;\r\nimport android.widget.ImageView;\r\nimport android.widget.RatingBar;\r\nimport android.widget.TextView;\r\n\r\nimport androidx.appcompat.app.ActionBar;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport java.util.List;\r\n\r\npublic class description_page extends AppCompatActivity {\r\n    private int position;\r\n\r\n    private final TravelDatabaseHelper travelDatabaseHelper=new TravelDatabaseHelper(this);\r\n\r\n    private List<TravelDatabaseHelper.Site> data;\r\n\r\n    private boolean btn_flag;\r\n\r\n\r\n    //详情页面渲染\r\n    private class page_render extends AsyncTask<Void,Void,Boolean> {\r\n        @Override\r\n        protected void onPreExecute(){\r\n\r\n        }\r\n\r\n        @Override\r\n        protected Boolean doInBackground(Void... voids){\r\n            data=travelDatabaseHelper.getAllSites();\r\n\r\n            return true;\r\n        }\r\n\r\n        @Override\r\n        protected void onPostExecute(Boolean success){\r\n            //String name\r\n            String rl_name=data.get(position).getName();\r\n            Log.e(\"description\",\"Name: \" + rl_name);\r\n            TextView name=findViewById(R.id.item_name);\r\n            name.setText(rl_name);\r\n\r\n            //int imgID\r\n            int image_index= data.get(position).getImgID();\r\n            ImageView image=findViewById(R.id.description_image);\r\n            image.setImageResource(image_index);\r\n\r\n\r\n\r\n            //int mark\r\n            int rl_mark=data.get(position).getMark();\r\n            RatingBar mark=findViewById(R.id.item_rating);\r\n            mark.setRating(rl_mark);\r\n\r\n            //String type\r\n            String rl_type=data.get(position).getType();\r\n            TextView type=findViewById(R.id.item_kind);\r\n            type.setText(rl_type);\r\n\r\n            //String place\r\n            String rl_place=data.get(position).getPlace();\r\n            TextView place=findViewById(R.id.item_location);\r\n            place.setText(rl_place);\r\n\r\n            //String phone\r\n            String rl_phone=data.get(position).getPhone();\r\n            TextView phone=findViewById(R.id.item_phone);\r\n            phone.setText(rl_phone);\r\n\r\n            //String openTime\r\n            String rl_openTime=data.get(position).getOpenTime();\r\n            TextView openTime=findViewById(R.id.item_time);\r\n            openTime.setText(rl_openTime);\r\n\r\n            //String description\r\n            String rl_description=data.get(position).getDescription();\r\n            TextView description=findViewById(R.id.description);\r\n            description.setText(rl_description);\r\n\r\n            //boolean isFavorite\r\n            Boolean favouriteflag=data.get(position).getIsFavorite();\r\n            Button favorite_btn=findViewById(R.id.lovebutton);\r\n            if(favouriteflag){\r\n                favorite_btn.setActivated(true);\r\n            }\r\n            else{\r\n                favorite_btn.setActivated(false);\r\n            }\r\n\r\n\r\n        }\r\n\r\n\r\n\r\n    }\r\n\r\n    //favorite按钮\r\n    private class btn_click extends AsyncTask<Void,Void,Boolean> {\r\n        @Override\r\n        protected void onPreExecute(){\r\n\r\n        }\r\n\r\n        @Override\r\n        protected Boolean doInBackground(Void... voids){\r\n            data=travelDatabaseHelper.getAllSites();\r\n            Boolean favouriteflag_1=data.get(position).getIsFavorite(); //默认是false，灰色\r\n\r\n            return favouriteflag_1;\r\n        }\r\n\r\n        @Override\r\n        protected void onPostExecute(Boolean favouriteflag_1){\r\n            Button favorite_btn=findViewById(R.id.lovebutton);\r\n            if(favouriteflag_1){\r\n                favorite_btn.setActivated(false); //按钮变灰色\r\n                //Log.e(\"取消收藏\",\"取消前的flag = \"+favouriteflag_1);\r\n                travelDatabaseHelper.deleteFavoriteItem(position+1);\r\n            }\r\n            else{\r\n                favorite_btn.setActivated(true); //按钮变紫色\r\n                // Log.e(\"增加收藏\",\"增加前的flag = \"+favouriteflag_1);\r\n                travelDatabaseHelper.addFavoriteItem(position+1);\r\n            }\r\n        }\r\n\r\n\r\n\r\n    }\r\n\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_description_page);\r\n\r\n        ActionBar actionBar=getSupportActionBar();\r\n        if(actionBar!=null){\r\n            actionBar.setHomeButtonEnabled(true);\r\n            actionBar.setDisplayHomeAsUpEnabled(true);\r\n        }\r\n\r\n        Intent i=getIntent();\r\n        position=i.getIntExtra(\"Position\",-1);\r\n        Log.e(\"description\",\"position:\" + position);\r\n\r\n        new page_render().execute();\r\n\r\n\r\n\r\n        /**\r\n         * 只实现了点击爱心图标切换的功能\r\n         * 现有问题：点击切换后，退出子页面重进会重新加载初始图标，不会保留之前切换后的内容\r\n         * */\r\n       Button bt_click=findViewById(R.id.lovebutton);\r\n        bt_click.setOnClickListener(new View.OnClickListener() {\r\n\r\n            @Override\r\n            public void onClick(View view) {\r\n                new btn_click().execute();\r\n            }\r\n        });\r\n\r\n\r\n\r\n\r\n    }\r\n\r\n\r\n    @Override\r\n    public boolean onOptionsItemSelected(MenuItem item){\r\n        switch (item.getItemId()){\r\n            case  android.R.id.home:\r\n                this.finish();\r\n                return true;\r\n        }\r\n        return super.onOptionsItemSelected(item);\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/travelplan/description_page.java b/app/src/main/java/com/example/travelplan/description_page.java
+--- a/app/src/main/java/com/example/travelplan/description_page.java	(revision 859fa5cd2c8bb7b09dd432da186e8a6a6334feb9)
++++ b/app/src/main/java/com/example/travelplan/description_page.java	(date 1669794895857)
+@@ -156,10 +156,7 @@
+ 
+ 
+ 
+-        /**
+-         * 只实现了点击爱心图标切换的功能
+-         * 现有问题：点击切换后，退出子页面重进会重新加载初始图标，不会保留之前切换后的内容
+-         * */
++
+        Button bt_click=findViewById(R.id.lovebutton);
+         bt_click.setOnClickListener(new View.OnClickListener() {
+ 
+Index: app/src/main/java/com/example/travelplan/Helper.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.travelplan;\r\n\r\nimport androidx.appcompat.app.AlertDialog;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport android.content.Context;\r\nimport android.content.DialogInterface;\r\nimport android.os.Bundle;\r\nimport android.support.v4.view.ViewPager;\r\nimport android.view.LayoutInflater;\r\nimport android.view.MotionEvent;\r\nimport android.view.View;\r\nimport android.widget.EditText;\r\nimport android.widget.PopupWindow;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport java.util.ArrayList;\r\n\r\npublic class Helper extends AppCompatActivity {\r\n    private TextView h1, h2;\r\n    private Context mContext;\r\n    private AlertDialog alert = null;\r\n    private AlertDialog.Builder builder = null;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_helper);\r\n\r\n        h1 = (TextView) findViewById(R.id.h1);\r\n        h2 = (TextView) findViewById(R.id.h2);\r\n        mContext = Helper.this;\r\n        h1 = (TextView) findViewById(R.id.h1);\r\n        h2 = (TextView) findViewById(R.id.h2);\r\n\r\n        h1.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                alert = null;\r\n                builder = new AlertDialog.Builder(mContext);\r\n                alert = builder\r\n                        .setTitle(\"What is this?\")\r\n                        .setMessage(\"This is a app used to find the resorts and recommend the best route for you!\")\r\n                        .setNegativeButton(\"OK\", new DialogInterface.OnClickListener() {\r\n                            @Override\r\n                            public void onClick(DialogInterface dialog, int which) {\r\n                                //Toast.makeText(mContext, \"OK\", Toast.LENGTH_SHORT).show();\r\n                            }\r\n                        }).create();\r\n                alert.show();\r\n            }\r\n        });\r\n\r\n\r\n        h2.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                alert = null;\r\n                builder = new AlertDialog.Builder(mContext);\r\n                alert = builder\r\n                        .setTitle(\"How to check map?\")\r\n                        .setMessage(\"You can tap the map button on the bottom navigation bar. Then you can choose the place you want to visit and see the route.\")\r\n                        .setNegativeButton(\"OK\", new DialogInterface.OnClickListener() {\r\n                            @Override\r\n                            public void onClick(DialogInterface dialog, int which) {\r\n                                //Toast.makeText(mContext, \"OK\", Toast.LENGTH_SHORT).show();\r\n                            }\r\n                        }).create();\r\n                alert.show();\r\n            }\r\n        });\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/travelplan/Helper.java b/app/src/main/java/com/example/travelplan/Helper.java
+--- a/app/src/main/java/com/example/travelplan/Helper.java	(revision 859fa5cd2c8bb7b09dd432da186e8a6a6334feb9)
++++ b/app/src/main/java/com/example/travelplan/Helper.java	(date 1669795949011)
+@@ -1,5 +1,6 @@
+ package com.example.travelplan;
+ 
++import androidx.appcompat.app.ActionBar;
+ import androidx.appcompat.app.AlertDialog;
+ import androidx.appcompat.app.AppCompatActivity;
+ 
+@@ -8,6 +9,7 @@
+ import android.os.Bundle;
+ import android.support.v4.view.ViewPager;
+ import android.view.LayoutInflater;
++import android.view.MenuItem;
+ import android.view.MotionEvent;
+ import android.view.View;
+ import android.widget.EditText;
+@@ -70,5 +72,21 @@
+                 alert.show();
+             }
+         });
++
++        ActionBar actionBar=getSupportActionBar();
++        if(actionBar!=null){
++            actionBar.setHomeButtonEnabled(true);
++            actionBar.setDisplayHomeAsUpEnabled(true);
++        }
++    }
++
++    @Override
++    public boolean onOptionsItemSelected(MenuItem item){
++        switch (item.getItemId()){
++            case  android.R.id.home:
++                this.finish();
++                return true;
++        }
++        return super.onOptionsItemSelected(item);
+     }
+ }
+Index: app/src/main/res/drawable/favarite_shift.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<selector xmlns:android=\"http://schemas.android.com/apk/res/android\">\r\n    <item android:state_activated=\"false\">\r\n        <shape android:shape=\"rectangle\">\r\n            <corners android:radius=\"10dp\"/>\r\n            <solid android:color=\"@color/gray\"/>\r\n            <stroke android:width=\"1dp\" android:color=\"@color/white\"/>\r\n\r\n        </shape>\r\n    </item>\r\n    <item android:state_activated=\"true\">\r\n        <shape android:shape=\"rectangle\">\r\n            <corners android:radius=\"10dp\"/>\r\n            <solid android:color=\"@color/purple_200\"/>\r\n            <stroke android:width=\"1dp\" android:color=\"@color/white\"/>\r\n        </shape>\r\n    </item>\r\n</selector>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/drawable/favarite_shift.xml b/app/src/main/res/drawable/favarite_shift.xml
+--- a/app/src/main/res/drawable/favarite_shift.xml	(revision 859fa5cd2c8bb7b09dd432da186e8a6a6334feb9)
++++ b/app/src/main/res/drawable/favarite_shift.xml	(date 1669794000760)
+@@ -11,7 +11,7 @@
+     <item android:state_activated="true">
+         <shape android:shape="rectangle">
+             <corners android:radius="10dp"/>
+-            <solid android:color="@color/purple_200"/>
++            <solid android:color="@color/teal_700"/>
+             <stroke android:width="1dp" android:color="@color/white"/>
+         </shape>
+     </item>

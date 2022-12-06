@@ -509,17 +509,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         new getAllLocs().execute();
 
 
-        if(sp.getString("route","").isEmpty()||sp.getString("route","").equals("")){
-            Toast toast= makeText(getContext(), "please add places you want to go", LENGTH_LONG);
-            showMyToast(toast, 2*1000);
-        }
-        else{
-            new display_window().execute();
-        }
-
-
-
-        Log.e("sey up","display window");
         //display窗口的Adapter设置
         recyclerView=root.findViewById(R.id.display_window);
         LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity().getApplicationContext());
@@ -535,6 +524,14 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
                 }
                 else{
+
+                    if(sp.getString("route","").isEmpty()||sp.getString("route","").equals("")){
+                        Toast toast= makeText(getContext(), "please add places you want to go", LENGTH_LONG);
+                        showMyToast(toast, 2*1000);
+                    }
+                    else{
+                        new display_window().execute();
+                    }
                     recyclerView.setVisibility(View.VISIBLE);
 
                 }

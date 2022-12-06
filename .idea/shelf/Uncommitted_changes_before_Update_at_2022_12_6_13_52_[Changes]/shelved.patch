@@ -1,0 +1,372 @@
+Index: app/src/main/java/com/example/travelplan/ui/map/MapFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.travelplan.ui.map;\r\n\r\nimport static android.content.Context.MODE_PRIVATE;\r\n\r\nimport android.app.Dialog;\r\nimport android.content.Context;\r\nimport android.content.SharedPreferences;\r\nimport android.content.SharedPreferences.Editor;\r\nimport android.graphics.Bitmap;\r\nimport android.graphics.BitmapFactory;\r\nimport android.os.AsyncTask;\r\nimport android.os.Bundle;\r\nimport android.text.TextUtils;\r\nimport android.util.Log;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.view.Window;\r\nimport android.view.WindowManager;\r\nimport android.widget.Button;\r\nimport android.widget.ImageView;\r\nimport android.widget.ProgressBar;\r\nimport android.widget.RadioButton;\r\nimport android.widget.RadioGroup;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.annotation.Nullable;\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.lifecycle.ViewModelProvider;\r\n\r\nimport com.amap.api.maps2d.AMap;\r\nimport com.amap.api.maps2d.CameraUpdateFactory;\r\nimport com.amap.api.maps2d.MapView;\r\nimport com.amap.api.maps2d.UiSettings;\r\nimport com.amap.api.maps2d.model.BitmapDescriptor;\r\nimport com.amap.api.maps2d.model.BitmapDescriptorFactory;\r\nimport com.amap.api.maps2d.model.LatLng;\r\nimport com.amap.api.maps2d.model.Marker;\r\nimport com.amap.api.maps2d.model.MarkerOptions;\r\nimport com.amap.api.maps2d.model.PolylineOptions;\r\nimport com.example.travelplan.R;\r\nimport com.example.travelplan.TravelDatabaseHelper;\r\nimport com.example.travelplan.databinding.FragmentMapBinding;\r\n\r\nimport java.lang.reflect.Array;\r\nimport java.util.AbstractCollection;\r\nimport java.util.ArrayList;\r\nimport java.util.Arrays;\r\nimport java.util.List;\r\nimport java.util.Timer;\r\nimport java.util.TimerTask;\r\n\r\n\r\npublic class MapFragment extends Fragment implements AMap.OnMarkerClickListener,AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, AMap.OnMapClickListener{\r\n    private FragmentMapBinding binding;\r\n    private TravelDatabaseHelper travelDatabaseHelper;\r\n    private MapView mapView = null;\r\n    ProgressBar progressBar; // 进度条\r\n    private List<TravelDatabaseHelper.Site> data;\r\n    View infoWindow = null;\r\n    private UiSettings uiSettings;\r\n    private AMap aMap;\r\n    private Marker clickMaker;\r\n    View root;\r\n    private SharedPreferences sp;\r\n\r\n\r\n\r\n\r\n\r\n    class getAllLocs extends AsyncTask<Void, Void, Boolean> {\r\n\r\n        // 方法1：onPreExecute（）\r\n        // 作用：执行 线程任务前的操作\r\n        @Override\r\n        protected void onPreExecute() {\r\n\r\n            if (isFristRun()){\r\n//                AlertDialog alertDialog2 = new AlertDialog.Builder(getContext())\r\n//                        .setTitle(\"Click on the image to add to route\")\r\n////                        .setMessage(\"有多个按钮\")\r\n//                        .setIcon(R.drawable.click_on_image)\r\n//\r\n//                        .setPositiveButton(\"Got it\", new DialogInterface.OnClickListener()\r\n//                                {//添加按钮\r\n//                            @Override\r\n//                            public void onClick(DialogInterface dialogInterface, int i) {\r\n////                                Toast.makeText(getContext(),\"这是确定按钮\", Toast.LENGTH_SHORT).show();\r\n//                            }\r\n//                        }\r\n//                        )\r\n//\r\n//                        .create();\r\n//                alertDialog2.show();\r\n                Bitmap  bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.click_on_image);\r\n                showDialog(getContext(),bitmap);\r\n            };\r\n\r\n        }\r\n\r\n        // 方法2：doInBackground（）\r\n        // 作用：接收输入参数、执行任务中的耗时操作、返回 线程任务执行的结果\r\n        // 此处通过计算从而模拟“加载进度”的情况\r\n        @Override\r\n        protected Boolean doInBackground(Void... voids) {\r\n\r\n            data = travelDatabaseHelper.getAllSites();\r\n            aMap.clear();  //清空地图上的所有覆盖物\r\n            Log.e(\"test22\", \"data: \"+data.get(0).getxCoor() );\r\n\r\n            String location_string =sp.getString(\"sites\",\"\");\r\n            List<String> location_list = new ArrayList<String>();\r\n            location_list.addAll(Arrays.asList(location_string.split(\",\")));\r\n            List<Integer> int_list =new ArrayList<Integer>();\r\n//            location_list.add(\"??\");\r\n            if (location_list.contains(\"\")){\r\n                location_list.remove(\"\");\r\n            }\r\n            for (int i = 0; i < location_list.size(); i++) {\r\n                int index =Integer.parseInt(location_list.get(i));\r\n                int_list.add(index);\r\n\r\n            }\r\n\r\n\r\n            for (int i = 0; i < 13;i++){\r\n//                Log.e(\"test\", \"doInBackground: \"+i );\r\n                Double lat =data.get(i).getyCoor(); //latitude\r\n                Double lng =data.get(i).getxCoor(); //longitude\r\n                LatLng latLng3  = new LatLng(lat,lng);\r\n                //定义Marker样式\r\n                MarkerOptions options = new MarkerOptions();\r\n                options.position(latLng3);//定位设置\r\n\r\n//                int imageID =data.get(i).getImgID();\r\n\r\n                String imageID = String.valueOf(data.get(i).getImgID());\r\n\r\n//\r\n                if (int_list.contains(i)){\r\n                    options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));\r\n                    options.draggable(false);\r\n                }\r\n                else{options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));\r\n                    options.draggable(true);}\r\n\r\n\r\n\r\n                options.title(imageID+\",\"+i);//标题内容设置  存储图片ID\r\n                options.snippet(data.get(i).getName());\r\n//                    ArrayList<BitmapDescriptor> arr1 =  new ArrayList<>();\r\n//                    arr1.add(0,BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));\r\n//\r\n////                arr1.add(1,BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));\r\n//                    options.icons(arr1);\r\n//               options.title(lst_title.get(i)).snippet(lst2.get(i));//标题内容设置\r\n                aMap.addMarker(options);\r\n            }\r\n\r\n//            SharedPreferences.Editor editor = sp.edit();\r\n            ArrayList<LatLng> latLngList = new ArrayList<LatLng>();\r\n            Log.e(\"int_list\", \"content: \"+int_list );\r\n            for (int i = 0; i < int_list.size(); i++) {\r\n                latLngList.add(new LatLng(data.get(int_list.get(i)).getyCoor(), data.get(int_list.get(i)).getxCoor()));\r\n            }\r\n\r\n            SharedPreferences.Editor editor = sp.edit();\r\n            editor.putString(\"route\",sp.getString(\"sites\",\"\"));\r\n            editor.apply();\r\n\r\n            PolylineOptions pl = new PolylineOptions()\r\n                    .addAll(latLngList)\r\n                    .width(5)\r\n                    .setDottedLine(false);\r\n            aMap.addPolyline(pl);\r\n\r\n\r\n            return true;\r\n        }\r\n\r\n\r\n\r\n        //         方法4：onPostExecute（）\r\n//         作用：接收线程任务执行结果、将执行结果显示到UI组件\r\n        @Override\r\n        protected void onPostExecute(Boolean success) {\r\n            // 执行完毕后，则更新UI\r\n//            text.setText(\"加载完毕\");\r\n//            data = travelDatabaseHelper.getAllSites();\r\n\r\n//            recyclerView.setAdapter(myAdapter);\r\n//            recyclerView.postInvalidate();\r\n//            root.findViewById(R.id.bt_1).setOnClickListener(new View.OnClickListener(){\r\n//                @Override\r\n//                public void onClick(View v) {\r\n////                Toast.makeText(getApplicationContext(),\"Button 3 clicked\",Toast.LENGTH_LONG).show();\r\n//                    Log.e(\"test\", \"onClick: 11111\");\r\n//                }\r\n//            });\r\n\r\n        }\r\n\r\n        // 方法5：onCancelled()\r\n        // 作用：将异步任务设置为：取消状态\r\n        @Override\r\n        protected void onCancelled() {\r\n\r\n            progressBar.setProgress(0);\r\n\r\n        }\r\n    }\r\n\r\n    class getpart extends AsyncTask<Void, Void, Boolean> {\r\n\r\n        // 方法1：onPreExecute（）\r\n        // 作用：执行 线程任务前的操作\r\n        @Override\r\n        protected void onPreExecute() {\r\n\r\n        }\r\n\r\n        // 方法2：doInBackground（）\r\n        // 作用：接收输入参数、执行任务中的耗时操作、返回 线程任务执行的结果\r\n        // 此处通过计算从而模拟“加载进度”的情况\r\n        @Override\r\n        protected Boolean doInBackground(Void... voids) {\r\n\r\n            data = travelDatabaseHelper.getAllSites();\r\n            aMap.clear();  //清空地图上的所有覆盖物\r\n            Log.e(\"test22\", \"data: \" + data.get(0).getxCoor());\r\n\r\n            String location_string = sp.getString(\"sites\", \"\");\r\n            List<String> location_list = new ArrayList<String>();\r\n            location_list.addAll(Arrays.asList(location_string.split(\",\")));\r\n            //Log.e(\"location_string:\", location_string);\r\n            List<Integer> int_list = new ArrayList<Integer>();\r\n//            location_list.add(\"??\");\r\n            if (location_list.contains(\"\")) {\r\n                location_list.remove(\"\");\r\n            }\r\n            for (int i = 0; i < location_list.size(); i++) {\r\n                int index = Integer.parseInt(location_list.get(i));\r\n                int_list.add(index);\r\n\r\n            }\r\n\r\n\r\n            for (int i = 0; i < 13; i++) {\r\n//                Log.e(\"test\", \"doInBackground: \"+i );\r\n//\r\n                if (int_list.contains(i)) {\r\n                    Double lat = data.get(i).getyCoor(); //latitude\r\n                    Double lng = data.get(i).getxCoor(); //longitude\r\n                    LatLng latLng3 = new LatLng(lat, lng);\r\n                    //定义Marker样式\r\n                    MarkerOptions options = new MarkerOptions();\r\n                    options.position(latLng3);//定位设置\r\n\r\n//                int imageID =data.get(i).getImgID();\r\n\r\n                    String imageID = String.valueOf(data.get(i).getImgID());\r\n                    options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));\r\n                    options.draggable(false);\r\n                    options.title(imageID + \",\" + i);//标题内容设置  存储图片ID\r\n                    options.snippet(data.get(i).getName());\r\n//                    ArrayList<BitmapDescriptor> arr1 =  new ArrayList<>();\r\n//                    arr1.add(0,BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));\r\n//\r\n////                arr1.add(1,BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));\r\n//                    options.icons(arr1);\r\n//               options.title(lst_title.get(i)).snippet(lst2.get(i));//标题内容设置\r\n                    aMap.addMarker(options);\r\n\r\n                }\r\n            }\r\n\r\n//            SharedPreferences.Editor editor = sp.edit();\r\n            ArrayList<LatLng> latLngList = new ArrayList<LatLng>();\r\n            Log.e(\"int_list\", \"content: \" + int_list);\r\n            for (int j = 0; j < int_list.size(); j++) {\r\n                latLngList.add(new LatLng(data.get(int_list.get(j)).getyCoor(), data.get(int_list.get(j)).getxCoor()));\r\n            }\r\n\r\n            SharedPreferences.Editor editor = sp.edit();\r\n            editor.putString(\"route\", sp.getString(\"sites\", \"\"));\r\n            editor.apply();\r\n\r\n            PolylineOptions pl = new PolylineOptions()\r\n                    .addAll(latLngList)\r\n                    .width(5)\r\n                    .setDottedLine(false);\r\n            aMap.addPolyline(pl);\r\n\r\n\r\n                return true;\r\n\r\n        }\r\n\r\n\r\n            //         方法4：onPostExecute（）\r\n//         作用：接收线程任务执行结果、将执行结果显示到UI组件\r\n            @Override\r\n            protected void onPostExecute(Boolean success) {\r\n                // 执行完毕后，则更新UI\r\n//            text.setText(\"加载完毕\");\r\n//            data = travelDatabaseHelper.getAllSites();\r\n\r\n//            recyclerView.setAdapter(myAdapter);\r\n//            recyclerView.postInvalidate();\r\n//            root.findViewById(R.id.bt_1).setOnClickListener(new View.OnClickListener(){\r\n//                @Override\r\n//                public void onClick(View v) {\r\n////                Toast.makeText(getApplicationContext(),\"Button 3 clicked\",Toast.LENGTH_LONG).show();\r\n//                    Log.e(\"test\", \"onClick: 11111\");\r\n//                }\r\n//            });\r\n\r\n            }\r\n\r\n            // 方法5：onCancelled()\r\n            // 作用：将异步任务设置为：取消状态\r\n            @Override\r\n            protected void onCancelled() {\r\n\r\n                progressBar.setProgress(0);\r\n\r\n            }\r\n        }\r\n\r\n\r\n    public View onCreateView(@NonNull LayoutInflater inflater,\r\n                             ViewGroup container, Bundle savedInstanceState) {\r\n\r\n\r\n        sp = getActivity().getSharedPreferences(\"Personal\", MODE_PRIVATE);\r\n\r\n\r\n            //提交\r\n\r\n\r\n        travelDatabaseHelper= new TravelDatabaseHelper(this.getActivity());\r\n\r\n\r\n        MapViewModel mapViewModel =\r\n                new ViewModelProvider(this).get(MapViewModel.class);\r\n\r\n        binding = FragmentMapBinding.inflate(inflater, container, false);\r\n        root = binding.getRoot();\r\n\r\n\r\n        mapView = (MapView)root.findViewById(R.id.map);\r\n        mapView.onCreate(savedInstanceState);\r\n\r\n\r\n\r\n//        aMap = mapView.getMap();//get aMap\r\n\r\n        if (aMap == null) {\r\n            aMap = mapView.getMap();\r\n            uiSettings = aMap.getUiSettings();\r\n            //设置地图属性\r\n            setMapAttribute();\r\n        }\r\n\r\n\r\n        new getAllLocs().execute();\r\n\r\n        //单选框监听事件\r\n        RadioGroup radiogroup=(RadioGroup) root.findViewById(R.id.radio_group);\r\n\r\n        radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {\r\n            @Override\r\n            public void onCheckedChanged(RadioGroup radioGroup, int checkedid) {\r\n                RadioButton rb=radioGroup.findViewById(checkedid);\r\n                String checked_rb=(String) rb.getText();\r\n                if(checked_rb.equals(\"show all sides\")){\r\n                    new getAllLocs().execute();\r\n                    Log.e(\"show all sides \",\"success!\");\r\n                }\r\n                else{\r\n                     new getpart().execute();\r\n                     Log.e(\"show part\",\"success!\");\r\n                }\r\n\r\n            }\r\n        });\r\n\r\n\r\n//\r\n\r\n\r\n//        aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(),15)); //更新地图\r\n\r\n        //添加一个marker的点击事件\r\n//        aMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {\r\n//            @Override\r\n//            public boolean onMarkerClick(Marker marker) {\r\n//\r\n//                //当点击的时候打开infoWindow\r\n//                if (marker.isInfoWindowShown()){\r\n//                    marker.hideInfoWindow();\r\n//                }\r\n//                else {\r\n//                    marker.showInfoWindow();}\r\n//\r\n////                Log.e(\"test\", \"onMarkerClick: test\");\r\n////                //这里在添加点击监听事件后，原来的InfoWindow被取消了，可以在回调方法中手动实现\r\n////\r\n//\r\n//                return true;\r\n//            }\r\n//        });\r\n\r\n\r\n        //添加一个InfoWindow的点击事件\r\n//        aMap.setOnInfoWindowClickListener(new AMap.OnInfoWindowClickListener() {\r\n//            @Override\r\n//            public void onInfoWindowClick(Marker marker) {\r\n//\r\n//                Log.e(\"Test\", \"onInfoWindowClick: 标题为：\" + marker.getTitle() + \"  的InfoWindow被点击了\");\r\n//\r\n//            }\r\n//        });\r\n//        root.findViewById(R.id.bt_1).setOnClickListener(new View.OnClickListener(){\r\n//            @Override\r\n//            public void onClick(View v) {\r\n////                Toast.makeText(getApplicationContext(),\"Button 3 clicked\",Toast.LENGTH_LONG).show();\r\n//                Log.e(\"test\", \"onClick: 11111\");\r\n//            }\r\n//        });\r\n\r\n\r\n        return root;\r\n    }\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n    private void setMapAttribute() {\r\n\r\n        LatLng latLng = new LatLng(31.288477,120.617335);//construct a location; location can be searched on https://lbs.amap.com/tools/picker\r\n//        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11)); //zoom rate\r\n        aMap.setMapLanguage(AMap.ENGLISH);\r\n        //设置默认缩放级别\r\n        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,12)); //zoom rate\r\n        //隐藏的右下角缩放按钮\r\n        uiSettings.setZoomControlsEnabled(true);\r\n        //设置marker点击事件监听\r\n        aMap.setOnMarkerClickListener(this);\r\n        //设置InfoWindow点击事件监听\r\n        aMap.setOnInfoWindowClickListener(this);\r\n        //设置自定义信息窗口\r\n        aMap.setInfoWindowAdapter(this);\r\n        //设置地图点击事件监听\r\n        aMap.setOnMapClickListener(this);\r\n    }\r\n\r\n\r\n\r\n\r\n    @Override\r\n    public boolean onMarkerClick(Marker marker) {\r\n        clickMaker = marker;\r\n        //点击当前marker展示自定义窗体\r\n\r\n        //返回true 表示接口已响应事,无需继续传递\r\n//        当点击的时候打开infoWindow\r\n        if (marker.isInfoWindowShown()){\r\n            marker.hideInfoWindow();\r\n        }\r\n        else {\r\n            marker.showInfoWindow();}\r\n\r\n//                Log.e(\"test\", \"onMarkerClick: test\");\r\n//                //这里在添加点击监听事件后，原来的InfoWindow被取消了，可以在回调方法中手动实现\r\n//\r\n\r\n        return true;\r\n\r\n\r\n    }\r\n\r\n    /*\r\n     * 弹出图片\r\n     */\r\n    private void showDialog(Context context, Bitmap bitmap){\r\n        Dialog dia = new Dialog(context);\r\n        dia.setContentView(R.layout.dialog);\r\n        ImageView imageView = (ImageView) dia.findViewById(R.id.ivdialog);\r\n        //可以set任何格式图片\r\n        imageView.setImageBitmap(bitmap);\r\n        dia.show();\r\n        //选择true的话点击其他地方可以使dialog消失，为false的话不会消失\r\n        dia.setCanceledOnTouchOutside(true); // Sets whether this dialog is\r\n        Window w = dia.getWindow();\r\n        WindowManager.LayoutParams lp = w.getAttributes();\r\n        lp.x = 0;\r\n        lp.y = 40;\r\n        dia.onWindowAttributesChanged(lp);\r\n    }\r\n\r\n    private boolean isFristRun() {\r\n        //实例化SharedPreferences对象（第一步）\r\n        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(\r\n                \"share\", MODE_PRIVATE);\r\n        //实例化SharedPreferences.Editor对象（第二步）\r\n        boolean isFirstRun = sharedPreferences.getBoolean(\"isFirstRun\", true);\r\n        Editor editor = sharedPreferences.edit();\r\n        if (!isFirstRun) {\r\n            return false;\r\n        } else {\r\n            //保存数据 （第三步）\r\n\r\n\r\n            editor.putBoolean(\"isFirstRun\", false);\r\n            //提交当前数据 （第四步）\r\n            editor.commit();\r\n            return true;\r\n        }\r\n    }\r\n\r\n\r\n\r\n    @Override\r\n    public void onInfoWindowClick(Marker marker) {\r\n\r\n//        Log.e(\"Test\", \"onInfoWindowClick: 标题为：\" + marker.getTitle() + \"  的InfoWindow被点击了\");\r\n//        marker.setIcon(R.drawable.icon_loc);\r\n        if(marker.isDraggable())\r\n        {\r\n            Log.e(\"sp_before\", \"sp: \"+sp.getString(\"sites\", \"\") );\r\n            Log.e(\"Test\", \"蓝色变红色; \"+marker.getId());\r\n            String id=marker.getTitle().split(\",\")[1];  //get infoWin ID\r\n            marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));\r\n            marker.setDraggable(false);\r\n            Toast toast=Toast.makeText(this.getContext(), \"添加到route\", Toast.LENGTH_LONG);\r\n            showMyToast(toast, 2*1000);\r\n\r\n            SharedPreferences.Editor editor = sp.edit();\r\n            String location_string =sp.getString(\"sites\",\"\");\r\n            List<String> location_list = new ArrayList<String>();\r\n            location_list.addAll(Arrays.asList(location_string.split(\",\")));\r\n            if (location_list.contains(\"\")){\r\n                location_list.remove(\"\");\r\n            }\r\n\r\n            int len = location_list.size();\r\n            boolean temp =true;\r\n            for (int i = 0; i < len; i++) {\r\n                if (location_list.get(i).equals(id)){\r\n                    temp=false;\r\n                }\r\n            }\r\n            if(temp){\r\n                editor.putString(\"sites\",sp.getString(\"sites\",\"\")+id+\",\");\r\n                editor.apply();\r\n\r\n            }\r\n\r\n\r\n          Log.e(\"final_sp\", \"sp: \"+sp.getString(\"sites\", \"\") );\r\n\r\n\r\n        }\r\n        else{\r\n            Log.e(\"sp_before\", \"sp: \"+sp.getString(\"sites\", \"\") );\r\n            Log.e(\"Test\", \"红色变蓝色\");\r\n            String id=marker.getTitle().split(\",\")[1];\r\n            marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));\r\n            marker.setDraggable(true);\r\n            Toast toast=Toast.makeText(this.getContext(), \"从route删除\", Toast.LENGTH_LONG);\r\n            showMyToast(toast, 2*1000);\r\n\r\n            SharedPreferences.Editor editor = sp.edit();\r\n            String location_string =sp.getString(\"sites\",\"\");\r\n            List<String> location_list = new ArrayList<String>(); //content in sp\r\n            location_list.addAll(Arrays.asList(location_string.split(\",\")));\r\n            if (location_list.contains(\"\")){\r\n                location_list.remove(\"\");\r\n            }\r\n            int len =location_list.size();\r\n            int index =-23;\r\n            for (int i = 0; i < len; i++) {\r\n                if (location_list.get(i).equals(id)){\r\n                    index=i;\r\n                }\r\n            }\r\n            if (index > -23) {\r\n                location_list.remove(index);\r\n            }\r\n            int len_af= location_list.size();\r\n            String final_list = \"\";\r\n            for (int i = 0; i < len_af; i++) {\r\n                final_list += location_list.get(i)+\",\";\r\n            }\r\n            editor.putString(\"sites\",final_list);\r\n            editor.apply();\r\n            Log.e(\"final_sp\", \"sp: \"+sp.getString(\"sites\", \"\") );\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n        }\r\n//        Log.e(\"Test\", \"onInfoWindowClick: 标题为：\" + marker.getSnippet()+ \"  的InfoWindow被点击了\");\r\n//        marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));\r\n        new getAllLocs().execute();\r\n    }\r\n\r\n    public void showMyToast(final Toast toast, final int cnt) {\r\n        final Timer timer = new Timer();\r\n        timer.schedule(new TimerTask() {\r\n            @Override\r\n            public void run() {\r\n                toast.show();\r\n            }\r\n        }, 0, 3000);\r\n        new Timer().schedule(new TimerTask() {\r\n            @Override\r\n            public void run() {\r\n                toast.cancel();\r\n                timer.cancel();\r\n            }\r\n        }, cnt );\r\n    }\r\n\r\n    /*\r\n     * 监听自定义窗口infoWindow事件回调\r\n     */\r\n    @Override\r\n    public View getInfoWindow(Marker marker) {\r\n//        if (infoWindow == null) {\r\n//            infoWindow = LayoutInflater.from(this.getContext()).inflate(R.layout.inforwindow_layout, null);\r\n//        }\r\n        infoWindow = LayoutInflater.from(this.getContext()).inflate(R.layout.inforwindow_layout, null);\r\n        render(marker, infoWindow);\r\n        return infoWindow;\r\n    }\r\n\r\n    /**\r\n     * 自定义infoWindow窗口\r\n     */\r\n    private void render(Marker marker, View infoWindow) {\r\n//        TextView title = infoWindow.findViewById(R.id.info_window_title);\r\n        TextView content = infoWindow.findViewById(R.id.info_window_content);\r\n        ImageView imageView=infoWindow.findViewById(R.id.iv_1);\r\n\r\n       int imageID=Integer.parseInt(marker.getTitle().split(\",\")[0]);\r\n\r\n        imageView.setImageResource(imageID);\r\n//        title.setText(marker.getTitle());\r\n        content.setText(marker.getSnippet());\r\n    }\r\n\r\n    /**\r\n     * 不能修改整个InfoWindow的背景和边框，返回null\r\n     */\r\n    @Override\r\n    public View getInfoContents(Marker marker) {\r\n        return null;\r\n    }\r\n\r\n    /**\r\n     * 地图点击事件\r\n     * 点击地图区域让当前展示的窗体隐藏\r\n     */\r\n    @Override\r\n    public void onMapClick(LatLng latLng) {\r\n        //判断当前marker信息窗口是否显示\r\n        if (clickMaker != null && clickMaker.isInfoWindowShown()) {\r\n            clickMaker.hideInfoWindow();\r\n        }\r\n\r\n    }\r\n\r\n\r\n\r\n\r\n//    public interface InfoWindowAdapter {\r\n//        View getInfoWindow(Marker marker);\r\n//        View getInfoContents(Marker marker);\r\n//    }\r\n\r\n    /**\r\n     * set map language\r\n     *\r\n     * @param language AMap.CHINESE, AMap.ENGLISH\r\n     * @since 5.5.0\r\n     */\r\n    public void setMapLanguage(String language){}\r\n\r\n    @Override\r\n    public void onSaveInstanceState(Bundle outstate){\r\n        super.onSaveInstanceState(outstate);\r\n        mapView.onSaveInstanceState(outstate);\r\n    }\r\n    @Override\r\n    public void onDestroyView() {\r\n        super.onDestroyView();\r\n        binding = null;\r\n    }\r\n\r\n    @Override\r\n    public void onResume() {\r\n        super.onResume();\r\n        //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图\r\n        mapView.onResume();\r\n    }\r\n    @Override\r\n    public void onPause(\r\n\r\n    ) {\r\n        super.onPause();\r\n        //在activity执行onPause时执行mMapView.onPause ()，暂停地图的绘制\r\n        mapView.onPause();\r\n    }\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/travelplan/ui/map/MapFragment.java b/app/src/main/java/com/example/travelplan/ui/map/MapFragment.java
+--- a/app/src/main/java/com/example/travelplan/ui/map/MapFragment.java	(revision 409a5b98ad944f09c6d3a751139b706dcc546cc6)
++++ b/app/src/main/java/com/example/travelplan/ui/map/MapFragment.java	(date 1670300125298)
+@@ -18,7 +18,9 @@
+ import android.view.Window;
+ import android.view.WindowManager;
+ import android.widget.Button;
++import android.widget.HorizontalScrollView;
+ import android.widget.ImageView;
++import android.widget.LinearLayout;
+ import android.widget.ProgressBar;
+ import android.widget.RadioButton;
+ import android.widget.RadioGroup;
+@@ -29,6 +31,8 @@
+ import androidx.annotation.Nullable;
+ import androidx.fragment.app.Fragment;
+ import androidx.lifecycle.ViewModelProvider;
++import androidx.recyclerview.widget.LinearLayoutManager;
++import androidx.recyclerview.widget.RecyclerView;
+ 
+ import com.amap.api.maps2d.AMap;
+ import com.amap.api.maps2d.CameraUpdateFactory;
+@@ -65,6 +69,8 @@
+     private Marker clickMaker;
+     View root;
+     private SharedPreferences sp;
++    display_window_Adapter display_Adapter;
++    RecyclerView recyclerView;
+ 
+ 
+ 
+@@ -329,6 +335,64 @@
+             }
+         }
+ 
++    class display_window extends AsyncTask<Void, Void, Boolean> {
++
++        // 方法1：onPreExecute（）
++        // 作用：执行 线程任务前的操作
++        @Override
++        protected void onPreExecute() {
++
++        }
++
++        // 方法2：doInBackground（）
++        // 作用：接收输入参数、执行任务中的耗时操作、返回 线程任务执行的结果
++        // 此处通过计算从而模拟“加载进度”的情况
++        @Override
++        protected Boolean doInBackground(Void... voids) {
++            data = travelDatabaseHelper.getAllSites();
++
++            Log.e("test"," display"+ data.get(0).getImgID());
++
++            Log.e("route: ",sp.getString("route",""));
++            String route=sp.getString("route","");
++            List<String> rout_stlist = new ArrayList<String>();
++            rout_stlist.addAll(Arrays.asList(route.split(",")));
++            List<Integer> rout_inlist = new ArrayList<Integer>();
++//
++            if (rout_stlist.contains("")) {
++                rout_stlist.remove("");
++            }
++            for (int i = 0; i < rout_stlist.size(); i++) {
++                int index = Integer.parseInt(rout_stlist.get(i));
++                rout_inlist.add(index);
++
++            }
++            Log.e("route list: ", String.valueOf(rout_inlist));
++
++            display_Adapter=new display_window_Adapter(data,getContext(),rout_inlist);
++
++            return true;
++
++        }
++
++
++        //         方法4：onPostExecute（）
++//         作用：接收线程任务执行结果、将执行结果显示到UI组件
++        @Override
++        protected void onPostExecute(Boolean success) {
++            recyclerView.setAdapter(display_Adapter);
++
++        }
++
++        // 方法5：onCancelled()
++        // 作用：将异步任务设置为：取消状态
++        @Override
++        protected void onCancelled() {
++
++        }
++    }
++
++
+ 
+     public View onCreateView(@NonNull LayoutInflater inflater,
+                              ViewGroup container, Bundle savedInstanceState) {
+@@ -387,6 +451,42 @@
+             }
+         });
+ 
++        //display窗口的adapter设置
++        recyclerView=root.findViewById(R.id.display_window);
++
++        LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity().getApplicationContext());
++        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
++        recyclerView.setLayoutManager(layoutManager);
++        //display_window_Adapter adapter=new display_window_Adapter(data);
++        //recyclerView.setAdapter(adapter);
++
++        new display_window().execute();
++
++        TextView rout_btn= root.findViewById(R.id.route_btn);
++        rout_btn.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View view) {
++               // HorizontalScrollView rout_scrollview=root.findViewById(R.id.display_window);
++                //int i=rout_scrollview.getVisibility();  //0--visible 4--invisible  8--gone
++                if(recyclerView.getVisibility()==View.VISIBLE){
++                    recyclerView.setVisibility(View.GONE);
++                }else{
++                    recyclerView.setVisibility(View.VISIBLE);
++                }
++
++            }
++        });
++
++        TextView save_btn= root.findViewById(R.id.save_btn);
++        save_btn.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View view) {
++               Log.e("save btn"," click!");
++
++            }
++        });
++
++
+ 
+ //
+ 
+Index: app/src/main/res/layout/map_displaywindow_item.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/map_displaywindow_item.xml b/app/src/main/res/layout/map_displaywindow_item.xml
+new file mode 100644
+--- /dev/null	(date 1670298693667)
++++ b/app/src/main/res/layout/map_displaywindow_item.xml	(date 1670298693667)
+@@ -0,0 +1,48 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    android:orientation="vertical"
++    android:layout_width="300dp"
++    android:layout_height="200dp"
++
++   >
++    <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        android:orientation="horizontal"
++        android:background="@drawable/display_card">
++        <TextView
++            android:id="@+id/display_item_number"
++            android:layout_width="20dp"
++            android:layout_height="match_parent"
++            android:text="1"
++            android:gravity="center"
++            android:textStyle="bold"
++            android:textSize="20sp"
++            android:textColor="@color/black"
++            />
++        <TextView
++            android:id="@+id/display_item_name"
++            android:layout_width="100dp"
++            android:layout_height="match_parent"
++
++            android:paddingHorizontal="5dp"
++            android:paddingVertical="5dp"
++            android:text="This is a text name"
++            android:gravity="center"
++            android:textStyle="bold"
++            android:textSize="20sp"
++            android:textColor="@color/black"
++            />
++
++        <ImageView
++            android:id="@+id/display_item_image"
++            android:layout_width="150dp"
++            android:layout_height="match_parent"
++            android:layout_marginHorizontal="10dp"
++           android:layout_marginVertical="20dp"
++            android:scaleType="centerCrop"
++            android:src="@drawable/site4" />
++
++    </LinearLayout>
++
++</LinearLayout>
+\ No newline at end of file
+Index: app/src/main/res/layout/fragment_map.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".ui.map.MapFragment\">\r\n\r\n\r\n\r\n    <com.amap.api.maps2d.MapView\r\n        android:id=\"@+id/map\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/display_bar\"\r\n        />\r\n\r\n\r\n    <LinearLayout\r\n        android:id=\"@+id/display_bar\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:background=\"@color/gray\"\r\n        android:orientation=\"horizontal\"\r\n        app:layout_constraintTop_toTopOf=\"parent\">\r\n\r\n        <TextView\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"match_parent\"\r\n            android:layout_marginLeft=\"10dp\"\r\n            android:layout_gravity=\"center_vertical\"\r\n            android:text=\"route:\"\r\n            android:textColor=\"@color/black\"\r\n            android:textSize=\"30sp\"\r\n            android:textStyle=\"bold\" />\r\n\r\n        <Button\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"match_parent\"\r\n            android:layout_marginLeft=\"200dp\"\r\n            android:text=\"save\" />\r\n\r\n    </LinearLayout>\r\n\r\n    <!--还没有写监听事件-->\r\n   <RadioGroup\r\n       android:id=\"@+id/radio_group\"\r\n       android:layout_width=\"wrap_content\"\r\n       android:layout_height=\"wrap_content\"\r\n       android:orientation=\"horizontal\"\r\n       app:layout_constraintTop_toBottomOf=\"@+id/display_bar\"\r\n       app:layout_constraintRight_toRightOf=\"parent\"\r\n      >\r\n       <RadioButton\r\n           android:id=\"@+id/rb_showall\"\r\n           android:layout_width=\"wrap_content\"\r\n           android:layout_height=\"wrap_content\"\r\n           android:text=\"show all sides\"\r\n           android:checked=\"true\"/>\r\n\r\n       <RadioButton\r\n           android:id=\"@+id/rb_shownotall\"\r\n           android:layout_width=\"wrap_content\"\r\n           android:layout_height=\"wrap_content\"\r\n           android:text=\"only show choosen sides\"\r\n           />\r\n   </RadioGroup>\r\n\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>\r\n\r\n\r\n\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/fragment_map.xml b/app/src/main/res/layout/fragment_map.xml
+--- a/app/src/main/res/layout/fragment_map.xml	(revision 409a5b98ad944f09c6d3a751139b706dcc546cc6)
++++ b/app/src/main/res/layout/fragment_map.xml	(date 1670065932762)
+@@ -18,7 +18,7 @@
+         app:layout_constraintTop_toBottomOf="@+id/display_bar"
+         />
+ 
+-
++<!--
+     <LinearLayout
+         android:id="@+id/display_bar"
+         android:layout_width="match_parent"
+@@ -43,9 +43,47 @@
+             android:layout_marginLeft="200dp"
+             android:text="save" />
+ 
++    </LinearLayout>
++    -->
++
++    <LinearLayout
++        android:id="@+id/display_bar"
++        android:layout_width="match_parent"
++        android:layout_height="30dp"
++        app:layout_constraintTop_toTopOf="parent"
++        android:orientation="horizontal">
++        <TextView
++            android:id="@+id/route_btn"
++            android:layout_width="0dp"
++            android:layout_height="match_parent"
++            android:layout_weight="1"
++            app:layout_constraintTop_toTopOf="parent"
++            android:text="ROUTE"
++            android:textSize="25dp"
++            android:textColor="@color/white"
++            android:textStyle="bold"
++           android:gravity="center"
++            android:background="@drawable/map_btn_style"
++            android:drawableRight="@drawable/arrow_down_line"
++            android:clickable="true"/>
++
++        <TextView
++            android:id="@+id/save_btn"
++            android:layout_width="0dp"
++            android:layout_height="match_parent"
++            android:layout_weight="1"
++            android:text="SAVE"
++            android:gravity="center"
++            android:textSize="25dp"
++            android:textColor="@color/white"
++            android:textStyle="bold"
++            android:background="@drawable/map_btn_style"
++            android:clickable="true"
++            />
++
+     </LinearLayout>
+ 
+-    <!--还没有写监听事件-->
++
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="wrap_content"
+@@ -59,16 +97,80 @@
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="show all sides"
+-           android:checked="true"/>
++           android:checked="true"
++           android:textStyle="bold"/>
+ 
+        <RadioButton
+            android:id="@+id/rb_shownotall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="only show choosen sides"
++           android:textStyle="bold"
+            />
+    </RadioGroup>
+ 
++    <!--<HorizontalScrollView
++        android:id="@+id/display_window"
++        android:layout_width="wrap_content"
++        android:layout_height="200dp"
++        app:layout_constraintTop_toBottomOf="@id/display_bar"
++        app:layout_constraintLeft_toLeftOf="parent"
++        android:visibility="gone">
++
++
++
++    <LinearLayout
++
++        android:layout_width="wrap_content"
++        android:layout_height="match_parent"
++        android:orientation="horizontal"
++
++        >
++
++        <TextView
++            android:layout_width="wrap_content"
++            android:layout_height="match_parent"
++            android:text="hiiiiiiiiiiiiiiii     "
++
++            android:textSize="25dp"
++            android:background="@color/teal_700"/>
++        <TextView
++            android:layout_width="wrap_content"
++            android:layout_height="match_parent"
++            android:text="hiiiiiiiiiiiiiiii     "
++            android:textSize="25dp"
++            android:background="@color/gray"/>
++        <TextView
++            android:layout_width="wrap_content"
++            android:layout_height="match_parent"
++            android:text="hiiiiiiiiiiiiiiii     "
++            android:textSize="25dp"
++            android:background="@color/teal_700"/>
++        <TextView
++            android:layout_width="wrap_content"
++            android:layout_height="match_parent"
++            android:text="hiiiiiiiiiiiiiiii     "
++            android:textSize="25dp"
++            android:background="@color/gray"/>
++        <TextView
++            android:layout_width="wrap_content"
++            android:layout_height="match_parent"
++            android:text="hiiiiiiiiiiiiiiii     "
++            android:textSize="25dp"
++            android:background="@color/teal_700"/>
++
++
++    </LinearLayout>
++
++  </HorizontalScrollView>-->
++    <androidx.recyclerview.widget.RecyclerView
++        android:id="@+id/display_window"
++        android:layout_width="match_parent"
++        android:layout_height="200dp"
++        app:layout_constraintTop_toBottomOf="@id/display_bar"
++         android:visibility="gone"
++        />
++
+ 
+ </androidx.constraintlayout.widget.ConstraintLayout>
+ 
+Index: app/src/main/res/drawable/map_btn_style.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/drawable/map_btn_style.xml b/app/src/main/res/drawable/map_btn_style.xml
+new file mode 100644
+--- /dev/null	(date 1670055268402)
++++ b/app/src/main/res/drawable/map_btn_style.xml	(date 1670055268402)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="utf-8"?>
++<shape xmlns:android="http://schemas.android.com/apk/res/android">
++    <corners android:radius="5dp"/>
++    <solid android:color="@color/dark_gray"/>
++    <stroke android:width="1dp" android:color="@color/white"/>
++</shape>
+\ No newline at end of file

@@ -91,7 +91,9 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     private Marker clickMaker;
     View root;
     private SharedPreferences sp;
-    private List<Integer> icon_list= List.of(R.drawable.num_1,R.drawable.num_2,R.drawable.num_3,R.drawable.num_4,R.drawable.num_5);
+    private List<Integer> icon_list= List.of(R.drawable.num_1,R.drawable.num_2,R.drawable.num_3,R.drawable.num_4,
+                                            R.drawable.num_5,R.drawable.num_6,R.drawable.num_7,R.drawable.num_8,
+                                            R.drawable.num_9,R.drawable.num_10,R.drawable.num_11,R.drawable.num_12,R.drawable.num_13);
     //声明AMapLocationClient类对象
     private RecyclerView recyclerView;
     private display_window_Adapter display_Adapter;
@@ -186,30 +188,18 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
                 //定义Marker样式
                 MarkerOptions options = new MarkerOptions();
                 options.position(latLng3);//定位设置
-
-//                int imageID =data.get(i).getImgID();
-
                 String imageID = String.valueOf(data.get(i).getImgID());
-
-//
                 if (site_sorted.contains(data.get(i).getId())){
-
                     options.icon(BitmapDescriptorFactory.fromResource(icon_list.get(site_sorted.indexOf(data.get(i).getId()))));
-                    //怎么拿到指定图片
-//                    options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));
                     options.draggable(false);
                 }
                 else{options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));
                     options.draggable(true);}
-
-
-
                 options.title(imageID+","+data.get(i).getId());//标题内容设置  存储图片ID
                 options.snippet(data.get(i).getName());
                 aMap.addMarker(options);
             }
 
-//
             ArrayList<LatLng> latLngList = new ArrayList<LatLng>();
 //            Log.e("int_list", "content: "+int_list );
             for (int i = 0; i < site_sorted.size(); i++) {
@@ -242,19 +232,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 //         作用：接收线程任务执行结果、将执行结果显示到UI组件
         @Override
         protected void onPostExecute(Boolean success) {
-            // 执行完毕后，则更新UI
-//            text.setText("加载完毕");
-//            data = travelDatabaseHelper.getAllSites();
-
-//            recyclerView.setAdapter(myAdapter);
-//            recyclerView.postInvalidate();
-//            root.findViewById(R.id.bt_1).setOnClickListener(new View.OnClickListener(){
-//                @Override
-//                public void onClick(View v) {
-////                Toast.makeText(getApplicationContext(),"Button 3 clicked",Toast.LENGTH_LONG).show();
-//                    Log.e("test", "onClick: 11111");
-//                }
-//            });
 
         }
 
@@ -391,19 +368,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 //         作用：接收线程任务执行结果、将执行结果显示到UI组件
             @Override
             protected void onPostExecute(Boolean success) {
-                // 执行完毕后，则更新UI
-//            text.setText("加载完毕");
-//            data = travelDatabaseHelper.getAllSites();
-
-//            recyclerView.setAdapter(myAdapter);
-//            recyclerView.postInvalidate();
-//            root.findViewById(R.id.bt_1).setOnClickListener(new View.OnClickListener(){
-//                @Override
-//                public void onClick(View v) {
-////                Toast.makeText(getApplicationContext(),"Button 3 clicked",Toast.LENGTH_LONG).show();
-//                    Log.e("test", "onClick: 11111");
-//                }
-//            });
 
             }
 

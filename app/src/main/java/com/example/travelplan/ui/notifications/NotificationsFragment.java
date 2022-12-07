@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -208,8 +209,9 @@ public class NotificationsFragment extends Fragment {
             }
         });
         //popupWindow.setBackgroundDrawable(new ColorDrawable(0xF));
-        popupWindow.showAsDropDown(v, -230, 100);
-        //参照View，x轴的偏移量，y轴的偏移量
+        //popupWindow.showAsDropDown(v, 0, 0);//参照View，x轴的偏移量，y轴的偏移量
+        popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+
 
         //点击事件（换头像
 

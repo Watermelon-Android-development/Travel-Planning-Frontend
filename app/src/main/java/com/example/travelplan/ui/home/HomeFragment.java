@@ -76,7 +76,7 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onRecyclerItemClick(int position) {
 //                    Log.e("test", "onRecyclerItemClick: "+position);
-                    startActivity2(root,position);
+                    startActivity2(root,data.get(position).getId()-1);
                 }
             });
 
@@ -197,11 +197,11 @@ public class HomeFragment extends Fragment {
                 new ShowKind().execute();
                 Toast.makeText(this.getContext(),"The selected location category is museum",Toast.LENGTH_SHORT).show();
                 break;
-            case  R.id.temple:
-                kindResult="temple";
-                new ShowKind().execute();
-                Toast.makeText(this.getContext(),"The selected location category is temple",Toast.LENGTH_SHORT).show();
-                break;
+//             case  R.id.temple:
+//                 kindResult="temple";
+//                 new ShowKind().execute();
+//                 Toast.makeText(this.getContext(),"The selected location category is temple",Toast.LENGTH_SHORT).show();
+//                 break;
             case  R.id.mall:
                 kindResult="mall";
                 new ShowKind().execute();
@@ -212,11 +212,11 @@ public class HomeFragment extends Fragment {
                 new ShowKind().execute();
                 Toast.makeText(this.getContext(),"The selected location category is church",Toast.LENGTH_SHORT).show();
                 break;
-            case  R.id.block:
-                kindResult="block";
-                new ShowKind().execute();
-                Toast.makeText(this.getContext(),"The selected location category is block",Toast.LENGTH_SHORT).show();
-                break;
+//             case  R.id.block:
+//                 kindResult="block";
+//                 new ShowKind().execute();
+//                 Toast.makeText(this.getContext(),"The selected location category is block",Toast.LENGTH_SHORT).show();
+//                 break;
 
         }
 
@@ -240,7 +240,7 @@ public class HomeFragment extends Fragment {
             myAdapter.setRecyclerItemClickListener(new myAdapter.OnRecyclerItemClickListener() {
                 @Override
                 public void onRecyclerItemClick(int position) {
-                    startActivity2(root,position);
+                    startActivity2(root,data.get(position).getId()-1);
                 }
             });
             return true;

@@ -237,9 +237,6 @@ public class Favorite extends AppCompatActivity{
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-
-                        Toast.makeText(Favorite.this,"Jump to"+mDatas.get(i).getName(),Toast.LENGTH_SHORT).show();
-
 //                        Log.e("favorite ","get  "+(mDatas.get((i)).getId()-1));
                         jumpTodesc(view,mDatas.get((i)).getId()-1);
                     }

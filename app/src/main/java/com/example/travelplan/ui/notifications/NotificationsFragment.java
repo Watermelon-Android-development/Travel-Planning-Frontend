@@ -175,7 +175,7 @@ public class NotificationsFragment extends Fragment {
         final EditText editText = new EditText(getContext());
         editText.setText(nickName);
         new AlertDialog.Builder(getContext()).setTitle("Input the username").setView(editText)
-                .setPositiveButton("confrim", new DialogInterface.OnClickListener() {
+                .setPositiveButton("confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         name.setText(editText.getText().toString());

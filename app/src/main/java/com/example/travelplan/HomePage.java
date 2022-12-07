@@ -112,7 +112,7 @@ public class HomePage extends AppCompatActivity {
                         if (amapLocation.getErrorCode() == 12 && !ifAskedPermission && Build.VERSION.SDK_INT >= 23) {
                             //如果用户并没有同意该权限
                             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 100);
-                        } else if (amapLocation.getErrorCode() == 7) {
+                        } else {
                             longitude = MapFragment.CB_LONGITUDE;
                             latitude = MapFragment.CB_LATITUDE;
                         }
@@ -126,6 +126,7 @@ public class HomePage extends AppCompatActivity {
         AMapLocationClientOption mLocationOption = new AMapLocationClientOption();
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         mLocationOption.setOnceLocation(true);
+        mLocationOption.setMockEnable(true);
         mLocationOption.setHttpTimeOut(10000);
         //给定位客户端对象设置定位参数
         mLocationClient.setLocationOption(mLocationOption);

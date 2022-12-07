@@ -106,6 +106,8 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     public static void setLocation(double longitude, double latitude) {
         MapFragment.longitude = longitude;
         MapFragment.latitude = latitude;
+        Log.d("jing", String.valueOf(longitude));
+        Log.d("wei", String.valueOf(latitude));
     }
 
 
@@ -175,8 +177,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 //            Log.e("sites_for_sort", "content: "+sites_for_sort );
             double[] myLocation = new double[]{longitude, latitude};
             site_sorted=ShortestRouteAlgorithm.getShortestRoute(myLocation,sites_for_sort);
-            System.out.println(longitude);
-            System.out.println(latitude);
 //            for (int i = 0; i < site_sorted.size();i++){
 //                site_sorted.set(i,site_sorted.get(i)-1);
 //            }

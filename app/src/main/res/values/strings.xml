@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Travel plan</string>
+    <string name="app_name">Suzhou Travel Planner</string>
     <string name="title_activity_home_page">HomePage</string>
     <string name="title_home">Home</string>
     <string name="title_Map">Map</string>

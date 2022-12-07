@@ -121,6 +121,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:paddingLeft="30dp"
             android:orientation="vertical"
             android:paddingTop="50dp">
 
@@ -128,8 +129,8 @@
                 android:id="@+id/aboutus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="-80dp"
                 android:text="About us"
+                android:layout_marginStart="-80dp"
                 android:textSize="20sp" />
 
             <TextView
@@ -147,7 +148,7 @@
                 android:id="@+id/helper"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="-80dp"
+                android:layout_marginStart="-90dp"
                 android:layout_marginTop="40dp"
                 android:text="Helper"
                 android:textSize="20sp" />
@@ -158,8 +159,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-40dp"
                 android:gravity="center"
-                android:text="_______________________"
                 android:paddingTop="10dp"
+                android:text="_______________________"
                 android:textColor="#4D64807D"
                 android:textSize="34sp" />
 

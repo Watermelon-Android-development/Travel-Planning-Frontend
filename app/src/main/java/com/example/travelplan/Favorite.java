@@ -29,7 +29,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.travelplan.ui.favorite.SaveCheckBox;
 import com.example.travelplan.ui.favorite.FavoriteAdapter;
 import com.example.travelplan.ui.planlist.PlanlistAdapter;
 

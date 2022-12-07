@@ -1,137 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Helper">
+    tools:context=".Helper"
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/white" />
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Common questions"
+            android:textSize="24sp"
+            android:paddingLeft="30dp"
+            android:paddingTop="30dp"
+            />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="76dp"
+            android:layout_height="84dp"
+            app:srcCompat="@android:drawable/ic_menu_help" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="42dp"
-        android:layout_marginTop="27dp"
-        android:layout_marginEnd="110dp"
-        android:layout_marginBottom="672dp"
-        android:layout_toEndOf="@+id/imageView"
-        android:layout_weight="1"
-        android:text="Common questions"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.13"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.133" />
+
+    </LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingLeft="30dp">
 
     <TextView
         android:id="@+id/h1"
-        android:layout_width="163dp"
-        android:layout_height="131dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="164dp"
-        android:layout_marginEnd="33dp"
-        android:layout_toEndOf="@+id/h2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="#26CABB"
         android:gravity="center"
+        android:paddingLeft="30dp"
+        android:paddingTop="30dp"
+        android:paddingRight="30dp"
+        android:paddingBottom="30dp"
         android:text="What is this?"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.104"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.28" />
+        android:textColor="#FFFFFF" />
 
 
     <TextView
         android:id="@+id/h2"
-        android:layout_width="167dp"
-        android:layout_height="242dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="135dp"
-        android:layout_marginBottom="354dp"
         android:background="#15656C"
+        android:paddingLeft="30dp"
+        android:paddingTop="60dp"
+        android:paddingRight="30dp"
+        android:paddingBottom="60dp"
         android:gravity="center"
         android:text="How to check map?"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.872"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.332" />
+        android:textColor="#FFFFFF" />
+</LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="30dp"
+        android:paddingTop="30dp">
 
     <TextView
         android:id="@+id/h3"
-        android:layout_width="166dp"
-        android:layout_height="185dp"
-        android:layout_below="@+id/h1"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="137dp"
-        android:layout_marginEnd="211dp"
-        android:layout_marginBottom="101dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="#13736A"
         android:gravity="center"
         android:text="How to ...?"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.106"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.598" />
+        android:paddingLeft="30dp"
+        android:paddingTop="60dp"
+        android:paddingRight="30dp"
+        android:paddingBottom="60dp"
+        android:textColor="#FFFFFF" />
 
     <TextView
         android:id="@+id/button4"
-        android:layout_width="152dp"
-        android:layout_height="186dp"
-        android:layout_below="@+id/h1"
-        android:layout_alignStart="@+id/h3"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="189dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="31dp"
-        android:layout_marginBottom="223dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="#009688"
         android:gravity="center"
+        android:paddingLeft="30dp"
+        android:paddingTop="60dp"
+        android:paddingRight="30dp"
+        android:paddingBottom="60dp"
         android:text="More..."
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.845"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.77" />
+        android:layout_marginStart="25dp"
+        android:textColor="#FFFFFF" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="76dp"
-        android:layout_height="84dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.047"
-        app:srcCompat="@android:drawable/ic_menu_help" />
-
-
-</RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

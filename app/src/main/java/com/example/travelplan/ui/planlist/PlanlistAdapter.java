@@ -67,7 +67,7 @@ public class PlanlistAdapter extends BaseAdapter {
 
             holder = new ViewHolder();
 
-            holder.checkboxOperateData = convertView.findViewById(R.id.plan_checkbox_operate_data);
+            holder.checkboxData = convertView.findViewById(R.id.plan_checkbox_operate_data);
             holder.textTitle = convertView.findViewById(R.id.plan_text_title);
             holder.textDesc = convertView.findViewById(R.id.sitenumber);
             holder.textDetail = convertView.findViewById(R.id.plan_go_to_detail);;
@@ -79,35 +79,35 @@ public class PlanlistAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        final TravelDatabaseHelper.Plan dataBean = mDatas.get(position);
-        if (dataBean != null) {
-            holder.textTitle.setText(dataBean.getTitle());
-            holder.textDesc.setText(dataBean.getRoute().size() + " dest. in total");
+        final TravelDatabaseHelper.Plan data = mDatas.get(position);
+        if (data != null) {
+            holder.textTitle.setText(data.getTitle());
+            holder.textDesc.setText(data.getRoute().size() + " dest. in total");
             View finalConvertView = convertView;
             holder.textDetail.setOnClickListener(v -> {
 
                 Intent intent=new Intent(finalConvertView.getContext(), PlanDetailActivity.class);
-                intent.putExtra("title", dataBean.getTitle());
+                intent.putExtra("title", data.getTitle());
                 finalConvertView.getContext().startActivity(intent);
             });
 
 
             if (flage_edit) {
-                holder.checkboxOperateData.setVisibility(View.VISIBLE);
+                holder.checkboxData.setVisibility(View.VISIBLE);
             } else {
-                holder.checkboxOperateData.setVisibility(View.GONE);
+                holder.checkboxData.setVisibility(View.GONE);
             }
 
-            holder.checkboxOperateData.setChecked(dataBean.isCheck);
+            holder.checkboxData.setChecked(data.isCheck);
 
 
-            holder.checkboxOperateData.setOnClickListener(new View.OnClickListener() {
+            holder.checkboxData.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (dataBean.isCheck) {
-                        dataBean.isCheck = false;
+                    if (data.isCheck) {
+                        data.isCheck = false;
                     } else {
-                        dataBean.isCheck = true;
+                        data.isCheck = true;
                     }
                 }
             });
@@ -117,7 +117,7 @@ public class PlanlistAdapter extends BaseAdapter {
 
     class ViewHolder {
 
-        public CheckBox checkboxOperateData;
+        public CheckBox checkboxData;
 
         public TextView textTitle;
 

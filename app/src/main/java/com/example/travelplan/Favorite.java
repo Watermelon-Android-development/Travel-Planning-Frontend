@@ -223,13 +223,13 @@ public class Favorite extends AppCompatActivity{
         startActivity(inte);
     }
 
-    private class ShowFavorite extends AsyncTask<TravelDatabaseHelper.Plan, Void, Boolean> {
+    private class ShowFavorite extends AsyncTask<String, Void, Boolean> {
         @Override
         protected void onPreExecute(){
         }
 
         @Override
-        protected Boolean doInBackground(TravelDatabaseHelper.Plan... plans) {
+        protected Boolean doInBackground(String... strings) {
             try {
                 mDatas = travelDatabaseHelper.getAllFavoriteSites();
                 mAdapter = new FavoriteAdapter(Favorite.this, mDatas);

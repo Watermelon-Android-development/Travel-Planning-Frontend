@@ -50,13 +50,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
             android:background="@drawable/background"
+            android:gravity="center"
+            android:orientation="vertical"
             android:paddingBottom="20dp">
+
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
@@ -71,17 +73,17 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:gravity="center"
-                android:paddingTop="30dp"
                 android:onClick="ChangeAvatar"
-                app:srcCompat="@drawable/avatar1"/>
+                android:paddingTop="30dp"
+                app:srcCompat="@drawable/avatar1" />
 
             <TextView
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="username"
                 android:paddingTop="10dp"
+                android:text="username"
                 android:textColor="#FFFFFF"
                 android:textSize="24sp" />
 
@@ -98,7 +100,7 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingLeft="20dp"
-            android:paddingTop="20dp"
+            android:paddingTop="10dp"
             android:paddingRight="20dp">
 
             <Button
@@ -123,16 +125,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingLeft="30dp"
             android:orientation="vertical"
-            android:paddingTop="50dp">
+            android:paddingLeft="30dp"
+            android:paddingTop="30dp">
 
             <TextView
                 android:id="@+id/aboutus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="About us"
                 android:layout_marginStart="-80dp"
+                android:text="About us"
                 android:textSize="20sp" />
 
             <TextView
@@ -141,8 +143,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-40dp"
                 android:gravity="center"
-                android:text="_______________________"
                 android:paddingTop="10dp"
+                android:text="_______________________"
                 android:textColor="#4D64807D"
                 android:textSize="34sp" />
 

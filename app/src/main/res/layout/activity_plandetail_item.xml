@@ -36,7 +36,7 @@
             android:src="@drawable/description_sight_1" />
 
         <LinearLayout
-            android:layout_width="218dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginHorizontal="10dp"

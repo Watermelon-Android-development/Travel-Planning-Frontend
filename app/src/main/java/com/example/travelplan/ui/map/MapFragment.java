@@ -530,7 +530,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
                 else{
 
                     if(sp.getString("route","").isEmpty()||sp.getString("route","").equals("")){
-                        Toast toast= makeText(getContext(), "please add places you want to go", LENGTH_LONG);
+                        Toast toast= makeText(getContext(), "please add places you want to visit", LENGTH_LONG);
                         showMyToast(toast, 2*1000);
                     }
                     else{
@@ -569,7 +569,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
             }
         });
 
-
+        //save button
         TextView save_btn=root.findViewById(R.id.save_btn);
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -583,49 +583,57 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
                 builder.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        String input_text=input.getText().toString();
-                        if(input_text!=null&&!input_text.isEmpty()){
-                            String route_str=sp.getString("route","");
-
-                            List<String> route_str_list = new ArrayList<String>();
-                            route_str_list.addAll(Arrays.asList(route_str.split(",")));
-                            if (route_str_list.contains("")) {
-                                route_str_list.remove("");
-                            }
-                            route=new ArrayList<Integer>();
-                            for (int j = 0; j < route_str_list.size(); j++) {
-                                int index = Integer.parseInt(route_str_list.get(j));
-                                route.add(index);
-
-                            }
-
-                           route_name=input_text;
-
-                            Log.e("route", String.valueOf(route));
-                            Log.e("route name",route_name);
-                            SharedPreferences.Editor editor = sp.edit();
-                            new save_route().execute();
-                            editor.clear();
-                            editor.apply();
-                            Log.e("sp has been clear","");
-
-                            if(radio_btn_check){
-                                Log.e("radio btn check", String.valueOf(radio_btn_check));
-                                new getAllLocs().execute();
-                            }
-                            else{
-                                Log.e("radio btn check", String.valueOf(radio_btn_check));
-                                new getpart().execute();
-                            }
-
-                            new display_window().execute();
-
-                        }
-                        else{
-                            Log.e("no input","!!");
-                            Toast toast= makeText(getContext(), "please input something!", LENGTH_LONG);
+                        if(sp.getString("route","").isEmpty()||sp.getString("route","").equals("")){
+                            Toast toast= makeText(getContext(), "please add places you want to visit", LENGTH_LONG);
                             showMyToast(toast, 2*1000);
                         }
+                        else{
+                            String input_text=input.getText().toString();
+                            if(input_text!=null&&!input_text.isEmpty()){
+                                String route_str=sp.getString("route","");
+
+                                List<String> route_str_list = new ArrayList<String>();
+                                route_str_list.addAll(Arrays.asList(route_str.split(",")));
+                                if (route_str_list.contains("")) {
+                                    route_str_list.remove("");
+                                }
+                                route=new ArrayList<Integer>();
+                                for (int j = 0; j < route_str_list.size(); j++) {
+                                    int index = Integer.parseInt(route_str_list.get(j));
+                                    route.add(index);
+
+                                }
+
+                                route_name=input_text;
+
+                                Log.e("route", String.valueOf(route));
+                                Log.e("route name",route_name);
+                                SharedPreferences.Editor editor = sp.edit();
+                                new save_route().execute();
+                                editor.clear();
+                                editor.apply();
+                                Log.e("sp has been clear","");
+
+                                if(radio_btn_check){
+                                    Log.e("radio btn check", String.valueOf(radio_btn_check));
+                                    new getAllLocs().execute();
+                                }
+                                else{
+                                    Log.e("radio btn check", String.valueOf(radio_btn_check));
+                                    new getpart().execute();
+                                }
+
+                                new display_window().execute();
+
+                            }
+                            else{
+                                Log.e("no input","!!");
+                                Toast toast= makeText(getContext(), "please input something!", LENGTH_LONG);
+                                showMyToast(toast, 2*1000);
+                            }
+                        }
+
+
 
                     }
                 });

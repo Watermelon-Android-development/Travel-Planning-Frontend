@@ -64,12 +64,12 @@ public class FavoriteAdapter extends BaseAdapter {
         ViewHolder holder = null;
 
         if (convertView == null) {
-            //
+
             convertView = mInflater.inflate(R.layout.activity_favorite_list_item, null);
 
             holder = new ViewHolder();
 
-            holder.checkboxOperateData = (CheckBox) convertView.findViewById(R.id.checkbox_operate_data);
+            holder.checkboxData = (CheckBox) convertView.findViewById(R.id.checkbox_operate_data);
             holder.title = (TextView) convertView.findViewById(R.id.text_title);
             holder.rank = (TextView) convertView.findViewById(R.id.rank);
             holder.kind = (TextView) convertView.findViewById(R.id.kind);
@@ -82,36 +82,33 @@ public class FavoriteAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        final TravelDatabaseHelper.Site dataBean = mDatas.get(position);
-        if (dataBean != null) {
-            String mark = String.valueOf(dataBean.getMark());
-            holder.title.setText(dataBean.getName());
+        final TravelDatabaseHelper.Site data = mDatas.get(position);
+        if (data != null) {
+            String mark = String.valueOf(data.getMark());
+            holder.title.setText(data.getName());
             holder.rank.setText("Mark: "+mark);
-            holder.kind.setText("Type: "+dataBean.getType());
+            holder.kind.setText("Type: "+data.getType());
 
-            int image_index= dataBean.getImgID();
+            int image_index= data.getImgID();
             holder.favorite_iamge.setImageResource( image_index);
 
 
-
-
-
             if (flage_edit) {
-                holder.checkboxOperateData.setVisibility(View.VISIBLE);
+                holder.checkboxData.setVisibility(View.VISIBLE);
             } else {
-                holder.checkboxOperateData.setVisibility(View.GONE);
+                holder.checkboxData.setVisibility(View.GONE);
             }
 
-            holder.checkboxOperateData.setChecked(dataBean.isCheck);
+            holder.checkboxData.setChecked(data.isCheck);
 
 
-            holder.checkboxOperateData.setOnClickListener(new View.OnClickListener() {
+            holder.checkboxData.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (dataBean.isCheck) {
-                        dataBean.isCheck = false;
+                    if (data.isCheck) {
+                        data.isCheck = false;
                     } else {
-                        dataBean.isCheck = true;
+                        data.isCheck = true;
                     }
                 }
             });
@@ -121,8 +118,7 @@ public class FavoriteAdapter extends BaseAdapter {
 
     class ViewHolder {
 
-        public CheckBox checkboxOperateData;
-
+        public CheckBox checkboxData;
         public TextView title;
         public TextView rank;
         public TextView kind;

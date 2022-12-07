@@ -193,18 +193,19 @@
             />
 
 
-
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="229dp">
 
             <android.widget.Button
                 android:id="@+id/lovebutton"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginLeft="100dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="40dp"
                 android:background="@drawable/favarite_shift"
                 android:drawableLeft="@drawable/heart_line"
                 android:paddingHorizontal="20dp"
@@ -212,8 +213,7 @@
                 android:text="favorite"
                 android:textColor="@color/white"
                 android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_marginTop="30dp"/>
+                android:textStyle="bold" />
         </RelativeLayout>
 
 

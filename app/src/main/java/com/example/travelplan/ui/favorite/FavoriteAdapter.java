@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 
 import com.example.travelplan.TravelDatabaseHelper;
 import com.example.travelplan.myAdapter;
-import com.example.travelplan.ui.favorite.SaveCheckBox;
 import com.example.travelplan.R;
 
 

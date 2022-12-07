@@ -2,11 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
-    android:id="@+id/gender"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".ui.notifications.NotificationsFragment">
+
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="409dp"
@@ -38,8 +37,6 @@
         app:layout_constraintVertical_bias="0.932" />
 
 
-
-
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
@@ -53,43 +50,41 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/l1"
+            android:id="@+id/l10"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textView7"
+            <LinearLayout
+                android:id="@+id/l11"
                 android:layout_width="50dp"
-                android:layout_height="350dp"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginBottom="0dp"
+                android:layout_height="300dp"
                 android:background="#017E72"
-                android:text="" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="80dp"
-                android:layout_height="350dp"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/l12"
+                android:layout_width="50dp"
+                android:layout_height="300dp"
                 android:background="#01554D"
-                android:text="" />
-
-            <TextView
-                android:id="@+id/textView9"
+                android:orientation="horizontal">
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/l13"
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
-                android:background="#01332F"
-                android:text="" />
-        </LinearLayout>
+                android:layout_height="300dp"
+                android:orientation="horizontal"
+                android:background="#01332F">
+            </LinearLayout>
+
+      </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/l2"
@@ -106,7 +101,7 @@
 
             <Button
                 android:id="@+id/collection"
-                android:layout_width="180dp"
+                android:layout_width="150dp"
                 android:layout_height="80dp"
                 android:gravity="center"
                 android:onClick="onClick"
@@ -114,7 +109,7 @@
 
             <Button
                 android:id="@+id/planlist"
-                android:layout_width="180dp"
+                android:layout_width="150dp"
                 android:layout_height="80dp"
                 android:layout_marginStart="50dp"
                 android:gravity="center"
@@ -125,9 +120,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/frameLayout"
-            android:layout_below="@+id/l1"
-
             android:gravity="center"
             android:orientation="vertical"
             android:paddingTop="50dp">
@@ -147,6 +139,7 @@
                 android:layout_marginTop="-40dp"
                 android:gravity="center"
                 android:text="_______________________"
+                android:paddingTop="10dp"
                 android:textColor="#4D64807D"
                 android:textSize="34sp" />
 
@@ -166,6 +159,7 @@
                 android:layout_marginTop="-40dp"
                 android:gravity="center"
                 android:text="_______________________"
+                android:paddingTop="10dp"
                 android:textColor="#4D64807D"
                 android:textSize="34sp" />
 
@@ -176,48 +170,44 @@
 
 
 
-    <ImageView
-        android:id="@+id/avatar"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="141dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="140dp"
-        android:layout_marginBottom="70dp"
-        android:onClick="ChangeAvatar"
-        app:srcCompat="@drawable/avatar1"/>
 
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center">
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="141dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="140dp"
-        android:layout_marginBottom="742dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center"
+        android:paddingTop="30dp"
         android:text="Press to change the avatar and user name"
         android:textColor="#FFFFFF" />
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:gravity="center"
+        android:paddingTop="30dp"
+        android:onClick="ChangeAvatar"
+        app:srcCompat="@drawable/avatar1"/>
 
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/avatar"
-        android:layout_alignStart="@+id/avatar"
-        android:layout_alignEnd="@+id/avatar"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="-20dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="742dp"
         android:gravity="center"
         android:text="username"
+        android:paddingTop="10dp"
         android:textColor="#FFFFFF"
         android:textSize="24sp" />
+
+</LinearLayout>
+
+
 
 
 

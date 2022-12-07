@@ -178,6 +178,8 @@
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="6"
+            android:ellipsize="end"
             android:text="A showcase of melting glaciers, alpine meadows, carved valleys, and spectacular lakes. With over 700 miles of trails, Glacier is a paradise for adventurous visitors seeking
         wilderness steeped in human history.
         Relive the days of old through historic chalets,

@@ -34,11 +34,11 @@
         android:orderInCategory="101"
         app:showAsAction="never"
         android:title="Museum" />
-    <item
+<!--     <item
         android:id="@+id/temple"
         android:orderInCategory="101"
         app:showAsAction="never"
-        android:title="Temple" />
+        android:title="Temple" /> -->
     <item
         android:id="@+id/mall"
         android:orderInCategory="101"
@@ -51,11 +51,11 @@
         app:showAsAction="never"
         android:title="Church" />
     />
-    <item
+<!--     <item
         android:id="@+id/block"
         android:orderInCategory="101"
         app:showAsAction="never"
-        android:title="Block" />
+        android:title="Block" /> -->
     />
     />
 

@@ -69,7 +69,7 @@ public class HomePage extends AppCompatActivity {
 //                        "The Center Building of XJTLU will be used as your starting point.", Toast.LENGTH_LONG).show();
                 AlertDialog alertDialog = new AlertDialog.Builder(HomePage.this)
                         //标题
-                        .setTitle("Remind")
+                        .setTitle("Reminder")
                         //内容
                         .setMessage("Location permission has been denied by you.\n" +
                         "The Center Building of XJTLU will be used as your starting point.")

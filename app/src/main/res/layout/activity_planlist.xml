@@ -13,7 +13,7 @@
     <ListView
         android:id="@+id/planlistView"
         android:layout_width="fill_parent"
-        android:layout_height="680dp" />
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="fill_parent"

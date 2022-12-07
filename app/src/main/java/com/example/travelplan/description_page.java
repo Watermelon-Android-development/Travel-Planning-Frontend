@@ -90,6 +90,7 @@ public class description_page extends AppCompatActivity {
             Button favorite_btn=findViewById(R.id.lovebutton);
             if(favouriteflag){
                 favorite_btn.setActivated(true);
+                favorite_btn.setText("FAVORITED !");
             }
             else{
                 favorite_btn.setActivated(false);

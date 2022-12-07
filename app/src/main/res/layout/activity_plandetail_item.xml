@@ -54,33 +54,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center|right"
+                    android:gravity="center"
                     android:text="Site Name"
                     android:textColor="#555555"
-                    android:textSize="16sp"
-                    tools:ignore="RtlHardcoded"/>
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/site_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center|right"
+                    android:gravity="center"
                     android:text="Site Location"
                     android:textColor="#555555"
-                    android:textSize="16sp" 
-                    tools:ignore="RtlHardcoded"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/site_opentime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center|right"
+                    android:gravity="center"
                     android:text="Site Opentime"
                     android:textColor="#555555"
-                    android:textSize="16sp"
-                    tools:ignore="RtlHardcoded"/>
+                    android:textSize="16sp"/>
 
             </LinearLayout>
         </LinearLayout>

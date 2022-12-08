@@ -84,7 +84,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     private MapView mapView = null;
     ProgressBar progressBar; // 进度条
     private List<TravelDatabaseHelper.Site> data;
-    private List<TravelDatabaseHelper.Plan> plan;
+    private List<TravelDatabaseHelper.Plan> plandata;
     View infoWindow = null;
     private UiSettings uiSettings;
     private AMap aMap;
@@ -100,6 +100,8 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     private Boolean radio_btn_check=true;
     private List<Integer> route;
     private String route_name;
+    private Boolean check_routetitle_result=true;
+
 
     private static double longitude, latitude;
 
@@ -437,6 +439,57 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         }
     }
 
+    class check_routetitle extends AsyncTask<Void, Void, Boolean> {
+
+        // 方法1：onPreExecute（）
+        // 作用：执行 线程任务前的操作
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        // 方法2：doInBackground（）
+        // 作用：接收输入参数、执行任务中的耗时操作、返回 线程任务执行的结果
+        // 此处通过计算从而模拟“加载进度”的情况
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            plandata=travelDatabaseHelper.getAllPlans();
+            if(plandata.size()!=0){
+                for(int i=0;i<plandata.size();i++){
+                    String plan_name=plandata.get(i).getTitle();
+                    if(route_name.equals(plan_name)){
+                        check_routetitle_result=false;   //已经有这个route名字存在
+                        break;
+                    }
+                    else{
+
+                    }
+                }
+            }
+            else{
+
+            }
+            return true;
+        }
+
+
+        //         方法4：onPostExecute（）
+//         作用：接收线程任务执行结果、将执行结果显示到UI组件
+        @Override
+        protected void onPostExecute(Boolean success) {
+
+
+        }
+
+        // 方法5：onCancelled()
+        // 作用：将异步任务设置为：取消状态
+        @Override
+        protected void onCancelled() {
+
+
+        }
+    }
+
     class save_route extends AsyncTask<Void, Void, Boolean> {
 
         // 方法1：onPreExecute（）
@@ -455,7 +508,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
             Log.e("insert plan",route_name);
             return true;
         }
-
 
 
         //         方法4：onPostExecute（）
@@ -608,24 +660,38 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
                                 Log.e("route", String.valueOf(route));
                                 Log.e("route name",route_name);
-                                SharedPreferences.Editor editor = sp.edit();
-                                new save_route().execute();
-                                editor.clear();
-                                editor.apply();
-                                Log.e("sp has been clear","");
 
-                                if(radio_btn_check){
-                                    Log.e("radio btn check", String.valueOf(radio_btn_check));
-                                    aMap.clear();
-                                    new getAllLocs().execute();
+                                new check_routetitle().execute();
+                                if(check_routetitle_result){
+                                    new save_route().execute();
+                                    Toast toast= makeText(getContext(), "route save successfully!", LENGTH_SHORT);
+                                    showMyToast(toast, 2*1000);
+
+
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.apply();
+                                    Log.e("sp has been clear","");
+
+                                    if(radio_btn_check){
+                                        Log.e("radio btn check", String.valueOf(radio_btn_check));
+                                        aMap.clear();
+                                        new getAllLocs().execute();
+                                    }
+                                    else{
+                                        Log.e("radio btn check", String.valueOf(radio_btn_check));
+                                        aMap.clear();
+                                        new getpart().execute();
+                                    }
+
+                                    new display_window().execute();
                                 }
                                 else{
-                                    Log.e("radio btn check", String.valueOf(radio_btn_check));
-                                    aMap.clear();
-                                    new getpart().execute();
+                                    Toast toast= makeText(getContext(), "this plan name has been existed, please input another one", LENGTH_LONG);
+                                    showMyToast(toast, 2*1000);
                                 }
 
-                                new display_window().execute();
+
 
                             }
                             else{

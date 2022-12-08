@@ -102,7 +102,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     private String route_name;
     private Boolean check_routetitle_result=true;
 
-
     private static double longitude, latitude;
 
     public static void setLocation(double longitude, double latitude) {
@@ -457,12 +456,15 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
             if(plandata.size()!=0){
                 for(int i=0;i<plandata.size();i++){
                     String plan_name=plandata.get(i).getTitle();
+                    Log.e("plan name",plan_name);
                     if(route_name.equals(plan_name)){
-                        check_routetitle_result=false;   //已经有这个route名字存在
+
+                        check_routetitle_result=false;//已经有这个route名字存在
+                        //Log.e("check route result", String.valueOf(check_routetitle_result));
+
                         break;
                     }
                     else{
-
                     }
                 }
             }
@@ -477,8 +479,38 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 //         作用：接收线程任务执行结果、将执行结果显示到UI组件
         @Override
         protected void onPostExecute(Boolean success) {
+            Log.e("check!!!", String.valueOf(check_routetitle_result));
+                if(!check_routetitle_result){
+                    Toast toast= makeText(getContext(), "this plan name has been existed, please input another one", LENGTH_LONG);
+                    Log.e("this plan name existed","");
+                    showMyToast(toast, 2*1000);
+
+                }
+                else{
+                    new save_route().execute();
+                    Toast toast= makeText(getContext(), "route save successfully!", LENGTH_SHORT);
+                    Log.e("route successfully!","");
+                    showMyToast(toast, 2*1000);
 
 
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.clear();
+                    editor.apply();
+                    Log.e("sp has been clear","");
+
+                    if(radio_btn_check){
+                        Log.e("radio btn check", String.valueOf(radio_btn_check));
+                        aMap.clear();
+                        new getAllLocs().execute();
+                    }
+                    else{
+                        Log.e("radio btn check", String.valueOf(radio_btn_check));
+                        aMap.clear();
+                        new getpart().execute();
+                    }
+
+                    new display_window().execute();
+                }
         }
 
         // 方法5：onCancelled()
@@ -661,35 +693,14 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
                                 Log.e("route", String.valueOf(route));
                                 Log.e("route name",route_name);
 
+
                                 new check_routetitle().execute();
-                                if(check_routetitle_result){
-                                    new save_route().execute();
-                                    Toast toast= makeText(getContext(), "route save successfully!", LENGTH_SHORT);
-                                    showMyToast(toast, 2*1000);
+
+                                //Log.e("check route result", String.valueOf(check_routetitle_result));
 
 
-                                    SharedPreferences.Editor editor = sp.edit();
-                                    editor.clear();
-                                    editor.apply();
-                                    Log.e("sp has been clear","");
 
-                                    if(radio_btn_check){
-                                        Log.e("radio btn check", String.valueOf(radio_btn_check));
-                                        aMap.clear();
-                                        new getAllLocs().execute();
-                                    }
-                                    else{
-                                        Log.e("radio btn check", String.valueOf(radio_btn_check));
-                                        aMap.clear();
-                                        new getpart().execute();
-                                    }
 
-                                    new display_window().execute();
-                                }
-                                else{
-                                    Toast toast= makeText(getContext(), "this plan name has been existed, please input another one", LENGTH_LONG);
-                                    showMyToast(toast, 2*1000);
-                                }
 
 
 

@@ -481,15 +481,15 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         protected void onPostExecute(Boolean success) {
             Log.e("check!!!", String.valueOf(check_routetitle_result));
                 if(!check_routetitle_result){
-                    Toast toast= makeText(getContext(), "this plan name has been existed, please input another one", LENGTH_LONG);
-                    Log.e("this plan name existed","");
+                    Toast toast= makeText(getContext(), "Failure: Plan name cannot be identical! Try again with another name!", LENGTH_LONG);
+                    Log.e("plan name existed","");
                     showMyToast(toast, 2*1000);
 
                 }
                 else{
                     new save_route().execute();
-                    Toast toast= makeText(getContext(), "route save successfully!", LENGTH_SHORT);
-                    Log.e("route successfully!","");
+                    Toast toast= makeText(getContext(), "Success: Plan saved to planlist!", LENGTH_SHORT);
+                    Log.e("save plan successfully!","");
                     showMyToast(toast, 2*1000);
 
 

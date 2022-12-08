@@ -76,6 +76,7 @@ public class PlanlistActivity extends AppCompatActivity{
         protected Boolean doInBackground(String... strings) {
             try {
                 for (int i = 0,len=mDatas.size(); i < len; i++) {
+                    if (len==0)return true;
                     if (mDatas.get(i).isCheck){
                         travelDatabaseHelper.deletePlans(mDatas.get(i).getTitle());
                         mDatas.remove(i);
@@ -91,7 +92,10 @@ public class PlanlistActivity extends AppCompatActivity{
 
         @Override
         protected void onPostExecute(Boolean success){
-            if (success) Toast.makeText(PlanlistActivity.this, "Delete successfully", Toast.LENGTH_SHORT).show();
+            if (success) {
+                listView.setAdapter(mAdapter);
+                Toast.makeText(PlanlistActivity.this, "Delete successfully", Toast.LENGTH_SHORT).show();
+            }
             else Toast.makeText(PlanlistActivity.this, "Database unavailable", Toast.LENGTH_SHORT).show();
         }
 
@@ -205,10 +209,15 @@ public class PlanlistActivity extends AppCompatActivity{
         builder.setPositiveButton("CONFIRM", (dialog, which) -> {
             new DeletePlanTask().execute();
             mAdapter.notifyDataSetChanged();
+            if (dialog != null) {
+                dialog.dismiss();
+            }
         });
 
         builder.setNegativeButton("CANCEL", (dialog, which) -> {
-
+            if (dialog != null) {
+                dialog.dismiss();
+            }
         });
         AlertDialog dialog=builder.create();
         dialog.show();
@@ -216,4 +225,3 @@ public class PlanlistActivity extends AppCompatActivity{
 
 
 }
-

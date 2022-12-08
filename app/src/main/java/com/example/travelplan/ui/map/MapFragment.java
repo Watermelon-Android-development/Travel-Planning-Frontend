@@ -616,10 +616,12 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
                                 if(radio_btn_check){
                                     Log.e("radio btn check", String.valueOf(radio_btn_check));
+                                    aMap.clear();
                                     new getAllLocs().execute();
                                 }
                                 else{
                                     Log.e("radio btn check", String.valueOf(radio_btn_check));
+                                    aMap.clear();
                                     new getpart().execute();
                                 }
 

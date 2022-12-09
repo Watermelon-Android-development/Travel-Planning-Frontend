@@ -6,14 +6,12 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.example.travelplan.ui.map.MapFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -68,12 +66,12 @@ public class HomePage extends AppCompatActivity {
 //                Toast.makeText(this, "Location permission has been denied by you. \n" +
 //                        "The Center Building of XJTLU will be used as your starting point.", Toast.LENGTH_LONG).show();
                 AlertDialog alertDialog = new AlertDialog.Builder(HomePage.this)
-                        //标题
+                        //title
                         .setTitle("Reminder")
-                        //内容
+                        //content
                         .setMessage("Location permission has been denied by you.\n" +
                         "The Center Building of XJTLU will be used as your starting point.")
-                        //图标
+                        //icon
                         .setIcon(R.mipmap.ic_launcher)
                         .setPositiveButton("confirm", null)
                         .create();
@@ -89,7 +87,7 @@ public class HomePage extends AppCompatActivity {
         Context c = getApplicationContext();
         AMapLocationClient.updatePrivacyShow(c, true, true);
         AMapLocationClient.updatePrivacyAgree(c, true);
-        //初始化定位
+        //initialization location
         try {
             mLocationClient = new AMapLocationClient(c);
         } catch (Exception e) {
@@ -102,15 +100,15 @@ public class HomePage extends AppCompatActivity {
                 if (amapLocation != null) {
                     if (amapLocation.getErrorCode() == 0) {
                         ifAskedPermission = true;
-                        latitude = amapLocation.getLatitude();//获取纬度
-                        longitude = amapLocation.getLongitude();//获取经度
+                        latitude = amapLocation.getLatitude();
+                        longitude = amapLocation.getLongitude();
                         if (mLocationClient != null) mLocationClient.stopLocation();
                     } else {
                         Log.e("AmapError", "location Error, ErrCode:"
                                 + amapLocation.getErrorCode() + ", errInfo:"
                                 + amapLocation.getErrorInfo());
                         if (amapLocation.getErrorCode() == 12 && !ifAskedPermission && Build.VERSION.SDK_INT >= 23) {
-                            //如果用户并没有同意该权限
+                            //if access denied
                             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 100);
                         } else {
                             longitude = MapFragment.CB_LONGITUDE;
@@ -121,16 +119,16 @@ public class HomePage extends AppCompatActivity {
                 MapFragment.setLocation(longitude, latitude);
             }
         };
-        //设置定位回调监听
+        //set location listener
         mLocationClient.setLocationListener(mLocationListener);
         AMapLocationClientOption mLocationOption = new AMapLocationClientOption();
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         mLocationOption.setOnceLocation(true);
         mLocationOption.setMockEnable(true);
         mLocationOption.setHttpTimeOut(10000);
-        //给定位客户端对象设置定位参数
+        //set location parameter
         mLocationClient.setLocationOption(mLocationOption);
-        //启动定位
+        //start location
         mLocationClient.startLocation();
     }
 

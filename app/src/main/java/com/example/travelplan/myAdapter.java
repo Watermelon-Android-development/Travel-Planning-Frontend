@@ -2,20 +2,14 @@ package com.example.travelplan;
 
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.io.File;
 import java.util.List;
 
 public class myAdapter extends RecyclerView.Adapter<myAdapter.MyViewHolder> {
@@ -48,12 +42,6 @@ public class myAdapter extends RecyclerView.Adapter<myAdapter.MyViewHolder> {
       int image_index= data.get(position).getImgID();
 
       holder.iv.setImageDrawable(context.getResources().getDrawable( image_index));
-//      String path= Environment.getExternalStorageDirectory()+ File.separator+"k4k_2878019";
-//      String path2=".../res/drawable/k4k_2878019.jpg";
-//      Log.e("test", "onBindViewHolder: "+image_index);
-//      R.drawable.k4k_2878019
-//      Bitmapbm = BitmapFactory.decodeResource(getResources(),R.drawable.img);
-//      Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
       Bitmap bm = BitmapFactory.decodeResource(context.getResources(),  image_index);
       holder.iv.setImageBitmap(bm);
       holder.iv.setImageResource(image_index);

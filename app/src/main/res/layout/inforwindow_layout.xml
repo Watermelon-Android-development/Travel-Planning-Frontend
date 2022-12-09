@@ -3,89 +3,19 @@
     android:layout_width="100dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-
     android:orientation="vertical">
-    <!--@drawable/infowindow为.9图-->
-
-
-
-<!--    <Button-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="add to route"/>-->
-<!--    <TextView-->
-<!--        android:id="@+id/tv_1"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:gravity="center"-->
-<!--        android:padding="1dp"-->
-<!--        android:textColor="#333"-->
-<!--        android:textSize="12sp"-->
-<!--        android:text="click here to add"/>-->
-<!--    <ImageButton-->
-<!--        android:layout_width="24dp"-->
-<!--        android:layout_height="24dp"-->
-<!--        android:layout_gravity="right"-->
-<!--        android:text="add"-->
-<!--        android:src="@drawable/add_icon"-->
-<!--        android:textSize="6dp"-->
-<!--        android:id="@+id/ib"-->
-
-<!--        android:background="#00000000"-->
-<!--        android:textColor="#ffffffff"/>-->
-<!--    <Button-->
-<!--        android:id="@+id/bt_1"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="28dp"-->
-<!--        android:textSize="8sp"-->
-<!--        android:text="click image to add" />-->
 
     <FrameLayout
         android:layout_width="100dp"
         android:layout_height="60dp"
         >
-
         <ImageView
             android:id="@+id/iv_1"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:scaleType="centerCrop"
             android:src="@drawable/k4k_2878019" />
-        <!--        <TextView-->
-<!--            android:id="@+id/info_window_content"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="20dp"-->
-<!--            android:gravity="bottom"-->
-<!--            android:padding="1dp"-->
-<!--            android:textColor="#ffffffff"-->
-<!--            android:background="#00000000"-->
-<!--            android:textSize="12sp"-->
-<!--            />-->
-
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginBottom="20dip"-->
-<!--            android:layout_gravity="center_horizontal|bottom"-->
-<!--            android:id="@+id/tv"-->
-<!--            android:padding="12dip"-->
-<!--            android:textSize="20dp"-->
-<!--            android:background="#AA000000"-->
-<!--            android:textColor="#ffffffff"-->
-
-<!--            android:text="Golden Gate" />-->
-
-
     </FrameLayout>
-<!--    <TextView-->
-<!--        android:id="@+id/info_window_title"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:gravity="center"-->
-<!--        android:padding="1dp"-->
-<!--        android:textColor="#333"-->
-<!--        android:textSize="12sp" />-->
-
     <TextView
         android:id="@+id/info_window_content"
         android:layout_width="match_parent"
@@ -95,11 +25,5 @@
         android:textColor="#ffffffff"
         android:background="#AA000000"
         android:textSize="12sp" />
-<!--    <Button-->
-<!--        android:layout_width="10dp"-->
-<!--        android:layout_height="30dp"-->
-<!--        android:layout_marginRight="5dp"-->
-<!--        android:textSize="5dp"-->
-<!--        android:text="save" />-->
 
 </LinearLayout>

@@ -2,75 +2,50 @@ package com.example.travelplan.ui.map;
 
 import static android.content.Context.MODE_PRIVATE;
 import static android.widget.Toast.*;
-
-import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.text.InputFilter;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.UiSettings;
-import com.amap.api.maps2d.model.BitmapDescriptor;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.PolylineOptions;
-import com.example.travelplan.PlanDetailActivity;
 import com.example.travelplan.R;
 import com.example.travelplan.ShortestRouteAlgorithm;
 import com.example.travelplan.TravelDatabaseHelper;
 import com.example.travelplan.databinding.FragmentMapBinding;
-import com.example.travelplan.description_page;
-
-import java.lang.reflect.Array;
-import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -82,7 +57,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     private FragmentMapBinding binding;
     private TravelDatabaseHelper travelDatabaseHelper;
     private MapView mapView = null;
-    ProgressBar progressBar; // 进度条
     private List<TravelDatabaseHelper.Site> data;
     private List<TravelDatabaseHelper.Plan> plandata;
     View infoWindow = null;
@@ -94,7 +68,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     private List<Integer> icon_list = List.of(R.drawable.num_1, R.drawable.num_2, R.drawable.num_3, R.drawable.num_4,
             R.drawable.num_5, R.drawable.num_6, R.drawable.num_7, R.drawable.num_8,
             R.drawable.num_9, R.drawable.num_10, R.drawable.num_11, R.drawable.num_12, R.drawable.num_13);
-    //声明AMapLocationClient类对象
     private RecyclerView recyclerView;
     private display_window_Adapter display_Adapter;
     private Boolean radio_btn_check = true;
@@ -114,8 +87,8 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
     class getAllLocs extends AsyncTask<Void, Void, Boolean> {
 
-        // 方法1：onPreExecute（）
-        // 作用：执行 线程任务前的操作
+        // method 1：onPreExecute（）
+        // effect：execute before thread
         @Override
         protected void onPreExecute() {
 
@@ -127,15 +100,14 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
         }
 
-        // 方法2：doInBackground（）
-        // 作用：接收输入参数、执行任务中的耗时操作、返回 线程任务执行的结果
-        // 此处通过计算从而模拟“加载进度”的情况
+        // method 2：doInBackground（）
+        // effect：accept input parameter, fetch data, return result
         @Override
         protected Boolean doInBackground(Void... voids) {
 
 
             data = travelDatabaseHelper.getAllFavoriteSites();
-            aMap.clear();  //清空地图上的所有覆盖物
+            aMap.clear();
             Log.e("sp_before_sort", "sp: " + sp.getString("route", ""));
             String location_string = sp.getString("route", "");
             List<String> location_list = new ArrayList<String>(); //single string to string list
@@ -151,7 +123,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
                 int_list.add(id);
             }
             Log.e(" int_list", ": " + int_list);
-            //拿到route的景点
 
             List<Integer> int_list_2 = new ArrayList<Integer>(); //string list to int list
             for (int i = 0; i < data.size(); i++) {
@@ -162,7 +133,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
             Log.e("updated_int_list", ": " + int_list);
 
             ArrayList<TravelDatabaseHelper.Site> sites_for_sort = new ArrayList<TravelDatabaseHelper.Site>();
-//            Log.e("int_list_content", "content: "+int_list );
             for (int i = 0; i < int_list.size(); i++) {
                 int num = int_list.get(i);
                 int get_index = int_list_2.indexOf(num);
@@ -173,20 +143,16 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
             Log.e("sites_for_sort_content", "content: " + sites_for_sort);
             List<Integer> site_sorted;
-//            Log.e("sites_for_sort", "content: "+sites_for_sort );
             double[] myLocation = new double[]{longitude, latitude};
             site_sorted = ShortestRouteAlgorithm.getShortestRoute(myLocation, sites_for_sort);
-//            for (int i = 0; i < site_sorted.size();i++){
-//                site_sorted.set(i,site_sorted.get(i)-1);
-//            }
             Log.e("site_sorted_content", "content: " + site_sorted);
             for (int i = 0; i < data.size(); i++) {
                 Double lat = data.get(i).getyCoor(); //latitude
                 Double lng = data.get(i).getxCoor(); //longitude
                 LatLng latLng3 = new LatLng(lat, lng);
-                //定义Marker样式
+                //Marker
                 MarkerOptions options = new MarkerOptions();
-                options.position(latLng3);//定位设置
+                options.position(latLng3);//location
                 String imageID = String.valueOf(data.get(i).getImgID());
                 if (site_sorted.contains(data.get(i).getId())) {
                     options.icon(BitmapDescriptorFactory.fromResource(icon_list.get(site_sorted.indexOf(data.get(i).getId()))));
@@ -195,13 +161,12 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
                     options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));
                     options.draggable(true);
                 }
-                options.title(imageID + "," + data.get(i).getId());//标题内容设置  存储图片ID
+                options.title(imageID + "," + data.get(i).getId());//imageID + id
                 options.snippet(data.get(i).getName());
                 aMap.addMarker(options);
             }
 
             ArrayList<LatLng> latLngList = new ArrayList<LatLng>();
-//            Log.e("int_list", "content: "+int_list );
             for (int i = 0; i < site_sorted.size(); i++) {
                 latLngList.add(new LatLng(data.get(int_list_2.indexOf(site_sorted.get(i))).getyCoor(), data.get(int_list_2.indexOf(site_sorted.get(i))).getxCoor()));
             }
@@ -227,20 +192,17 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         }
 
 
-        //         方法4：onPostExecute（）
-//         作用：接收线程任务执行结果、将执行结果显示到UI组件
+        //         method 4：onPostExecute（）
+//         effect：accept result, show result on UI
         @Override
         protected void onPostExecute(Boolean success) {
 
         }
 
-        // 方法5：onCancelled()
-        // 作用：将异步任务设置为：取消状态
+        // method 5：onCancelled()
+        // effect：cancel async task
         @Override
         protected void onCancelled() {
-
-            progressBar.setProgress(0);
-
         }
     }
 
@@ -343,9 +305,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
         @Override
         protected void onCancelled() {
-
-            progressBar.setProgress(0);
-
         }
     }
 
@@ -675,10 +634,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     @Override
     public boolean onMarkerClick(Marker marker) {
         clickMaker = marker;
-        //点击当前marker展示自定义窗体
-
-        //返回true 表示接口已响应事,无需继续传递
-//        当点击的时候打开infoWindow
         if (marker.isInfoWindowShown()) {
             marker.hideInfoWindow();
         } else {
@@ -691,17 +646,13 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
     }
 
-    /*
-     * 弹出图片
-     */
+
     private void showDialog(Context context, Bitmap bitmap) {
         Dialog dia = new Dialog(context);
         dia.setContentView(R.layout.dialog);
         ImageView imageView = (ImageView) dia.findViewById(R.id.ivdialog);
-        //可以set任何格式图片
         imageView.setImageBitmap(bitmap);
         dia.show();
-        //选择true的话点击其他地方可以使dialog消失，为false的话不会消失
         dia.setCanceledOnTouchOutside(true); // Sets whether this dialog is
         Window w = dia.getWindow();
         WindowManager.LayoutParams lp = w.getAttributes();
@@ -711,20 +662,15 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     }
 
     private boolean isFristRun() {
-        //实例化SharedPreferences对象（第一步）
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(
                 "share", MODE_PRIVATE);
-        //实例化SharedPreferences.Editor对象（第二步）
         boolean isFirstRun = sharedPreferences.getBoolean("isFirstRun", true);
         Editor editor = sharedPreferences.edit();
         if (!isFirstRun) {
             return false;
         } else {
-            //保存数据 （第三步）
-
 
             editor.putBoolean("isFirstRun", false);
-            //提交当前数据 （第四步）
             editor.commit();
             return true;
         }
@@ -736,11 +682,11 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         Log.e("i click here!", "hhhhhhhhh");
         if (marker.isDraggable()) {
             Log.e("sp_before", "sp: " + sp.getString("route", ""));
-            Log.e("Test", "蓝色变红色; ");
+            Log.e("Test", "blue to red; ");
             String id = marker.getTitle().split(",")[1];  //get infoWin ID
             marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));
             marker.setDraggable(false);
-            Toast toast = makeText(this.getContext(), "添加到route", LENGTH_LONG);
+            Toast toast = makeText(this.getContext(), "added to route", LENGTH_LONG);
             showMyToast(toast, 2 * 1000);
 
             SharedPreferences.Editor editor = sp.edit();
@@ -770,11 +716,11 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
         } else {
             Log.e("sp_before", "sp: " + sp.getString("route", ""));
-            Log.e("Test", "红色变蓝色");
+            Log.e("Test", "red to blue");
             String id = marker.getTitle().split(",")[1];
             marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));
             marker.setDraggable(true);
-            Toast toast = makeText(this.getContext(), "从route删除", LENGTH_LONG);
+            Toast toast = makeText(this.getContext(), "remove from route", LENGTH_LONG);
             showMyToast(toast, 2 * 1000);
 
             SharedPreferences.Editor editor = sp.edit();

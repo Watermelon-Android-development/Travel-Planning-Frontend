@@ -639,10 +639,10 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
             public void onCheckedChanged(RadioGroup radioGroup, int checkedid) {
                 RadioButton rb=radioGroup.findViewById(checkedid);
                 String checked_rb=(String) rb.getText();
-                if(checked_rb.equals("show all sides")){
+                if(checked_rb.equals("show all sites")){
                     new getAllLocs().execute();
                     radio_btn_check=true;
-                    Log.e("show all sides ", String.valueOf(radio_btn_check));
+                    Log.e("show all sites ", String.valueOf(radio_btn_check));
                 }
                 else{
                     radio_btn_check=false;

@@ -49,7 +49,6 @@ public class HomePage extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         if (!ifAskedPermission) {
             getLocation();
         }

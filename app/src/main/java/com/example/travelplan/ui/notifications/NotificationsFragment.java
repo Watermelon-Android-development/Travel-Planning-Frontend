@@ -204,16 +204,15 @@ public class NotificationsFragment extends Fragment {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return false;
-                // 这里如果返回true的话，touch事件将被拦截
-                // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
+                // dismiss   click outside
             }
         });
         //popupWindow.setBackgroundDrawable(new ColorDrawable(0xF));
-        //popupWindow.showAsDropDown(v, 0, 0);//参照View，x轴的偏移量，y轴的偏移量
+        //popupWindow.showAsDropDown(v, 0, 0);
         popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
 
 
-        //点击事件（换头像
+        //change avatar
 
         image0.setOnClickListener(new OnClickListener() {
             @Override
@@ -285,20 +284,17 @@ public class NotificationsFragment extends Fragment {
         Toast.makeText(getContext(), "Changed!", Toast.LENGTH_SHORT).show();
     }
 
-    //这个是跳转到collection的
 
     public void ToFavorite(View view) {
 
         this.startActivity(new Intent(getActivity(), Favorite.class));
     }
 
-    //这是跳转到planlist的
     public void ToPlanlist(View view) {
 
         this.startActivity(new Intent(getActivity(), PlanlistActivity.class));
     }
 
-    //跳转关于我们
     public void ToAboutus(View view) {
 
         this.startActivity(new Intent(getActivity(), AboutUs.class));

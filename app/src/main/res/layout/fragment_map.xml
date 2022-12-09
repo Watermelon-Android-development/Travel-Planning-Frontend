@@ -96,7 +96,7 @@
            android:id="@+id/rb_showall"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:text="show all sites"
+           android:text="show all pins"
            android:checked="true"
            android:textStyle="bold"/>
 
@@ -104,7 +104,7 @@
            android:id="@+id/rb_shownotall"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:text="only show chosen sites"
+           android:text="only show chosen pins"
            android:textStyle="bold"
            />
    </RadioGroup>

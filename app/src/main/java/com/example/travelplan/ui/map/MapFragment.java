@@ -75,7 +75,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, AMap.OnMapClickListener{
+public class MapFragment extends Fragment implements AMap.OnMarkerClickListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, AMap.OnMapClickListener {
     public static final double CB_LONGITUDE = 120.738274;
     public static final double CB_LATITUDE = 31.272761;
 
@@ -91,16 +91,16 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     private Marker clickMaker;
     View root;
     private SharedPreferences sp;
-    private List<Integer> icon_list= List.of(R.drawable.num_1,R.drawable.num_2,R.drawable.num_3,R.drawable.num_4,
-                                            R.drawable.num_5,R.drawable.num_6,R.drawable.num_7,R.drawable.num_8,
-                                            R.drawable.num_9,R.drawable.num_10,R.drawable.num_11,R.drawable.num_12,R.drawable.num_13);
+    private List<Integer> icon_list = List.of(R.drawable.num_1, R.drawable.num_2, R.drawable.num_3, R.drawable.num_4,
+            R.drawable.num_5, R.drawable.num_6, R.drawable.num_7, R.drawable.num_8,
+            R.drawable.num_9, R.drawable.num_10, R.drawable.num_11, R.drawable.num_12, R.drawable.num_13);
     //声明AMapLocationClient类对象
     private RecyclerView recyclerView;
     private display_window_Adapter display_Adapter;
-    private Boolean radio_btn_check=true;
+    private Boolean radio_btn_check = true;
     private List<Integer> route;
     private String route_name;
-    private Boolean check_routetitle_result=true;
+    private Boolean check_routetitle_result = true;
 
     private static double longitude, latitude;
 
@@ -112,8 +112,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     }
 
 
-
-
     class getAllLocs extends AsyncTask<Void, Void, Boolean> {
 
         // 方法1：onPreExecute（）
@@ -121,10 +119,11 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         @Override
         protected void onPreExecute() {
 
-            if (isFristRun()){
-                Bitmap  bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.click_on_image);
-                showDialog(getContext(),bitmap);
-            };
+            if (isFristRun()) {
+                Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.click_on_image);
+                showDialog(getContext(), bitmap);
+            }
+            ;
 
         }
 
@@ -135,68 +134,68 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         protected Boolean doInBackground(Void... voids) {
 
 
-
             data = travelDatabaseHelper.getAllFavoriteSites();
             aMap.clear();  //清空地图上的所有覆盖物
-            Log.e("sp_before_sort", "sp: "+sp.getString("route", "") );
-            String location_string =sp.getString("route","");
+            Log.e("sp_before_sort", "sp: " + sp.getString("route", ""));
+            String location_string = sp.getString("route", "");
             List<String> location_list = new ArrayList<String>(); //single string to string list
             location_list.addAll(Arrays.asList(location_string.split(",")));
 
 //            location_list.add("??");
-            if (location_list.contains("")){
+            if (location_list.contains("")) {
                 location_list.remove("");
             }
-            List<Integer> int_list =new ArrayList<Integer>(); //string list to int list
+            List<Integer> int_list = new ArrayList<Integer>(); //string list to int list
             for (int i = 0; i < location_list.size(); i++) {
-                int id =Integer.parseInt(location_list.get(i));
+                int id = Integer.parseInt(location_list.get(i));
                 int_list.add(id);
             }
-            Log.e(" int_list", ": "+int_list);
+            Log.e(" int_list", ": " + int_list);
             //拿到route的景点
 
-            List<Integer> int_list_2 =new ArrayList<Integer>(); //string list to int list
+            List<Integer> int_list_2 = new ArrayList<Integer>(); //string list to int list
             for (int i = 0; i < data.size(); i++) {
                 int_list_2.add((data.get(i).getId()));
             }
-            Log.e(" int_list_2", ": "+int_list_2);
+            Log.e(" int_list_2", ": " + int_list_2);
             int_list.retainAll(int_list_2);
-            Log.e("updated_int_list", ": "+int_list);
+            Log.e("updated_int_list", ": " + int_list);
 
             ArrayList<TravelDatabaseHelper.Site> sites_for_sort = new ArrayList<TravelDatabaseHelper.Site>();
 //            Log.e("int_list_content", "content: "+int_list );
             for (int i = 0; i < int_list.size(); i++) {
-                int num=int_list.get(i);
-                int get_index=int_list_2.indexOf(num);
-                Log.e(" get_inedx", ": "+get_index );
+                int num = int_list.get(i);
+                int get_index = int_list_2.indexOf(num);
+                Log.e(" get_inedx", ": " + get_index);
                 sites_for_sort.add(data.get(get_index));
-                Log.e(" sites_for_sort", "id: "+data.get(get_index).getId() );
+                Log.e(" sites_for_sort", "id: " + data.get(get_index).getId());
             }
 
-            Log.e("sites_for_sort_content", "content: "+sites_for_sort );
+            Log.e("sites_for_sort_content", "content: " + sites_for_sort);
             List<Integer> site_sorted;
 //            Log.e("sites_for_sort", "content: "+sites_for_sort );
             double[] myLocation = new double[]{longitude, latitude};
-            site_sorted=ShortestRouteAlgorithm.getShortestRoute(myLocation,sites_for_sort);
+            site_sorted = ShortestRouteAlgorithm.getShortestRoute(myLocation, sites_for_sort);
 //            for (int i = 0; i < site_sorted.size();i++){
 //                site_sorted.set(i,site_sorted.get(i)-1);
 //            }
-            Log.e("site_sorted_content", "content: "+site_sorted );
-            for (int i = 0; i < data.size();i++){
-                Double lat =data.get(i).getyCoor(); //latitude
-                Double lng =data.get(i).getxCoor(); //longitude
-                LatLng latLng3  = new LatLng(lat,lng);
+            Log.e("site_sorted_content", "content: " + site_sorted);
+            for (int i = 0; i < data.size(); i++) {
+                Double lat = data.get(i).getyCoor(); //latitude
+                Double lng = data.get(i).getxCoor(); //longitude
+                LatLng latLng3 = new LatLng(lat, lng);
                 //定义Marker样式
                 MarkerOptions options = new MarkerOptions();
                 options.position(latLng3);//定位设置
                 String imageID = String.valueOf(data.get(i).getImgID());
-                if (site_sorted.contains(data.get(i).getId())){
+                if (site_sorted.contains(data.get(i).getId())) {
                     options.icon(BitmapDescriptorFactory.fromResource(icon_list.get(site_sorted.indexOf(data.get(i).getId()))));
                     options.draggable(false);
+                } else {
+                    options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));
+                    options.draggable(true);
                 }
-                else{options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));
-                    options.draggable(true);}
-                options.title(imageID+","+data.get(i).getId());//标题内容设置  存储图片ID
+                options.title(imageID + "," + data.get(i).getId());//标题内容设置  存储图片ID
                 options.snippet(data.get(i).getName());
                 aMap.addMarker(options);
             }
@@ -207,15 +206,15 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
                 latLngList.add(new LatLng(data.get(int_list_2.indexOf(site_sorted.get(i))).getyCoor(), data.get(int_list_2.indexOf(site_sorted.get(i))).getxCoor()));
             }
 
-            String final_route="";
-            for (int i = 0; i < site_sorted.size(); i++){
-                final_route += site_sorted.get(i)+",";
+            String final_route = "";
+            for (int i = 0; i < site_sorted.size(); i++) {
+                final_route += site_sorted.get(i) + ",";
             }
 
             SharedPreferences.Editor editor = sp.edit();
-            editor.putString("route",final_route);
+            editor.putString("route", final_route);
             editor.apply();
-            Log.e("final_route_content", "content: "+final_route );
+            Log.e("final_route_content", "content: " + final_route);
 
             PolylineOptions pl = new PolylineOptions()
                     .addAll(latLngList)
@@ -226,7 +225,6 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
             return true;
         }
-
 
 
         //         方法4：onPostExecute（）
@@ -246,113 +244,75 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         }
     }
 
+    //the method for the "only show chosen sites" map display status
     class getpart extends AsyncTask<Void, Void, Boolean> {
-
-        // 方法1：onPreExecute（）
-        // 作用：执行 线程任务前的操作
         @Override
         protected void onPreExecute() {
 
         }
 
-        // 方法2：doInBackground（）
-        // 作用：接收输入参数、执行任务中的耗时操作、返回 线程任务执行的结果
-        // 此处通过计算从而模拟“加载进度”的情况
+
         @Override
         protected Boolean doInBackground(Void... voids) {
             data = travelDatabaseHelper.getAllFavoriteSites();
-            aMap.clear();  //清空地图上的所有覆盖物
-            Log.e("sp_before_sort", "sp: "+sp.getString("route", "") );
-            String location_string =sp.getString("route","");
+            aMap.clear();
+
+            //deal with the chosen sites
+            String location_string = sp.getString("route", "");
             List<String> location_list = new ArrayList<String>(); //single string to string list
             location_list.addAll(Arrays.asList(location_string.split(",")));
-
-//            location_list.add("??");
-            if (location_list.contains("")){
+            if (location_list.contains("")) {
                 location_list.remove("");
             }
-            List<Integer> int_list =new ArrayList<Integer>(); //string list to int list
+            List<Integer> int_list = new ArrayList<Integer>(); //string list to int list
             for (int i = 0; i < location_list.size(); i++) {
-                int id =Integer.parseInt(location_list.get(i));
+                int id = Integer.parseInt(location_list.get(i));
                 int_list.add(id);
             }
-            Log.e(" int_list", ": "+int_list);
-            //拿到route的景点
-
-            List<Integer> int_list_2 =new ArrayList<Integer>(); //string list to int list
+            List<Integer> int_list_2 = new ArrayList<Integer>(); //string list to int list
             for (int i = 0; i < data.size(); i++) {
                 int_list_2.add((data.get(i).getId()));
             }
-            Log.e(" int_list_2", ": "+int_list_2);
             int_list.retainAll(int_list_2);
-            Log.e("updated_int_list", ": "+int_list);
 
+
+            //use algorithm to generate the route
             ArrayList<TravelDatabaseHelper.Site> sites_for_sort = new ArrayList<TravelDatabaseHelper.Site>();
-//            Log.e("int_list_content", "content: "+int_list );
             for (int i = 0; i < int_list.size(); i++) {
-                int num=int_list.get(i);
-                int get_index=int_list_2.indexOf(num);
-                Log.e(" get_inedx", ": "+get_index );
+                int num = int_list.get(i);
+                int get_index = int_list_2.indexOf(num);
                 sites_for_sort.add(data.get(get_index));
-                Log.e(" sites_for_sort", "id: "+data.get(get_index).getId() );
             }
-
-            Log.e("sites_for_sort_content", "content: "+sites_for_sort );
             List<Integer> site_sorted;
-//            Log.e("sites_for_sort", "content: "+sites_for_sort );
             double[] myLocation = new double[]{longitude, latitude};
-            site_sorted=ShortestRouteAlgorithm.getShortestRoute(myLocation,sites_for_sort);
-            System.out.println(longitude);
-            System.out.println(latitude);
-//            for (int i = 0; i < site_sorted.size();i++){
-//                site_sorted.set(i,site_sorted.get(i)-1);
-//            }
-            Log.e("site_sorted_content", "content: "+site_sorted );
+            site_sorted = ShortestRouteAlgorithm.getShortestRoute(myLocation, sites_for_sort);
 
-            for (int i = 0; i < data.size();i++){
 
-                if (site_sorted.contains(data.get(i).getId())){
-                    Double lat =data.get(i).getyCoor(); //latitude
-                    Double lng =data.get(i).getxCoor(); //longitude
-                    LatLng latLng3  = new LatLng(lat,lng);
-                    //定义Marker样式
+            //draw markers in the map
+            for (int i = 0; i < data.size(); i++) {
+                if (site_sorted.contains(data.get(i).getId())) {
+                    Double lat = data.get(i).getyCoor(); //latitude
+                    Double lng = data.get(i).getxCoor(); //longitude
+                    LatLng latLng3 = new LatLng(lat, lng);
                     MarkerOptions options = new MarkerOptions();
-                    options.position(latLng3);//定位设置
-
-//                int imageID =data.get(i).getImgID();
+                    options.position(latLng3);
 
                     String imageID = String.valueOf(data.get(i).getImgID());
-
                     options.icon(BitmapDescriptorFactory.fromResource(icon_list.get(site_sorted.indexOf(data.get(i).getId()))));
-                    //怎么拿到指定图片
-//                    options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));
                     options.draggable(false);
-                    options.title(imageID+","+data.get(i).getId());//标题内容设置  存储图片ID
+                    options.title(imageID + "," + data.get(i).getId());
                     options.snippet(data.get(i).getName());
                     aMap.addMarker(options);
-                }
-                else {
-
+                } else {
                 }
             }
 
-//
+
+            //draw the lines between markers in the map
             ArrayList<LatLng> latLngList = new ArrayList<LatLng>();
-//            Log.e("int_list", "content: "+int_list );
             for (int i = 0; i < site_sorted.size(); i++) {
                 latLngList.add(new LatLng(data.get(int_list_2.indexOf(site_sorted.get(i))).getyCoor(), data.get(int_list_2.indexOf(site_sorted.get(i))).getxCoor()));
             }
-
-            String final_route="";
-            for (int i = 0; i < site_sorted.size(); i++){
-                final_route += site_sorted.get(i)+",";
-            }
-
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putString("route",final_route);
-            editor.apply();
-            Log.e("final_route_content", "content: "+final_route );
-
             PolylineOptions pl = new PolylineOptions()
                     .addAll(latLngList)
                     .width(5)
@@ -360,77 +320,78 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
             aMap.addPolyline(pl);
 
 
-                return true;
+            //save the route into sp SharedPreferences
+            String final_route = "";
+            for (int i = 0; i < site_sorted.size(); i++) {
+                final_route += site_sorted.get(i) + ",";
+            }
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("route", final_route);
+            editor.apply();
+
+
+            return true;
 
         }
 
 
-            //         方法4：onPostExecute（）
-//         作用：接收线程任务执行结果、将执行结果显示到UI组件
-            @Override
-            protected void onPostExecute(Boolean success) {
+        @Override
+        protected void onPostExecute(Boolean success) {
 
-            }
-
-            // 方法5：onCancelled()
-            // 作用：将异步任务设置为：取消状态
-            @Override
-            protected void onCancelled() {
-
-                progressBar.setProgress(0);
-
-            }
         }
+
+
+        @Override
+        protected void onCancelled() {
+
+            progressBar.setProgress(0);
+
+        }
+    }
+
+    //the render method for the display window
     class display_window extends AsyncTask<Void, Void, Boolean> {
 
-        // 方法1：onPreExecute（）
-        // 作用：执行 线程任务前的操作
+
         @Override
         protected void onPreExecute() {
 
         }
 
-        // 方法2：doInBackground（）
-        // 作用：接收输入参数、执行任务中的耗时操作、返回 线程任务执行的结果
-        // 此处通过计算从而模拟“加载进度”的情况
+
         @Override
         protected Boolean doInBackground(Void... voids) {
             data = travelDatabaseHelper.getAllSites();
 
+            //get the route data and deal with it
             String route = sp.getString("route", "");
+            List<String> route_stlist = new ArrayList<String>();
+            route_stlist.addAll(Arrays.asList(route.split(",")));
+            List<Integer> route_inlist = new ArrayList<Integer>();
+            if (route_stlist.contains("")) {
+                route_stlist.remove("");
+            }
+            for (int i = 0; i < route_stlist.size(); i++) {
+                int index = Integer.parseInt(route_stlist.get(i));
+                route_inlist.add(index);
 
-                List<String> route_stlist = new ArrayList<String>();
-                route_stlist.addAll(Arrays.asList(route.split(",")));
-                //Log.e("location_string:", location_string);
-                List<Integer> route_inlist = new ArrayList<Integer>();
-//            location_list.add("??");
-                if (route_stlist.contains("")) {
-                    route_stlist.remove("");
-                }
-                for (int i = 0; i < route_stlist.size(); i++) {
-                    int index = Integer.parseInt(route_stlist.get(i));
-                    route_inlist.add(index);
+            }
 
-                }
-
-                display_Adapter=new display_window_Adapter(data,getContext(),route_inlist);
+            //combined with the adapter to render the display window
+            display_Adapter = new display_window_Adapter(data, getContext(), route_inlist);
 
 
             return true;
         }
 
 
-
-        //         方法4：onPostExecute（）
-//         作用：接收线程任务执行结果、将执行结果显示到UI组件
         @Override
         protected void onPostExecute(Boolean success) {
-                recyclerView.setAdapter(display_Adapter);
+            recyclerView.setAdapter(display_Adapter);
 
         }
 
-        // 方法5：onCancelled()
-        // 作用：将异步任务设置为：取消状态
+
         @Override
         protected void onCancelled() {
 
@@ -438,83 +399,72 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         }
     }
 
+    //the method for check the route(plan) name that user input
+    //and then deal with it according the check result
     class check_routetitle extends AsyncTask<Void, Void, Boolean> {
 
-        // 方法1：onPreExecute（）
-        // 作用：执行 线程任务前的操作
+
         @Override
         protected void onPreExecute() {
 
         }
 
-        // 方法2：doInBackground（）
-        // 作用：接收输入参数、执行任务中的耗时操作、返回 线程任务执行的结果
-        // 此处通过计算从而模拟“加载进度”的情况
+
         @Override
         protected Boolean doInBackground(Void... voids) {
-            plandata=travelDatabaseHelper.getAllPlans();
-            if(plandata.size()!=0){
-                for(int i=0;i<plandata.size();i++){
-                    String plan_name=plandata.get(i).getTitle();
-                    Log.e("plan name",plan_name);
-                    if(route_name.equals(plan_name)){
-
-                        check_routetitle_result=false;//已经有这个route名字存在
-                        //Log.e("check route result", String.valueOf(check_routetitle_result));
-
+            plandata = travelDatabaseHelper.getAllPlans();
+            if (plandata.size() != 0) {
+                for (int i = 0; i < plandata.size(); i++) {
+                    String plan_name = plandata.get(i).getTitle();
+                    if (route_name.equals(plan_name)) {
+                        check_routetitle_result = false; //The plan name already exists
                         break;
-                    }
-                    else{
+                    } else {
                     }
                 }
-            }
-            else{
+            } else {
 
             }
             return true;
         }
 
 
-        //         方法4：onPostExecute（）
-//         作用：接收线程任务执行结果、将执行结果显示到UI组件
         @Override
         protected void onPostExecute(Boolean success) {
-            Log.e("check!!!", String.valueOf(check_routetitle_result));
-                if(!check_routetitle_result){
-                    Toast toast= makeText(getContext(), "Failure: Plan name cannot be identical! Try again with another name!", LENGTH_LONG);
-                    Log.e("plan name existed","");
-                    showMyToast(toast, 2*1000);
+            //the plan name already exists
+            if (!check_routetitle_result) {
+                Toast toast = makeText(getContext(), "this plan name has been existed, please input another one", LENGTH_LONG);
+                showMyToast(toast, 2 * 1000);
 
+            }
+            //the plan name is new
+            else {
+                //execute the save_route()
+                new save_route().execute();
+
+
+                Toast toast = makeText(getContext(), "route save successfully!", LENGTH_SHORT);
+                showMyToast(toast, 2 * 1000);
+
+                //clear sp SharedPreferences
+                SharedPreferences.Editor editor = sp.edit();
+                editor.clear();
+                editor.apply();
+
+                //according the map status to refresh the map
+                if (radio_btn_check) {
+                    aMap.clear();
+                    new getAllLocs().execute();
+                } else {
+                    aMap.clear();
+                    new getpart().execute();
                 }
-                else{
-                    new save_route().execute();
-                    Toast toast= makeText(getContext(), "Success: Plan saved to planlist!", LENGTH_SHORT);
-                    Log.e("save plan successfully!","");
-                    showMyToast(toast, 2*1000);
 
-
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.clear();
-                    editor.apply();
-                    Log.e("sp has been clear","");
-
-                    if(radio_btn_check){
-                        Log.e("radio btn check", String.valueOf(radio_btn_check));
-                        aMap.clear();
-                        new getAllLocs().execute();
-                    }
-                    else{
-                        Log.e("radio btn check", String.valueOf(radio_btn_check));
-                        aMap.clear();
-                        new getpart().execute();
-                    }
-
-                    new display_window().execute();
-                }
+                new display_window().execute();
+            }
         }
 
-        // 方法5：onCancelled()
-        // 作用：将异步任务设置为：取消状态
+
         @Override
         protected void onCancelled() {
 
@@ -522,36 +472,31 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         }
     }
 
+    //the method for save the route(plan) into the database
     class save_route extends AsyncTask<Void, Void, Boolean> {
 
-        // 方法1：onPreExecute（）
-        // 作用：执行 线程任务前的操作
+
         @Override
         protected void onPreExecute() {
 
         }
 
-        // 方法2：doInBackground（）
-        // 作用：接收输入参数、执行任务中的耗时操作、返回 线程任务执行的结果
-        // 此处通过计算从而模拟“加载进度”的情况
+
         @Override
         protected Boolean doInBackground(Void... voids) {
-            travelDatabaseHelper.insertPlan(route,route_name);
-            Log.e("insert plan",route_name);
+            travelDatabaseHelper.insertPlan(route, route_name);
             return true;
         }
 
 
-        //         方法4：onPostExecute（）
-//         作用：接收线程任务执行结果、将执行结果显示到UI组件
+
         @Override
         protected void onPostExecute(Boolean success) {
 
 
         }
 
-        // 方法5：onCancelled()
-        // 作用：将异步任务设置为：取消状态
+
         @Override
         protected void onCancelled() {
 
@@ -563,61 +508,58 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-
+        //set up a "Personal" SharedPreferences
         sp = getActivity().getSharedPreferences("Personal", MODE_PRIVATE);
 
+        //database
+        travelDatabaseHelper = new TravelDatabaseHelper(this.getActivity());
 
-            //提交
-
-
-        travelDatabaseHelper= new TravelDatabaseHelper(this.getActivity());
-
+        //set map
         MapViewModel mapViewModel =
                 new ViewModelProvider(this).get(MapViewModel.class);
 
         binding = FragmentMapBinding.inflate(inflater, container, false);
         root = binding.getRoot();
 
-
-        mapView = (MapView)root.findViewById(R.id.map);
+        mapView = (MapView) root.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
-
-
-
-//        aMap = mapView.getMap();//get aMap
 
         if (aMap == null) {
             aMap = mapView.getMap();
             uiSettings = aMap.getUiSettings();
-            //设置地图属性
             setMapAttribute();
         }
 
-
+        //the initial map status is "show all sites", so this method executes
         new getAllLocs().execute();
 
 
-        //display窗口的Adapter设置
-        recyclerView=root.findViewById(R.id.display_window);
-        LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity().getApplicationContext());
+
+        //the Adapter setting for the display window
+        recyclerView = root.findViewById(R.id.display_window);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
 
-        TextView rout_btn=root.findViewById(R.id.route_btn);
+
+        //the route button click event
+        TextView rout_btn = root.findViewById(R.id.route_btn);
         rout_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(recyclerView.getVisibility()==View.VISIBLE){
+                //disshow the display window
+                if (recyclerView.getVisibility() == View.VISIBLE) {
                     recyclerView.setVisibility(View.GONE);
 
                 }
-                else{
-
-                    if(sp.getString("route","").isEmpty()||sp.getString("route","").equals("")){
-                        Toast toast= makeText(getContext(), "please add places you want to visit", LENGTH_LONG);
-                        showMyToast(toast, 2*1000);
+                //show the display window
+                else {
+                    //if users don't choose any sites, the display window won't show
+                    if (sp.getString("route", "").isEmpty() || sp.getString("route", "").equals("")) {
+                        Toast toast = makeText(getContext(), "please add places you want to visit", LENGTH_LONG);
+                        showMyToast(toast, 2 * 1000);
                     }
-                    else{
+                    else {
                         new display_window().execute();
                     }
                     recyclerView.setVisibility(View.VISIBLE);
@@ -627,100 +569,80 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         });
 
 
-
-
-
-
-        //单选框监听事件
-        RadioGroup radiogroup=(RadioGroup) root.findViewById(R.id.radio_group);
-
+        //the radiobutton click event
+        RadioGroup radiogroup = (RadioGroup) root.findViewById(R.id.radio_group);
         radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedid) {
-                RadioButton rb=radioGroup.findViewById(checkedid);
-                String checked_rb=(String) rb.getText();
-                if(checked_rb.equals("show all pins")){
+                RadioButton rb = radioGroup.findViewById(checkedid);
+                String checked_rb = (String) rb.getText();
+                if (checked_rb.equals("show all sides")) {
                     new getAllLocs().execute();
-                    radio_btn_check=true;
-                    Log.e("show all pins", String.valueOf(radio_btn_check));
-                }
-                else{
-                    radio_btn_check=false;
-                     new getpart().execute();
-                     Log.e("show part",String.valueOf(radio_btn_check));
+                    radio_btn_check = true;
+
+                } else {
+                    radio_btn_check = false;
+                    new getpart().execute();
+
                 }
 
             }
         });
 
-        //save button
-        TextView save_btn=root.findViewById(R.id.save_btn);
+        //save button click event
+        TextView save_btn = root.findViewById(R.id.save_btn);
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("save btn"," click!");
-                final EditText input=new EditText(getContext());
+
+                final EditText input = new EditText(getContext());
                 input.setFilters(new InputFilter[]{new InputFilter.LengthFilter(20)});
-                AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Input your plan name");
-                builder.setView(input).setNegativeButton("cancel",null);
+                builder.setView(input).setNegativeButton("cancel", null);
                 builder.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if(sp.getString("route","").isEmpty()||sp.getString("route","").equals("")){
-                            Toast toast= makeText(getContext(), "please add places you want to visit", LENGTH_LONG);
-                            showMyToast(toast, 2*1000);
+                        //users don't choose any sites
+                        if (sp.getString("route", "").isEmpty() || sp.getString("route", "").equals("")) {
+                            Toast toast = makeText(getContext(), "please add places you want to visit", LENGTH_LONG);
+                            showMyToast(toast, 2 * 1000);
                         }
-                        else{
-                            String input_text=input.getText().toString();
-                            if(input_text!=null&&!input_text.isEmpty()){
-                                String route_str=sp.getString("route","");
+                        //users choose some sites
+                        else {
+                            String input_text = input.getText().toString();
+                            //input text is not empty
+                            if (input_text != null && !input_text.isEmpty()) {
+                                String route_str = sp.getString("route", "");
 
                                 List<String> route_str_list = new ArrayList<String>();
                                 route_str_list.addAll(Arrays.asList(route_str.split(",")));
                                 if (route_str_list.contains("")) {
                                     route_str_list.remove("");
                                 }
-                                route=new ArrayList<Integer>();
+                                route = new ArrayList<Integer>();
                                 for (int j = 0; j < route_str_list.size(); j++) {
                                     int index = Integer.parseInt(route_str_list.get(j));
                                     route.add(index);
-
                                 }
+                                route_name = input_text;
 
-                                route_name=input_text;
-
-                                Log.e("route", String.valueOf(route));
-                                Log.e("route name",route_name);
-
-
+                                //check and save the route(plan)
                                 new check_routetitle().execute();
 
-                                //Log.e("check route result", String.valueOf(check_routetitle_result));
-
-
-
-
-
-
-
                             }
-                            else{
-                                Log.e("no input","!!");
-                                Toast toast= makeText(getContext(), "please input something!", LENGTH_LONG);
-                                showMyToast(toast, 2*1000);
+                            //input text is empty
+                            else {
+                                Toast toast = makeText(getContext(), "please input something!", LENGTH_LONG);
+                                showMyToast(toast, 2 * 1000);
                             }
                         }
-
 
 
                     }
                 });
 
-
                 builder.show();
-
-
 
 
             }
@@ -730,33 +652,24 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     }
 
 
-
-
-
-
-
-
-
     private void setMapAttribute() {
 
-        LatLng latLng = new LatLng(31.288477,120.617335);//construct a location; location can be searched on https://lbs.amap.com/tools/picker
+        LatLng latLng = new LatLng(31.288477, 120.617335);//construct a location; location can be searched on https://lbs.amap.com/tools/picker
 //        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11)); //zoom rate
         aMap.setMapLanguage(AMap.ENGLISH);
-        //设置默认缩放级别
-        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,12)); //zoom rate
-        //隐藏的右下角缩放按钮
+        //Set the default zoom level
+        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12)); //zoom rate
+        //Hidden bottom right zoom button
         uiSettings.setZoomControlsEnabled(true);
-        //设置marker点击事件监听
+        //Set the marker click event listener
         aMap.setOnMarkerClickListener(this);
-        //设置InfoWindow点击事件监听
+        //Set InfoWindow click event listener
         aMap.setOnInfoWindowClickListener(this);
-        //设置自定义信息窗口
+        //Set the custom information window
         aMap.setInfoWindowAdapter(this);
-        //设置地图点击事件监听
+        //Set map click event listener
         aMap.setOnMapClickListener(this);
     }
-
-
 
 
     @Override
@@ -766,15 +679,12 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
         //返回true 表示接口已响应事,无需继续传递
 //        当点击的时候打开infoWindow
-        if (marker.isInfoWindowShown()){
+        if (marker.isInfoWindowShown()) {
             marker.hideInfoWindow();
+        } else {
+            marker.showInfoWindow();
         }
-        else {
-            marker.showInfoWindow();}
 
-//                Log.e("test", "onMarkerClick: test");
-//                //这里在添加点击监听事件后，原来的InfoWindow被取消了，可以在回调方法中手动实现
-//
 
         return true;
 
@@ -784,7 +694,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     /*
      * 弹出图片
      */
-    private void showDialog(Context context, Bitmap bitmap){
+    private void showDialog(Context context, Bitmap bitmap) {
         Dialog dia = new Dialog(context);
         dia.setContentView(R.layout.dialog);
         ImageView imageView = (ImageView) dia.findViewById(R.id.ivdialog);
@@ -821,97 +731,90 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     }
 
 
-
     @Override
     public void onInfoWindowClick(Marker marker) {
-        Log.e("i click here!","hhhhhhhhh");
-        if(marker.isDraggable())
-        {
-            Log.e("sp_before", "sp: "+sp.getString("route", "") );
+        Log.e("i click here!", "hhhhhhhhh");
+        if (marker.isDraggable()) {
+            Log.e("sp_before", "sp: " + sp.getString("route", ""));
             Log.e("Test", "蓝色变红色; ");
-            String id=marker.getTitle().split(",")[1];  //get infoWin ID
+            String id = marker.getTitle().split(",")[1];  //get infoWin ID
             marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));
             marker.setDraggable(false);
-            Toast toast= makeText(this.getContext(), "添加到route", LENGTH_LONG);
-            showMyToast(toast, 2*1000);
+            Toast toast = makeText(this.getContext(), "添加到route", LENGTH_LONG);
+            showMyToast(toast, 2 * 1000);
 
             SharedPreferences.Editor editor = sp.edit();
-            String location_string =sp.getString("route","");
+            String location_string = sp.getString("route", "");
             List<String> location_list = new ArrayList<String>();
             location_list.addAll(Arrays.asList(location_string.split(",")));
-            if (location_list.contains("")){
+            if (location_list.contains("")) {
                 location_list.remove("");
             }
 
             int len = location_list.size();
-            boolean temp =true;
+            boolean temp = true;
             for (int i = 0; i < len; i++) {
-                if (location_list.get(i).equals(id)){
-                    temp=false;
+                if (location_list.get(i).equals(id)) {
+                    temp = false;
                 }
             }
-            if(temp){
-                editor.putString("route",sp.getString("route","")+id+",");
+            if (temp) {
+                editor.putString("route", sp.getString("route", "") + id + ",");
                 editor.apply();
 
             }
 
 
-          Log.e("final_sp", "sp: "+sp.getString("route", "") );
+            Log.e("final_sp", "sp: " + sp.getString("route", ""));
 
 
-        }
-        else{
-            Log.e("sp_before", "sp: "+sp.getString("route", "") );
+        } else {
+            Log.e("sp_before", "sp: " + sp.getString("route", ""));
             Log.e("Test", "红色变蓝色");
-            String id=marker.getTitle().split(",")[1];
+            String id = marker.getTitle().split(",")[1];
             marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_blue));
             marker.setDraggable(true);
-            Toast toast= makeText(this.getContext(), "从route删除", LENGTH_LONG);
-            showMyToast(toast, 2*1000);
+            Toast toast = makeText(this.getContext(), "从route删除", LENGTH_LONG);
+            showMyToast(toast, 2 * 1000);
 
             SharedPreferences.Editor editor = sp.edit();
-            String location_string =sp.getString("route","");
+            String location_string = sp.getString("route", "");
             List<String> location_list = new ArrayList<String>(); //content in sp
             location_list.addAll(Arrays.asList(location_string.split(",")));
-            if (location_list.contains("")){
+            if (location_list.contains("")) {
                 location_list.remove("");
             }
-            int len =location_list.size();
-            int index =-23;
+            int len = location_list.size();
+            int index = -23;
             for (int i = 0; i < len; i++) {
-                if (location_list.get(i).equals(id)){
-                    index=i;
+                if (location_list.get(i).equals(id)) {
+                    index = i;
                 }
             }
             if (index > -23) {
                 location_list.remove(index);
             }
-            int len_af= location_list.size();
+            int len_af = location_list.size();
             String final_list = "";
             for (int i = 0; i < len_af; i++) {
-                final_list += location_list.get(i)+",";
+                final_list += location_list.get(i) + ",";
             }
-            editor.putString("route",final_list);
+            editor.putString("route", final_list);
             editor.apply();
-            Log.e("final_sp", "sp: "+sp.getString("route", "") );
-
-
-
+            Log.e("final_sp", "sp: " + sp.getString("route", ""));
 
 
         }
-//        Log.e("Test", "onInfoWindowClick: 标题为：" + marker.getSnippet()+ "  的InfoWindow被点击了");
-//        marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_red));
-        if(radio_btn_check){
-            Log.e("radio btn check", String.valueOf(radio_btn_check));
+
+        //the map status is "show all sites"
+        if (radio_btn_check) {
             new getAllLocs().execute();
         }
-        else{
-            Log.e("radio btn check", String.valueOf(radio_btn_check));
+        //the map status is "only show chosen sites"
+        else {
             new getpart().execute();
         }
-
+        //refresh the display window
         new display_window().execute();
     }
 
@@ -929,38 +832,35 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
                 toast.cancel();
                 timer.cancel();
             }
-        }, cnt );
+        }, cnt);
     }
 
-    /*
-     * 监听自定义窗口infoWindow事件回调
+    /**
+     * Listens for custom window infoWindow event callbacks
      */
     @Override
     public View getInfoWindow(Marker marker) {
-//        if (infoWindow == null) {
-//            infoWindow = LayoutInflater.from(this.getContext()).inflate(R.layout.inforwindow_layout, null);
-//        }
+
         infoWindow = LayoutInflater.from(this.getContext()).inflate(R.layout.inforwindow_layout, null);
         render(marker, infoWindow);
         return infoWindow;
     }
 
     /**
-     * 自定义infoWindow窗口
+     * Customize the infoWindow window
      */
     private void render(Marker marker, View infoWindow) {
-//        TextView title = infoWindow.findViewById(R.id.info_window_title);
         TextView content = infoWindow.findViewById(R.id.info_window_content);
-        ImageView imageView=infoWindow.findViewById(R.id.iv_1);
+        ImageView imageView = infoWindow.findViewById(R.id.iv_1);
 
-       int imageID=Integer.parseInt(marker.getTitle().split(",")[0]);
+        int imageID = Integer.parseInt(marker.getTitle().split(",")[0]);
 
         imageView.setImageResource(imageID);
         content.setText(marker.getSnippet());
     }
 
     /**
-     * 不能修改整个InfoWindow的背景和边框，返回null
+     * The background and borders of the entire InfoWindow cannot be modified. null is returned
      */
     @Override
     public View getInfoContents(Marker marker) {
@@ -968,12 +868,12 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     }
 
     /**
-     * 地图点击事件
-     * 点击地图区域让当前展示的窗体隐藏
+     * Map click event
+     * Click on the map area to hide the currently displayed form
      */
     @Override
     public void onMapClick(LatLng latLng) {
-        //判断当前marker信息窗口是否显示
+        //Check whether the marker information window is displayed
         if (clickMaker != null && clickMaker.isInfoWindowShown()) {
             clickMaker.hideInfoWindow();
         }
@@ -983,24 +883,21 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
 
 
-//    public interface InfoWindowAdapter {
-//        View getInfoWindow(Marker marker);
-//        View getInfoContents(Marker marker);
-//    }
-
     /**
      * set map language
      *
      * @param language AMap.CHINESE, AMap.ENGLISH
      * @since 5.5.0
      */
-    public void setMapLanguage(String language){}
+    public void setMapLanguage(String language) {
+    }
 
     @Override
-    public void onSaveInstanceState(Bundle outstate){
+    public void onSaveInstanceState(Bundle outstate) {
         super.onSaveInstanceState(outstate);
         mapView.onSaveInstanceState(outstate);
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -1010,15 +907,16 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     @Override
     public void onResume() {
         super.onResume();
-        //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
+        //When the activity executes onResume, run mMapView.onResume () to redraw the load map
         mapView.onResume();
     }
+
     @Override
     public void onPause(
 
     ) {
         super.onPause();
-        //在activity执行onPause时执行mMapView.onPause ()，暂停地图的绘制
+        //When the activity executes onPause, run mMapView.onPause () to pause the load map
         mapView.onPause();
     }
 

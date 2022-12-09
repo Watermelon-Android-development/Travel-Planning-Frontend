@@ -23,10 +23,8 @@ public class description_page extends AppCompatActivity {
 
     private List<TravelDatabaseHelper.Site> data;
 
-    private boolean btn_flag;
 
-
-    //详情页面渲染
+    //combined with database to render detail information in the description page
     private class page_render extends AsyncTask<Void,Void,Boolean> {
         @Override
         protected void onPreExecute(){
@@ -44,7 +42,6 @@ public class description_page extends AppCompatActivity {
         protected void onPostExecute(Boolean success){
             //String name
             String rl_name=data.get(position).getName();
-            Log.e("description","Name: " + rl_name);
             TextView name=findViewById(R.id.item_name);
             name.setText(rl_name);
 
@@ -52,7 +49,6 @@ public class description_page extends AppCompatActivity {
             int image_index= data.get(position).getImgID();
             ImageView image=findViewById(R.id.description_image);
             image.setImageResource(image_index);
-
 
 
             //int mark
@@ -103,7 +99,7 @@ public class description_page extends AppCompatActivity {
 
     }
 
-    //favorite按钮
+    //favorite function
     private class btn_click extends AsyncTask<Void,Void,Boolean> {
         @Override
         protected void onPreExecute(){
@@ -113,7 +109,7 @@ public class description_page extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... voids){
             data=travelDatabaseHelper.getAllSites();
-            Boolean favouriteflag_1=data.get(position).getIsFavorite(); //默认是false，灰色
+            Boolean favouriteflag_1=data.get(position).getIsFavorite(); //button initial state is false & gray
 
             return favouriteflag_1;
         }
@@ -122,15 +118,13 @@ public class description_page extends AppCompatActivity {
         protected void onPostExecute(Boolean favouriteflag_1){
             Button favorite_btn=findViewById(R.id.lovebutton);
             if(favouriteflag_1){
-                favorite_btn.setActivated(false); //按钮变灰色
+                favorite_btn.setActivated(false); //button turn gray
                 favorite_btn.setText("FAVORITE");
-                //Log.e("取消收藏","取消前的flag = "+favouriteflag_1);
                 travelDatabaseHelper.deleteFavoriteItem(position+1);
             }
             else{
-                favorite_btn.setActivated(true); //按钮变紫色
+                favorite_btn.setActivated(true); //button turn purple
                 favorite_btn.setText("FAVORITED !");
-                // Log.e("增加收藏","增加前的flag = "+favouriteflag_1);
                 travelDatabaseHelper.addFavoriteItem(position+1);
             }
         }
@@ -153,7 +147,7 @@ public class description_page extends AppCompatActivity {
 
         Intent i=getIntent();
         position=i.getIntExtra("Position",-1);
-        Log.e("description","position:" + position);
+
 
         new page_render().execute();
 
@@ -174,7 +168,7 @@ public class description_page extends AppCompatActivity {
 
     }
 
-
+    //the back button to return home page
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){

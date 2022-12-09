@@ -392,7 +392,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         protected void onPostExecute(Boolean success) {
             //the plan name already exists
             if (!check_routetitle_result) {
-                Toast toast = makeText(getContext(), "this plan name has been existed, please input another one", LENGTH_LONG);
+                Toast toast = makeText(getContext(), "Failure: Duplicated plan title, please try another name!", LENGTH_LONG);
                 showMyToast(toast, 2 * 1000);
 
             }
@@ -402,7 +402,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
                 new save_route().execute();
 
 
-                Toast toast = makeText(getContext(), "route save successfully!", LENGTH_SHORT);
+                Toast toast = makeText(getContext(), "Success: Plan saved to planlist!", LENGTH_SHORT);
                 showMyToast(toast, 2 * 1000);
 
                 //clear sp SharedPreferences

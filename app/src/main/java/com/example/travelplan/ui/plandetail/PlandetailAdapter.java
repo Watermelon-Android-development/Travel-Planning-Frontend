@@ -1,7 +1,4 @@
 package com.example.travelplan.ui.plandetail;
-//
-//public class FavoriteAdapter {
-//}
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -61,7 +58,6 @@ public class PlandetailAdapter extends BaseAdapter {
         ViewHolder holder = null;
 
         if (convertView == null) {
-            // 下拉项布局
             convertView = mInflater.inflate(R.layout.activity_plandetail_item, null);
 
             holder = new ViewHolder();

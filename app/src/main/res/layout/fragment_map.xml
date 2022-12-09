@@ -96,7 +96,7 @@
            android:id="@+id/rb_showall"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:text="show all sides"
+           android:text="show all sites"
            android:checked="true"
            android:textStyle="bold"/>
 
@@ -104,7 +104,7 @@
            android:id="@+id/rb_shownotall"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:text="only show choosen sides"
+           android:text="only show chosen sites"
            android:textStyle="bold"
            />
    </RadioGroup>
